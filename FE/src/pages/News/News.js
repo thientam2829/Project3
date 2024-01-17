@@ -585,7 +585,7 @@ export default function SimpleTabs() {
                     </div>
                     <div className="col-9">
                       <h6 className="text-secondary">
-                        NGÔ THANH VÂN CHÍNH THỨC KHỞI ĐỘNG CUỘC THI THIẾT
+                        NGÔ THANH VÂN CHÍNH THỨC KHỞI ĐỘNG CUỘC THI THIẾT KÊ
                       </h6>
                     </div>
                   </div>

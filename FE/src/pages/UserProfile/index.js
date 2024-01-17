@@ -332,7 +332,6 @@ export default function Index() {
                 </Form>
               )}
             </Formik>
-
           </div>
         </div>
         <div style={{ marginTop: "40px" }} className="col-md-4">

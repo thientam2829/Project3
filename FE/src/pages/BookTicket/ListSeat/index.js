@@ -176,7 +176,7 @@ export default function ListSeat() {
           </div>
           <div>
             <SeatIcon style={{ color: "#f7b500", fontSize: 27 }} />
-            <p>Ghế vip</p>
+            <p>Ghế VIP</p>
           </div>
 
           <div>

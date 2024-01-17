@@ -71,8 +71,9 @@ const btnMuaVe = {
 };
 
 const text = {
-  color: "#b42a14",
-  margin: "6px 0",
+  fontWeight: "bolder",
+  color: "#fff",
+  margin: "20px 0",
   textTransform: "uppercase",
 };
 
@@ -83,7 +84,7 @@ const overLay = {
   width: "100%",
   height: "100%",
   backgroundColor: "rgba(0, 0, 0, 0.5)", // Replace with your desired background color
-  zIndex: 99,
+  zIndex: 1,
 };
 
 function App() {
@@ -142,7 +143,7 @@ function App() {
                       <img
                         style={{ width: "100%", objectFit: "cover" }}
                         src={banner.hinhAnh ?? ""}
-                        alt="hinh anh thong tin phim"
+                        alt="Hinh Anh"
                       />
                     </Link>
                     <Typography style={text}>{banner.tenPhim ?? ""}</Typography>

@@ -6,7 +6,7 @@ export default function index() {
     maxWidth: 940,
     margin: "auto",
     width: "100%",
-    background: "url(assets/img/back-news.png)",
+    //background: "url(public/img/back-news.png)",
     backgroundSize: "100%",
     backgroundRepeat: "no-repeat",
   };
