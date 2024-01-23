@@ -144,10 +144,21 @@ const transporter = nodemailer.createTransport({
 });
 function sendVerificationEmail(email, otp) {
   const mailOptions = {
-    from: "Cosmo Cinemas VietNam",
+    from: "Cosmo Cinemas VietNam <cosmocinemaldh@gmail.com>",
     to: email,
     subject: "Xác thực tài khoản",
-    text: `Mã OTP của bạn là: ${otp}`,
+    html: `
+      <p style="font-size: 16px; color: #333; line-height: 1.6;">
+        Xin chào.<br><br>
+        
+        Mã OTP của bạn là: <strong style="color:#0B1F3E ;">${otp}</strong><br><br>
+        
+        Trân trọng!<br>
+        Cosmo Cinemas VietNam Support Team!
+      </p>
+      <img src="https://res.cloudinary.com/thientam2829/image/upload/v1702947907/imager/jeqkrwnwdhmmnvobdqrb.jpg" 
+      style="width: 20rem; border-radius: 5px;" alt="thumbnail">
+    `,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -699,27 +710,6 @@ function queryAsync(sql, values) {
 }
 
 // QuanLyDatVe
-app.get("/api/QuanLyPhim/LayThongTin/:maPhim", function (req, res) {
-  const maPhim = req.params.maPhim;
-  dbConn.query(
-    "SELECT * FROM phiminsert WHERE maPhim = ?",
-    [maPhim],
-    function (error, results, fields) {
-      if (error) {
-        console.error("Lỗi khi truy vấn cơ sở dữ liệu:", error);
-        res.status(500).send("Lỗi khi truy vấn cơ sở dữ liệu");
-      } else {
-        if (results.length > 0) {
-          return res.send(results[0]);
-        } else {
-          return res
-            .status(404)
-            .send("Không tìm thấy phim với mã phim cung cấp");
-        }
-      }
-    }
-  );
-});
 
 app.get("/api/QuanLyDatVe/LayDanhSachPhongVe", function (req, res) {
   dbConn.query(
@@ -1014,15 +1004,33 @@ app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
   });
   const token = jwt.sign({ email: email }, "secretKey", { expiresIn: "1h" });
 
-  const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+  const resetLink = `http://localhost:3000/reset-password/${token}`;
   if (!user) {
     return res.status(404).send("Email không tồn tại, vui lòng kiểm tra lại.");
   }
   const mailOptions = {
-    from: "cosmocinemaldh@gmail.com",
+    from: "Cosmo Cinemas VietNam <cosmocinemaldh@gmail.com>",
     to: email,
     subject: "Đặt lại mật khẩu",
-    text: `Nhấn vào đây để đặt lại mật khẩu: ${resetLink}`,
+    html: `
+      <p style="font-size: 16px; color: #333; line-height: 1.6;">
+        Xin chào!<br><br>
+        
+        Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Nhấn vào đường link bên dưới để thực hiện thao tác này:<br><br>
+        
+        <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; background-color: #0B1F3E; color: #fff; text-decoration: none; border-radius: 5px;">
+          Đặt lại mật khẩu
+        </a><br><br>
+  
+        Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email.<br><br>
+  
+        Trân trọng!<br>
+        Cosmo Cinemas VietNam Support Team !
+    
+      </p>
+      <img src="https://res.cloudinary.com/thientam2829/image/upload/v1702947907/imager/jeqkrwnwdhmmnvobdqrb.jpg" 
+        style="width: 20rem; border-radius: 5px;" alt="thumbnail">
+    `,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -1044,7 +1052,6 @@ app.post(
     const { token, newPassword } = req.body;
 
     try {
-      // Xác minh token
       const decoded = jwt.verify(token, "secretKey");
       const email = decoded.email;
 
@@ -1064,3 +1071,28 @@ app.post(
     }
   }
 );
+app.get("/api/QuanLyTinTuc/LayTatCaTinTuc", function (req, res) {
+  dbConn.query("SELECT * FROM tintuc", [], function (error, results, fields) {
+    if (error) throw error;
+    return res.send(results);
+  });
+});
+app.get("/api/QuanLyTinTuc/LayThongTinTinTuc/:id", function (req, res) {
+  const id = req.params.id;
+  dbConn.query(
+    "SELECT * FROM tintuc WHERE id = ?",
+    [id],
+    function (error, results, fields) {
+      if (error) {
+        console.error("Lỗi khi truy vấn cơ sở dữ liệu:", error);
+        res.status(500).send("Lỗi khi truy vấn cơ sở dữ liệu");
+      } else {
+        if (results.length > 0) {
+          return res.send(results[0]);
+        } else {
+          return res.status(404).send("Không tìm thấy tin tức phù hợp");
+        }
+      }
+    }
+  );
+});

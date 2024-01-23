@@ -97,8 +97,8 @@ export default function Register() {
       console.error(error);
       Swal.fire({
         icon: "error",
-        title: "xxxx",
-        text: "xxx",
+        title: "Email đã tồn tại",
+        text: "Email đã tồn tại, vui lòng nhập email khác.",
       });
     }
   };
@@ -142,7 +142,7 @@ export default function Register() {
                       {(formikProps) => (
                         <Form className="col-sm-12">
                           <div className="form-group">
-                            <label>Tài khoản&nbsp;</label>
+                            <label>Tài khoản *&nbsp;</label>
                             <ErrorMessage
                               name="taiKhoan"
                               render={(msg) => (
@@ -156,7 +156,7 @@ export default function Register() {
                             />
                           </div>
                           <div className="form-group">
-                            <label>Mật khẩu&nbsp;</label>
+                            <label>Mật khẩu *&nbsp;</label>
                             <ErrorMessage
                               name="matKhau"
                               render={(msg) => (
@@ -170,7 +170,7 @@ export default function Register() {
                             />
                           </div>
                           <div className="form-group">
-                            <label>Họ và tên&nbsp;</label>
+                            <label>Họ và tên *&nbsp;</label>
                             <ErrorMessage
                               name="hoTen"
                               render={(msg) => (
@@ -185,7 +185,7 @@ export default function Register() {
                           </div>
 
                           <div className="form-group">
-                            <label>Email&nbsp;</label>
+                            <label>Email *&nbsp;</label>
                             <ErrorMessage
                               name="email"
                               render={(msg) => (
@@ -200,7 +200,7 @@ export default function Register() {
                             />
                           </div>
                           <div className="form-group">
-                            <label>Số điện thoại&nbsp;</label>
+                            <label>Số điện thoại *&nbsp;</label>
                             <ErrorMessage
                               name="soDt"
                               render={(msg) => (

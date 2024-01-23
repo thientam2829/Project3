@@ -12,7 +12,7 @@ import News from "../News/News";
 import MoviesList from "../Film/Film_Flip";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import ScrollToTopOnPathChange from "../../components/Scroll";
 export default function Homepage() {
   const dispatch = useDispatch();
   const movieList = useSelector((state) => state.movieReducer.movieList);
@@ -29,6 +29,7 @@ export default function Homepage() {
 
   return (
     <div>
+      <ScrollToTopOnPathChange />
       <Carousel />
       {/* <UpcomingMovie /> */}
       <MoviesList />

@@ -15,7 +15,7 @@
   height: 70px;
 }
 .btn-up {
-  border: 1px solid aliceblue;
+  border: 1px solid transparent;
   margin: 0 5px;
   border-radius: 4px;
   cursor: pointer;

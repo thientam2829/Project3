@@ -5,7 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   // Yup validation schema

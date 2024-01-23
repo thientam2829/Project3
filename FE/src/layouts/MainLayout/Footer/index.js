@@ -170,7 +170,7 @@ export default function Footer() {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://www.facebook.com/cosmo.cinema.ldhvn/"
+                href="https://www.facebook.com/profile.php?id=61555316983849"
               >
                 <img
                   className={classes.logo}
@@ -181,7 +181,7 @@ export default function Footer() {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://www.facebook.com/cosmo.cinema.ldhvn/"
+                href="https://www.facebook.com/profile.php?id=61555316983849"
               >
                 <img
                   className={classes.logo}

@@ -32,12 +32,12 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Box from "@material-ui/core/Box";
 import Modal from "@material-ui/core/Modal";
 import Fade from "@material-ui/core/Fade";
-
+import ResetPassword from "./pages/ResetPassword/resetpass";
 import Typography from "@material-ui/core/Typography";
 import ForgotPassword from "./pages/ResetPassword/forgotpass";
 import VerifyOTP from "./pages/Register/verifyOTP";
 import News from "./pages/News/News";
-
+import NewsPage from "./pages/NewDetails";
 const style = {
   position: "absolute",
   top: "50%",
@@ -164,13 +164,11 @@ function App() {
               />
             </MainLayout>
           </Route>
-
           <CheckoutRoute
             exact
             path="/datve/:maLichChieu"
             component={BookTicket}
           />
-
           <Route
             exact
             path={[
@@ -201,19 +199,16 @@ function App() {
               <AdminRoute exact path="/admin/films/addnew" />
             </AdminLayout>
           </Route>
-
           <Route exact path={["/login", "/signUp"]}>
             <MainLayout>
               <Route exact path="/login" component={Login} />
               <Route exact path="/signUp" component={Register} />
             </MainLayout>
           </Route>
-          <Route
-            path="/reset-password/:token"
-            element={<ResetPasswordForm />}
-          />
+          <Route path="/reset-password/:token" element={ResetPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/verify-otp" component={VerifyOTP} />
+          <Route path="/news/:id" component={NewsPage} />
           <Route component={Page404} />
         </Switch>
       </Suspense>
