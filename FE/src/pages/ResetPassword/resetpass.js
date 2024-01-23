@@ -1,62 +1,42 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
-function ResetPasswordForm({ token }) {
-  const [password, setPassword] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+const ResetPassword = () => {
+  const [newPassword, setNewPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const location = useLocation();
 
-  const resetPasswordHandler = async (e) => {
+  // Parse token từ URL
+  const token = new URLSearchParams(location.search).get("token");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (password !== confirmPass) {
-      setError("Mật khẩu không khớp");
-      return;
-    }
-
     try {
-      const url = `http://localhost:4000/api/QuanLyNguoiDung/QuenMatKhau`;
-
-      await axios.post(
-        url,
-        { password },
-        {
-          headers: {
-            "x-access-token": token,
-          },
-        }
+      const response = await axios.post(
+        "/api/QuanLyNguoiDung/XacMinhTokenVaCapNhatMatKhau",
+        { token, newPassword }
       );
-
-      setSuccess(true);
+      setMessage(response.data);
     } catch (error) {
-      setError(error.response.data.msg);
+      setMessage(error.response.data);
     }
   };
 
-  if (success) {
-    return <div>Mật khẩu đã được cập nhật!</div>;
-  }
-
   return (
-    <form onSubmit={resetPasswordHandler}>
-      {error && <p>{error}</p>}
-
-      <input
-        type="password"
-        placeholder="Mật khẩu mới"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <input
-        type="password"
-        placeholder="Xác nhận mật khẩu"
-        onChange={(e) => setConfirmPass(e.target.value)}
-      />
-
-      <button>Cập nhật</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Đặt lại mật khẩu</button>
+      </form>
+      {message && <p>{message}</p>}
+    </div>
   );
-}
+};
 
-export default ResetPasswordForm;
+export default ResetPassword;

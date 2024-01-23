@@ -9,7 +9,7 @@ import Theaters from "./Theaters";
 import Showtime from "./Showtime";
 import UpcomingMovie from "./UpcomingMovie";
 import News from "../News/News";
-import Film_Flip from "../Film/Film_Flip";
+import MoviesList from "../Film/Film_Flip";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -30,10 +30,11 @@ export default function Homepage() {
   return (
     <div>
       <Carousel />
-      <Film_Flip />
+      {/* <UpcomingMovie /> */}
+      <MoviesList />
       <Showtime />
       <Theaters />
-      {/* <UpcomingMovie /> */}
+
       <News />
     </div>
   );

@@ -69,46 +69,47 @@ export default function SimpleTabs() {
             <div className="row">
               <div className={classes.repons}>
                 <a
-                  href="https://tix.vn/goc-dien-anh/7965-an-dinh-chac-nich-ngay-khoi-chieu-16-04-ly-hai-tung-clip-lat-mat-48h-dam-chat"
+                  href="https://baomoi.com/nha-vit-di-cu-di-de-yeu-thuong-c47939877.epi"
                   className={classes.news}
                 >
                   <img
                     className={classes.fullImg}
-                    src="https://s3img.vcdn.vn/123phim/2021/03/an-dinh-chac-nich-ngay-khoi-chieu-16-04-ly-hai-tung-clip-lat-mat-48h-dam-chat-fast-furious-mien-song-nuoc-16170881088272.png"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1705913821/gsulnvf5uajdu9hgjbnm.jpg"
                     alt="news-movie"
                   />
                   <div className="py-3">
                     <h4 className="card-title">
-                      Ấn định chắc nịch ngày khởi chiếu 16.04, Lý Hải tung clip
-                      Lật Mặt: 48H đậm chất
+                      'NHÀ VỊT DI CƯ '- ĐI ĐỂ YÊU THƯƠNG
                     </h4>
                     <p className="text-secondary">
-                      Trước thềm khởi chiếu 16.04 này, Lý Hải bất ngờ tung clip
-                      rượt đuổi gay cấn thót tim fans hâm mộ
+                      Nhà vịt di cư (tựa gốc: Migration) do Illumination Studios
+                      sản xuất, kể về một gia đình vịt quyết định phiêu lưu khám
+                      phá những vùng đất mới. Qua hành trình này, họ gắn bó yêu
+                      thương nhau hơn.
                     </p>
                   </div>
                 </a>
               </div>
               <div className={classes.repons}>
                 <a
-                  href="https://tix.vn/goc-dien-anh/7964-mortal-kombat-cuoc-chien-sinh-tu-goi-ten-nhung-phim-dien-anh-noi-tieng-duoc-chuyen-the-tu-cac-tua-game-dinh-dam"
+                  href="https://tuoitre.vn/hospital-playlist-chua-lanh-cam-xuc-ve-nhung-bac-si-tai-hoa-va-duc-do-20210809205640694.htm"
                   className={classes.news}
                 >
                   <img
                     className={classes.fullImg}
-                    src="https://s3img.vcdn.vn/123phim/2021/03/mortal-kombat-cuoc-chien-sinh-tu-goi-ten-nhung-phim-dien-anh-noi-tieng-duoc-chuyen-the-tu-cac-tua-game-dinh-dam-16170160290762.png"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1705914256/hqxtskgdrmfxguyxu9xx.png"
                     alt="news-movie"
                   />
                   <div className="py-3">
                     <h4 className="card-title">
-                      [MORTAL KOMBAT: CUỘC CHIẾN SINH TỬ] - GỌI TÊN NHỮNG PHIM
-                      ĐIỆN ẢNH NỔI...
+                      HOSPITAL PLAYLIST CHỮA LÀNH CẢM XÚC VỀ NHỮNG BÁC SĨ TÀI
+                      HOA VÀ ĐỨC ĐỘ
                     </h4>
                     <p className="text-secondary">
-                      Cư dân nơi khác đang sắp “gato nổ mắt” với dân Sài Thành
-                      khi sắp tới đây thành phố HCM sẽ chào đón một rạp chiếu
-                      phim mang phong cách Artistic Urban Lifestyle đầu tiên tại
-                      Việt Nam!
+                      Giữa lúc nhiều phim truyền hình nhấn vào các âm mưu, tội
+                      ác hay bi kịch khiến khán giả mệt mỏi, Hospital Playlist
+                      miệt mài với con đường riêng: một bộ phim chữa lành cảm
+                      xúc về những bác sĩ tài hoa và đức độ.
                     </p>
                   </div>
                 </a>
@@ -175,7 +176,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         Khai trương rạp xịn giá ngon, chuẩn xì-tai Sài Gòn
                       </h6>
                     </div>
@@ -194,7 +195,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         “Bóc tem” tổ hợp giải trí mới toanh của giới Hà Thành
                       </h6>
                     </div>
@@ -213,9 +214,9 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         Tiệc Trăng Máu chính thức cán mốc 100 tỷ chỉ sau 2 tuần
-                        công
+                        công chiếu
                       </h6>
                     </div>
                   </div>
@@ -233,7 +234,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         NGÔ THANH VÂN CHÍNH THỨC KHỞI ĐỘNG CUỘC THI THIẾT KẾ
                       </h6>
                     </div>
@@ -248,45 +249,43 @@ export default function SimpleTabs() {
             <div className="row">
               <div className={classes.repons}>
                 <a
-                  href="https://tix.vn/goc-dien-anh/7964-mortal-kombat-cuoc-chien-sinh-tu-goi-ten-nhung-phim-dien-anh-noi-tieng-duoc-chuyen-the-tu-cac-tua-game-dinh-dam"
+                  href="https://tiin.vn/chuyen-muc/phim/review-ke-an-hon-hay-nhung-khong-tron-vi.html"
                   className={classes.news}
                 >
                   <img
                     className={classes.fullImg}
-                    src="https://s3img.vcdn.vn/123phim/2020/08/review-tan-tich-quy-am-relic-ba-the-he-va-moi-lien-ket-15965255784224.png"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1705917309/ljzwrj2soru9y2gvajhz.jpg"
                     alt="news-movie"
                   />
                   <div className="py-3">
                     <h4 className="card-title">
-                      [MORTAL KOMBAT: CUỘC CHIẾN SINH TỬ] - GỌI TÊN NHỮNG PHIM
-                      ĐIỆN ẢNH NỔI...
+                      Review Kẻ Ăn Hồn: Hay nhưng không tròn vị
                     </h4>
                     <p className="text-secondary">
-                      Cư dân nơi khác đang sắp “gato nổ mắt” với dân Sài Thành
-                      khi sắp tới đây thành phố HCM sẽ chào đón một rạp chiếu
-                      phim mang phong cách Artistic Urban Lifestyle đầu tiên tại
-                      Việt Nam!
+                      Với thời lượng có hạn, phim trình bày nội dung một cách
+                      xúc tích, có đủ máu me, kinh dị nhưng gây đáng tiếc vì lặp
+                      lại những sai lầm cũ.
                     </p>
                   </div>
                 </a>
               </div>
               <div className={classes.repons}>
                 <a
-                  href="https://tix.vn/review/7946-review-dinh-thu-oan-khuat-ghost-of-war"
+                  href="https://moveek.com/bai-viet/review-phim-ruou-cot-nguoi-ghi-diem-bang-hinh-anh-ma-mi/32668"
                   className={classes.news}
                 >
                   <img
                     className={classes.fullImg}
-                    src="https://s3img.vcdn.vn/123phim/2020/08/review-dinh-thu-oan-khuat-ghost-of-war-15965120886610.png"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1705917122/t2kkumjow9odm48ffzmk.jpg"
                     alt="news-movie"
                   />
                   <div className="py-3">
                     <h4 className="card-title">
-                      Review: Dinh Thự Oan Khuất (Ghost Of War)
+                      Review phim Rượu Cốt Người - Ghi điểm bằng hình ảnh ma mị
                     </h4>
                     <p className="text-secondary">
-                      Tuy là một bộ phim có chất lượng tốt, nhưng có vẻ Dinh Thự
-                      Oan Khuất vẫn chưa đủ để đem khán giả trở lại phòng vé!
+                      Rượu Cốt Người có yếu tố được chăm chút và những yếu tố
+                      cần sự chăm chút.
                     </p>
                   </div>
                 </a>
@@ -353,7 +352,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         Khai trương rạp xịn giá ngon, chuẩn xì-tai Sài Gòn
                       </h6>
                     </div>
@@ -372,7 +371,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         “Bóc tem” tổ hợp giải trí mới toanh của giới Hà Thành
                       </h6>
                     </div>
@@ -391,9 +390,9 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         Tiệc Trăng Máu chính thức cán mốc 100 tỷ chỉ sau 2 tuần
-                        công
+                        công chiếu
                       </h6>
                     </div>
                   </div>
@@ -411,7 +410,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         NGÔ THANH VÂN CHÍNH THỨC KHỞI ĐỘNG CUỘC THI THIẾT KẾ
                       </h6>
                     </div>
@@ -431,16 +430,19 @@ export default function SimpleTabs() {
                 >
                   <img
                     className={classes.fullImg}
-                    src="https://s3img.vcdn.vn/123phim/2021/04/bhd-59k-ve-ca-tuan-16190002421777.jpg"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1705916906/xvotvsahwwmvqhtjhj7i.jpg"
                     alt="news-movie"
                   />
 
                   <div className="py-3">
-                    <h4 className="card-title">BHD 59K/VÉ CẢ TUẦN !!!</h4>
+                    <h4 className="card-title">
+                      Khám phá vũ trụ điện ảnh chỉ 79.000đ tại COSMO CINEMA, quá
+                      dễ với Ví Trả Sau!
+                    </h4>
                     <p className="text-secondary">
-                      Tận hưởng Ưu Đãi lên đến 3 VÉ BHD Star mỗi tuần chỉ với
-                      giá 59k/vé khi mua vé trên TIX hoặc Mục Vé Phim trên
-                      ZaloPay.
+                      Bạn sẽ không phải bỏ lỡ loạt phim bom tấn nữa rồi! Ví Trả
+                      Sau tặng bạn ưu đãi chỉ 79.000đ/vé khi mua vé phim tại
+                      CGV. Xem ngay nào!
                     </p>
                   </div>
                 </a>
@@ -456,10 +458,10 @@ export default function SimpleTabs() {
                     alt="news-movie"
                   />
                   <div className="py-3">
-                    <h4 className="card-title">TIX 1K/VÉ NGẠI CHI GIÁ VÉ</h4>
+                    <h4 className="card-title">COSMO 1K/VÉ NGẠI CHI GIÁ VÉ</h4>
                     <p className="text-secondary">
-                      Đồng giá 1k/vé cả tuần tất cả các rạp trên TIX + Nhận thêm
-                      02 voucher thanh toán ZaloPay thả ga
+                      Đồng giá 1k/vé cả tuần tất cả các rạp trên COSMO + Nhận
+                      thêm 02 voucher thanh toán ZaloPay thả ga
                     </p>
                   </div>
                 </a>
@@ -526,7 +528,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         Khai trương rạp xịn giá ngon, chuẩn xì-tai Sài Gòn
                       </h6>
                     </div>
@@ -545,7 +547,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         “Bóc tem” tổ hợp giải trí mới toanh của giới Hà Thành
                       </h6>
                     </div>
@@ -564,9 +566,9 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         Tiệc Trăng Máu chính thức cán mốc 100 tỷ chỉ sau 2 tuần
-                        công
+                        công chiếu
                       </h6>
                     </div>
                   </div>
@@ -584,7 +586,7 @@ export default function SimpleTabs() {
                       />
                     </div>
                     <div className="col-9">
-                      <h6 className="text-secondary">
+                      <h6 className="card-title">
                         NGÔ THANH VÂN CHÍNH THỨC KHỞI ĐỘNG CUỘC THI THIẾT KÊ
                       </h6>
                     </div>

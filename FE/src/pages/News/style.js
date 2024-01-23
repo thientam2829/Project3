@@ -11,7 +11,7 @@ const useStyle = makeStyles((theme) => ({
   },
 
   fullImg: {
-    width: "100%",
+    width: "95%",
     height: "auto",
     borderRadius: 5,
   },

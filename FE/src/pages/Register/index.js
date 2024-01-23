@@ -37,8 +37,7 @@ export default function Register() {
     };
   }, []);
 
-  const phoneRegExp =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const phoneRegExp = /^0\d{9}$/;
 
   const signupUserSchema = yup.object().shape({
     taiKhoan: yup.string().required("*Tài khoản không được bỏ trống !"),
@@ -50,54 +49,58 @@ export default function Register() {
     soDt: yup
       .string()
       .required("*Số điện thoại không được bỏ trống !")
-      .matches(phoneRegExp, "Số điện thoại không hợp lệ!"),
+      .matches(phoneRegExp, "Số điện thoại không hợp lệ!")
+      .min(10, "Số điện thoại phải là 10 chữ số.")
+      .max(10, "Số điện thoại phải là 10 chữ số."),
     hoTen: yup.string().required("*Tên không được bỏ trống !"),
   });
   const [emailExistMessage, setEmailExistMessage] = useState("");
 
   const handleSubmit = async (user) => {
     try {
-      if (!loadingRegister && !responseRegister) {
-        // Gọi API đăng ký và nhận mã OTP
-        const response = await axios.post(
-          "http://localhost:4000/api/QuanLyNguoiDung/DangKy",
-          user
-        );
+      const emailExist = await axios.get(
+        `http://localhost:4000/api/check-email/${user.email}`
+      );
+      if (emailExist.status === 400) {
+        Swal.fire({
+          icon: "error",
+          title: "Email đã tồn tại",
+          text: "Email đã tồn tại. Vui lòng nhập lại email khác.",
+        });
+        return;
+      }
 
-        if (response.data === "Success") {
-          // Hiển thị thông báo thành công và chuyển hướng đến trang nhập OTP
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title:
-              "Bạn đã đăng ký thành công. Vui lòng kiểm tra email để nhập OTP.",
-            showConfirmButton: false,
-            timer: 3000,
-          });
+      const response = await axios.post(
+        "http://localhost:4000/api/QuanLyNguoiDung/DangKy",
+        user
+      );
 
-          history.push("/verify-otp", { email: user.email });
-        } else {
-          // Hiển thị thông báo lỗi từ server
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Đăng ký thất bại. Vui lòng thử lại.",
-          });
-        }
+      if (response.data === "Success") {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title:
+            "Bạn đã đăng ký thành công. Vui lòng kiểm tra email để nhập OTP.",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+
+        history.push("/verify-otp", { email: user.email });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Đăng ký thất bại",
+          text: "Đăng ký thất bại. Vui lòng thử lại.",
+        });
       }
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "xxxx",
+        text: "xxx",
+      });
     }
-    const response = await axios.get(
-      `http://localhost:4000/api/check-email/${user.email}`
-    );
-    if (
-      response.data.message === "Email đã tồn tại, vui lòng nhập email khác."
-    ) {
-      setEmailExistMessage(response.data.message);
-      return;
-    }
-    dispatch(register(user));
   };
 
   const handleLogin = () => {

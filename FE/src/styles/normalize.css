@@ -5513,6 +5513,7 @@ input[type="button"].btn-block {
 
 .card-title {
   margin-bottom: 0.75rem;
+  color: #fff !important;
 }
 
 .card-subtitle {
@@ -11702,7 +11703,8 @@ a.text-primary:focus {
 }
 
 .text-secondary {
-  color: #6c757d !important;
+  color: #fff3cd !important;
+  width: 500px;
 }
 
 a.text-secondary:hover,
@@ -12177,8 +12179,6 @@ h5,
 }
 
 .btn.btn-primary {
-  background: #e3b04b !important;
-  border: 1px solid #e3b04b !important;
   color: #fff !important;
 }
 

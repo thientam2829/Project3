@@ -8,10 +8,9 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import "./style.css";
-import logoTix from "../Register/logo/logoTix.png";
 import { login, resetErrorLoginRegister } from "../../reducers/actions/Auth";
 import { LOADING_BACKTO_HOME } from "../../reducers/constants/Lazy";
-import axios from "axios";
+
 export default function Login() {
   const { currentUser, errorLogin } = useSelector((state) => state.authReducer);
   let location = useLocation();
@@ -53,7 +52,7 @@ export default function Login() {
 
   const handleSubmit = (user) => {
     dispatch(login(user));
-    // history.push("/", location.state);
+    //history.push("/", location.state);
   };
   const handlesignUp = () => {
     history.push("/signUp", location.state);

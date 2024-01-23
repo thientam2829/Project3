@@ -1,58 +1,123 @@
 import React, { useState } from "react";
-
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import Swal from "sweetalert2";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleForgotPassword = async () => {
+  // Yup validation schema
+  const emailValidationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Email không hợp lệ")
+      .required("Email không được để trống"),
+  });
+
+  const handleForgotPassword = async (values) => {
+    setLoading(true);
+
     try {
-      if (!email) {
-        console.error("Email is not defined or empty");
-        return;
-      }
-
-      const response = await fetch(
-        "http:localhost:4000/api/QuanLyNguoiDung/QuenMatKhau",
+      const response = await axios.post(
+        "http://localhost:4000/api/QuanLyNguoiDung/QuenMatKhau",
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
+          email: values.email,
         }
       );
 
-      if (response.ok) {
-        const result = await response.json();
-        setSuccessMessage(result.message); // Thay đổi dòng này tùy theo cấu trúc phản hồi từ server
-        setErrorMessage(""); // Đặt lại lỗi nếu có
+      if (
+        response.data ===
+        "Email xác nhận đã được gửi, vui lòng kiểm tra hòm thư của bạn."
+      ) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title:
+            "Email xác nhận đã được gửi, vui lòng kiểm tra hòm thư của bạn.",
+          showConfirmButton: false,
+          timer: 3000,
+        });
       } else {
-        const errorResult = await response.json();
-        setSuccessMessage("");
-        setErrorMessage(errorResult.error); // Thay đổi dòng này tùy theo cấu trúc phản hồi từ server
+        Swal.fire({
+          icon: "error",
+          title: "Gửi yêu cầu thất bại",
+          text: "Có lỗi xảy ra khi gửi email, vui lòng kiểm tra lại",
+        });
       }
     } catch (error) {
-      console.error("Error:", error);
-      setSuccessMessage("");
-      setErrorMessage("Failed to send reset email");
+      console.error(error);
+      const errorMessage =
+        error.response?.data?.message || "Có lỗi xảy ra khi gửi yêu cầu";
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi",
+        text: errorMessage,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h2>Forgot Password</h2>
-      <label>Email:</label>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button onClick={handleForgotPassword}>Reset Password</button>
-
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-    </div>
+    <>
+      <section className="ftco-section">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-md-12 col-lg-8">
+              <div className="wrap d-md-flex">
+                <div className="img" style={{ backgroundImage: "" }}>
+                  {/* Hình ảnh bất kỳ hoặc để trống */}
+                </div>
+                <div className="login-wrap p-4 p-md-5">
+                  <Formik
+                    initialValues={{ email: "" }}
+                    validationSchema={emailValidationSchema}
+                    onSubmit={handleForgotPassword}
+                  >
+                    {({ errors, touched }) => (
+                      <Form className="col-sm-12">
+                        <div className="form-group">
+                          <label>Email *&nbsp;</label>
+                          <ErrorMessage
+                            name="email"
+                            render={(msg) => (
+                              <span className="text-danger">{msg}</span>
+                            )}
+                          />
+                          <Field
+                            name="email"
+                            type="email"
+                            className={`form-control ${
+                              errors.email && touched.email ? "is-invalid" : ""
+                            }`}
+                          />
+                        </div>
+                        <div className="text-center">
+                          <button
+                            style={{
+                              backgroundColor: "rgb(238, 130, 59)",
+                              borderColor: "rgb(238, 130, 59)",
+                              cursor: "pointer",
+                              width: "100%",
+                            }}
+                            className="btn btn-success mt-3 container"
+                            type="submit"
+                            disabled={loading}
+                          >
+                            Gửi Yêu Cầu
+                          </button>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

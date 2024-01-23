@@ -20,10 +20,8 @@ app.use(
   })
 );
 
-// Set up Global configuration access
 dotenv.config();
 
-// route mặc định
 app.get("/", function (req, res) {
   return res.send({ error: true, message: "hello" });
 });
@@ -137,7 +135,6 @@ app.get("/api/QuanLyRap/LayThongTinCumRapTheoHeThong", async (req, res) => {
 //   });
 //   return final;
 // });
-
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -180,32 +177,27 @@ const isEmailExist = async (email) => {
     );
   });
 };
-app.get("/api/check-email/:email", (req, res) => {
+app.get("/api/check-email/:email", async (req, res) => {
   const email = req.params.email;
+  try {
+    const emailExist = await isEmailExist(email); // Sử dụng await để đợi kết quả
 
-  // Gọi hàm kiểm tra email từ máy chủ
-  const emailExist = isEmailExist(email);
-
-  // Trả về kết quả dưới dạng JSON
-  if (emailExist) {
-    return res
-      .status(400)
-      .json({ message: "Email đã tồn tại, vui lòng nhập email khác." });
-  } else {
-    return res.status(200).json({ message: "Email có thể sử dụng." });
+    if (emailExist) {
+      return res
+        .status(400)
+        .json({ message: "Email đã tồn tại, vui lòng nhập email khác." });
+    } else {
+      return res.status(200).json({ message: "Email có thể sử dụng." });
+    }
+  } catch (error) {
+    console.error("Lỗi khi kiểm tra email:", error);
+    return res.status(500).json({ message: "Lỗi server khi kiểm tra email." });
   }
 });
+
 app.post("/api/QuanLyNguoiDung/DangKy", async (req, res) => {
   const otp = generateOTP(); // Hàm để tạo mã OTP (ví dụ: Math.random())
   const hashedPassword = md5(req.body.matKhau);
-  const emailExist = await isEmailExist(req.body.email);
-
-  if (emailExist) {
-    return res.status(400).json({
-      message: "Email đã tồn tại, vui lòng nhập email khác.",
-      emailExist: true, // Thêm trường này để phía frontend biết rằng email đã tồn tại
-    });
-  }
 
   const final = await new Promise((resolve, reject) => {
     dbConn.query(
@@ -223,7 +215,6 @@ app.post("/api/QuanLyNguoiDung/DangKy", async (req, res) => {
       function (error, results, fields) {
         if (error) throw error;
 
-        // Gửi email chứa mã OTP tới địa chỉ email của người dùng
         sendVerificationEmail(req.body.email, otp);
 
         resolve(res.send("Success"));
@@ -266,13 +257,26 @@ app.post("/api/QuanLyNguoiDung/DangNhap", function (req, res) {
     "SELECT * FROM nguoidungvm WHERE taiKhoan=? AND matKhau=?",
     [req.body.taiKhoan, md5(req.body.matKhau)],
     function (error, results, fields) {
-      if (error) throw error;
-      if (results.length > 0) {
-        info = JSON.parse(JSON.stringify(results[0]));
-        info["accessToken"] = jwt.sign(info, process.env.JWT_SECRET_KEY);
-        return res.send(info);
+      if (error) {
+        console.error("Error during login:", error);
+        return res.status(500).send({ message: "Lỗi server khi đăng nhập." });
       }
-      return res.status(401).send({ error: true });
+
+      if (results.length > 0) {
+        const user = JSON.parse(JSON.stringify(results[0]));
+        if (!user.daXacThuc) {
+          return res.status(403).send({
+            message:
+              "Tài khoản chưa được xác thực. Vui lòng xác thực tài khoản của bạn.",
+          });
+        }
+        user["accessToken"] = jwt.sign(user, process.env.JWT_SECRET_KEY);
+        return res.send(user);
+      }
+
+      return res
+        .status(401)
+        .send({ message: "Tài khoản hoặc mật khẩu không chính xác." });
     }
   );
 });
@@ -695,6 +699,27 @@ function queryAsync(sql, values) {
 }
 
 // QuanLyDatVe
+app.get("/api/QuanLyPhim/LayThongTin/:maPhim", function (req, res) {
+  const maPhim = req.params.maPhim;
+  dbConn.query(
+    "SELECT * FROM phiminsert WHERE maPhim = ?",
+    [maPhim],
+    function (error, results, fields) {
+      if (error) {
+        console.error("Lỗi khi truy vấn cơ sở dữ liệu:", error);
+        res.status(500).send("Lỗi khi truy vấn cơ sở dữ liệu");
+      } else {
+        if (results.length > 0) {
+          return res.send(results[0]);
+        } else {
+          return res
+            .status(404)
+            .send("Không tìm thấy phim với mã phim cung cấp");
+        }
+      }
+    }
+  );
+});
 
 app.get("/api/QuanLyDatVe/LayDanhSachPhongVe", function (req, res) {
   dbConn.query(
@@ -975,82 +1000,67 @@ app.delete("/api/QuanLyPhim/XoaPhim", function (req, res) {
 app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
   const { email } = req.body;
 
-  try {
-    // 1. Kiểm tra xem email có tồn tại trong cơ sở dữ liệu không
-    const user = await getUserByEmail(email);
-
-    if (!user) {
-      return res.status(404).send("Email not found");
-    }
-
-    // 2. Tạo mật khẩu mới (ở đây sử dụng timestamp để đảm bảo tính ngẫu nhiên)
-    const newPassword = md5(new Date().toString());
-
-    // 3. Gửi email chứa link để nhập mật khẩu mới
-    await sendResetEmail(email, newPassword);
-
-    // 4. Cập nhật mật khẩu mới vào cơ sở dữ liệu
-    await updatePasswordByEmail(email, newPassword);
-
-    return res.send("Password reset email sent successfully");
-  } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).send("Internal Server Error");
-  }
-});
-
-// Function to get user by email from the database
-const getUserByEmail = async (email) => {
-  return new Promise((resolve, reject) => {
+  const user = await new Promise((resolve, reject) => {
     dbConn.query(
       "SELECT * FROM nguoidungvm WHERE email = ?",
       [email],
       (error, results) => {
         if (error) {
-          reject(error);
-        } else {
-          resolve(results[0]);
+          return reject(error);
         }
+        resolve(results[0]);
       }
     );
   });
-};
+  const token = jwt.sign({ email: email }, "secretKey", { expiresIn: "1h" });
 
-// Function to update user password by email in the database
-const updatePasswordByEmail = async (email, newPassword) => {
-  return new Promise((resolve, reject) => {
-    dbConn.query(
-      "UPDATE nguoidungvm SET matKhau = ? WHERE email = ?",
-      [md5(newPassword), email],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve();
+  const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+  if (!user) {
+    return res.status(404).send("Email không tồn tại, vui lòng kiểm tra lại.");
+  }
+  const mailOptions = {
+    from: "cosmocinemaldh@gmail.com",
+    to: email,
+    subject: "Đặt lại mật khẩu",
+    text: `Nhấn vào đây để đặt lại mật khẩu: ${resetLink}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send("Lỗi khi gửi mail");
+    } else {
+      console.log("Email sent: " + info.response);
+      res.send(
+        "Email xác nhận đã được gửi, vui lòng kiểm tra hòm thư của bạn."
+      );
+    }
+  });
+});
+
+app.post(
+  "/api/QuanLyNguoiDung/XacMinhTokenVaCapNhatMatKhau",
+  async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    try {
+      // Xác minh token
+      const decoded = jwt.verify(token, "secretKey");
+      const email = decoded.email;
+
+      const hashPassword = md5(newPassword);
+      dbConn.query(
+        "UPDATE nguoidungvm SET matKhau = ? WHERE email = ?",
+        [hashPassword, email],
+        function (error, results) {
+          if (error) {
+            return res.status(500).send("Lỗi khi cập nhật mật khẩu");
+          }
+          res.send("Cập nhật mật khẩu thành công");
         }
-      }
-    );
-  });
-};
-
-// Function to send password reset email
-const sendResetEmail = (email, newPassword) => {
-  return new Promise((resolve, reject) => {
-    const mailOptions = {
-      from: "Cosmo Cinema",
-      to: email,
-      subject: "Reset Password",
-      text: `Please use the following link to reset your password: http://localhost:3000/reset-password?email=${email}&token=${newPassword}`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Error sending email:", error);
-        reject(error);
-      } else {
-        console.log("Email sent:", info.response);
-        resolve();
-      }
-    });
-  });
-};
+      );
+    } catch (error) {
+      res.status(400).send("Token không hợp lệ hoặc đã hết hạn");
+    }
+  }
+);

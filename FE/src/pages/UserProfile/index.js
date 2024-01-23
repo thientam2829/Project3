@@ -151,7 +151,7 @@ export default function Index() {
         icon: "success",
         title: "Cập nhật thành công",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 3000,
       });
     }
   }, [successUpdateUser]);

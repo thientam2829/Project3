@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const UpcomingMovie = () => {
-  return (
-    <div>UpcomingMovie</div>
-  )
-}
+  return <div>Phim đang chiếu</div>;
+};
 
-export default UpcomingMovie
+export default UpcomingMovie;
