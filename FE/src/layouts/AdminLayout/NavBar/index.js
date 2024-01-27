@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-import MovieIcon from '@material-ui/icons/Movie';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import PostAddIcon from '@material-ui/icons/PostAdd';
-import ListIcon from '@material-ui/icons/List';
-import { useLocation, useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import MovieIcon from "@material-ui/icons/Movie";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import ListIcon from "@material-ui/icons/List";
+import NoteIcon from "@material-ui/icons/Note";
+import EqualizerSharpIcon from "@material-ui/icons/EqualizerSharp";
+import { useLocation, useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
 import {
   Avatar,
   Box,
@@ -14,51 +16,61 @@ import {
   Hidden,
   List,
   Typography,
-  makeStyles
-} from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import Tooltip from '@material-ui/core/Tooltip';
+  makeStyles,
+} from "@material-ui/core";
+import { useSelector } from "react-redux";
+import Tooltip from "@material-ui/core/Tooltip";
 
-import NavItem from './NavItem';
-import { FAKE_AVATAR } from '../../../constants/config';
+import NavItem from "./NavItem";
+import { FAKE_AVATAR } from "../../../constants/config";
 
 const items = [
   {
-    href: '/admin/movies',
+    href: "/admin/movies",
+    icon: EqualizerSharpIcon,
+    title: "Thống Kê",
+  },
+  {
+    href: "/admin/movies",
     icon: MovieIcon,
-    title: 'Phim'
+    title: "Phim",
   },
   {
-    href: '/admin/users',
+    href: "/admin/users",
     icon: PeopleAltIcon,
-    title: 'Người dùng'
+    title: "Người Dùng",
   },
   {
-    href: '/admin/showtimes',
+    href: "/admin/showtimes",
     icon: PostAddIcon,
-    title: 'Cụm rạp'
+    title: "Lịch Chiếu",
   },
   {
-    href: '/admin/book',
+    href: "/admin/book",
     icon: ListIcon,
-    title: 'Danh sách đặt'
+    title: "Danh Sách Đặt Chổ",
+  },
+  {
+    href: "/admin/news",
+    icon: NoteIcon,
+    title: "Tin Tức",
   },
 ];
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
-    width: 256
+    width: 256,
   },
   desktopDrawer: {
     width: 220,
     top: 64,
-    height: 'calc(100% - 64px)'
+    height: "calc(100% - 64px)",
   },
   avatar: {
-    cursor: 'pointer',
+    cursor: "pointer",
     width: 64,
-    height: 64
-  }
+    height: 64,
+  },
 }));
 
 export default function NavBar({ onMobileClose, openMobile }) {
@@ -76,25 +88,16 @@ export default function NavBar({ onMobileClose, openMobile }) {
 
   const user = {
     avatar: FAKE_AVATAR,
-    jobTitle: 'admin',
+    jobTitle: "admin",
     name: currentUser?.hoTen,
   };
 
   const handleUser = () => {
-    history.push("/taikhoan")
-  }
+    history.push("/taikhoan");
+  };
   const content = (
-    <Box
-      height="100%"
-      display="flex"
-      flexDirection="column"
-    >
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2} 
-      >
+    <Box height="100%" display="flex" flexDirection="column">
+      <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Tooltip title="">
           <Avatar
             className={classes.avatar}
@@ -102,17 +105,10 @@ export default function NavBar({ onMobileClose, openMobile }) {
             onClick={handleUser}
           />
         </Tooltip>
-        <Typography
-          className={classes.name}
-          color="textPrimary"
-          variant="h5"
-        >
+        <Typography className={classes.name} color="textPrimary" variant="h5">
           {user.name}
         </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
+        <Typography color="textSecondary" variant="body2">
           {user.jobTitle}
         </Typography>
       </Box>
@@ -139,12 +135,11 @@ export default function NavBar({ onMobileClose, openMobile }) {
           anchor="left"
           classes={{ paper: classes.mobileDrawer }}
           onClose={onMobileClose}
-          open={openMobile} 
+          open={openMobile}
           variant="temporary"
         >
           {content}
         </Drawer>
-
       </Hidden>
       <Hidden mdDown>
         <Drawer
@@ -156,18 +151,16 @@ export default function NavBar({ onMobileClose, openMobile }) {
           {content}
         </Drawer>
       </Hidden>
-
     </>
   );
-};
+}
 
 NavBar.propTypes = {
   onMobileClose: PropTypes.func,
-  openMobile: PropTypes.bool
+  openMobile: PropTypes.bool,
 };
 
 NavBar.defaultProps = {
-  onMobileClose: () => { },
-  openMobile: false
+  onMobileClose: () => {},
+  openMobile: false,
 };
-

@@ -1096,3 +1096,42 @@ app.get("/api/QuanLyTinTuc/LayThongTinTinTuc/:id", function (req, res) {
     }
   );
 });
+app.delete("/api/QuanLyTinTuc/XoaTinTuc/:id", function (req, res) {
+  const id = req.params.id;
+  dbConn.query(
+    "DELETE FROM tintuc WHERE id = ?",
+    [id],
+    function (error, results, fields) {
+      if (error) {
+        console.error("Lỗi khi truy vấn cơ sở dữ liệu:", error);
+        res.status(500).send("Lỗi khi xóa tin tức từ cơ sở dữ liệu");
+      } else {
+        if (results.affectedRows > 0) {
+          res.send({ message: "Tin tức đã được xóa thành công" });
+        } else {
+          res.status(404).send("Tin tức không tồn tại hoặc đã bị xóa trước đó");
+        }
+      }
+    }
+  );
+});
+app.put("/api/QuanLyTinTuc/ChinhSuaTinTuc/:id", function (req, res) {
+  const id = req.params.id;
+  const { tieude, noidung, hinhAnh } = req.body;
+  dbConn.query(
+    "UPDATE tintuc SET tieude = ?, noidung = ?, hinhAnh = ? WHERE id = ?",
+    [tieude, noidung, hinhAnh, id],
+    function (error, results, fields) {
+      if (error) {
+        console.error("Lỗi khi cập nhật cơ sở dữ liệu:", error);
+        res.status(500).send("Lỗi khi cập nhật tin tức trong cơ sở dữ liệu");
+      } else {
+        if (results.affectedRows > 0) {
+          res.send({ message: "Tin tức đã được cập nhật thành công" });
+        } else {
+          res.status(404).send("Không tìm thấy tin tức để cập nhật");
+        }
+      }
+    }
+  );
+});

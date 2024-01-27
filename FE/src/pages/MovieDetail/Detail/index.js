@@ -104,7 +104,13 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
                 <p className={``}>Nội dung</p>
               </div>
               <div className="col-lg-9">
-                <p>{data.moTa}</p>
+                <p
+                  style={{
+                    textAlign: "justify",
+                  }}
+                >
+                  {data.moTa}
+                </p>
               </div>
             </div>
 

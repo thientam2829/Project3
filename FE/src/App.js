@@ -27,7 +27,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Page404 from "./pages/Page404";
 import moviesApi from "./api/moviesApi";
-import ResetPasswordForm from "./pages/ResetPassword/resetpass";
 import Backdrop from "@material-ui/core/Backdrop";
 import Box from "@material-ui/core/Box";
 import Modal from "@material-ui/core/Modal";
@@ -36,8 +35,8 @@ import ResetPassword from "./pages/ResetPassword/resetpass";
 import Typography from "@material-ui/core/Typography";
 import ForgotPassword from "./pages/ResetPassword/forgotpass";
 import VerifyOTP from "./pages/Register/verifyOTP";
-import News from "./pages/News/News";
 import NewsPage from "./pages/NewDetails";
+import NewsList from "./pages/AdminNews";
 const style = {
   position: "absolute",
   top: "50%",
@@ -121,7 +120,7 @@ function App() {
       <ModalTrailer />
       <Suspense fallback={<LazyLoad />}>
         <Switch>
-          <Route exact path={["/", "/detail/:maPhim", "/taikhoan", "/news"]}>
+          <Route exact path={["/", "/detail/:maPhim", "/taikhoan"]}>
             <MainLayout>
               {open && <div style={overLay} />}
               <Modal
@@ -155,13 +154,17 @@ function App() {
               </Modal>
               <Route exact path="/" component={Homepage} />
               <Route exact path="/detail/:maPhim" component={MovieDetail} />
-              <Route exact path="/news" component={News} />
 
               <UserProfileRoute
                 exact
                 path="/taikhoan"
                 component={UserProfile}
               />
+            </MainLayout>
+          </Route>
+          <Route path="/news/:id">
+            <MainLayout>
+              <NewsPage />
             </MainLayout>
           </Route>
           <CheckoutRoute
@@ -177,6 +180,7 @@ function App() {
               "/admin/showtimes",
               "/admin/films/addnew",
               "/admin/book",
+              "/admin/news",
             ]}
           >
             <AdminLayout>
@@ -197,6 +201,7 @@ function App() {
               />
               <AdminRoute exact path="/admin/book" component={Book} />
               <AdminRoute exact path="/admin/films/addnew" />
+              <AdminRoute exact path="/admin/news" component={NewsList} />
             </AdminLayout>
           </Route>
           <Route exact path={["/login", "/signUp"]}>
@@ -208,7 +213,7 @@ function App() {
           <Route path="/reset-password/:token" element={ResetPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/verify-otp" component={VerifyOTP} />
-          <Route path="/news/:id" component={NewsPage} />
+
           <Route component={Page404} />
         </Switch>
       </Suspense>

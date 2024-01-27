@@ -1,19 +1,19 @@
-import { makeStyles } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   carousel: {
-    position: 'relative',
+    position: "relative",
     zIndex: 1,
   },
   itemSlider: {
-    position: 'relative'
+    position: "relative",
   },
-  img: { height: "100%", width: "100%" },
+  img: { height: "80%", width: "100%" },
   backgroundLinear: {
     position: "absolute",
     width: "100%",
     height: "100%",
     background: "linear-gradient(to top,#000,transparent 20%)",
-    top: "0"
+    top: "0",
   },
   Arrow: {
     position: "absolute",
@@ -26,11 +26,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#d8d8d8 !important",
     cursor: "pointer",
     transition: "all .2s",
-    '&:hover': { color: 'rgb(238, 130, 59) !important' },
+    "&:hover": { color: "rgb(238, 130, 59) !important" },
     [theme.breakpoints.down("md")]: {
       display: "none",
     },
   },
-
-}))
-export default useStyles
+}));
+export default useStyles;

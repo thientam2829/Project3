@@ -1,0 +1,15 @@
+.news-item {
+  border-bottom: 1px solid #eee; /* Tùy chọn: thêm viền phân cách giữa các mục */
+  padding-bottom: 20px; /* Tùy chọn: thêm padding dưới cùng của mỗi tin */
+}
+.news-item img {
+  border-radius: 5px; /* Tùy chọn: bo tròn ảnh */
+}
+.news-item h3 {
+  color: #333; /* Tùy chọn: màu cho tiêu đề */
+  font-size: 1.2rem; /* Tùy chọn: kích thước font cho tiêu đề */
+}
+.news-item p {
+  color: #666; /* Tùy chọn: màu cho mô tả */
+  font-size: 0.9rem; /* Tùy chọn: kích thước font cho mô tả */
+}

@@ -68,10 +68,7 @@ export default function SimpleTabs() {
           <TabPanel value={value} index={0}>
             <div className="row">
               <div className={classes.repons}>
-                <a
-                  href="https://baomoi.com/nha-vit-di-cu-di-de-yeu-thuong-c47939877.epi"
-                  className={classes.news}
-                >
+                <a href="http://localhost:3000/news/1" className={classes.news}>
                   <img
                     className={classes.fullImg}
                     src="https://res.cloudinary.com/thientam2829/image/upload/v1705913821/gsulnvf5uajdu9hgjbnm.jpg"
@@ -248,44 +245,38 @@ export default function SimpleTabs() {
           <TabPanel value={value} index={1}>
             <div className="row">
               <div className={classes.repons}>
-                <a
-                  href="https://tiin.vn/chuyen-muc/phim/review-ke-an-hon-hay-nhung-khong-tron-vi.html"
-                  className={classes.news}
-                >
+                <a href="http://localhost:3000/news/1" className={classes.news}>
                   <img
                     className={classes.fullImg}
-                    src="https://res.cloudinary.com/thientam2829/image/upload/v1705917309/ljzwrj2soru9y2gvajhz.jpg"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1705913821/gsulnvf5uajdu9hgjbnm.jpg"
                     alt="news-movie"
                   />
                   <div className="py-3">
                     <h4 className="card-title">
-                      Review Kẻ Ăn Hồn: Hay nhưng không tròn vị
+                      [Review] Migration: Nhà Vịt Có Đủ Sức Thành Hiện Tượng Như
+                      Minions?
                     </h4>
                     <p className="text-secondary">
-                      Với thời lượng có hạn, phim trình bày nội dung một cách
-                      xúc tích, có đủ máu me, kinh dị nhưng gây đáng tiếc vì lặp
-                      lại những sai lầm cũ.
+                      Migration như phim kinh điển Little Miss Sunshine phiên
+                      bản vịt.
                     </p>
                   </div>
                 </a>
               </div>
               <div className={classes.repons}>
-                <a
-                  href="https://moveek.com/bai-viet/review-phim-ruou-cot-nguoi-ghi-diem-bang-hinh-anh-ma-mi/32668"
-                  className={classes.news}
-                >
+                <a href="http://localhost:3000/news/2" className={classes.news}>
                   <img
                     className={classes.fullImg}
-                    src="https://res.cloudinary.com/thientam2829/image/upload/v1705917122/t2kkumjow9odm48ffzmk.jpg"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1706346585/gbjvipkfl0pb9vouqr2i.webp"
                     alt="news-movie"
                   />
                   <div className="py-3">
                     <h4 className="card-title">
-                      Review phim Rượu Cốt Người - Ghi điểm bằng hình ảnh ma mị
+                      [Review] Quỷ Cẩu: Dũng Cảm Chọn Thông Điệp Gây Tranh Cãi!
                     </h4>
                     <p className="text-secondary">
-                      Rượu Cốt Người có yếu tố được chăm chút và những yếu tố
-                      cần sự chăm chút.
+                      Lấy cảm hứng từ truyền thuyết “Chó đội nón mê”, Lưu Thành
+                      Luân kể câu chuyện “nghiệp báo” về gia đình bán thịt chó
                     </p>
                   </div>
                 </a>
