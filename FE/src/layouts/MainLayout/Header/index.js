@@ -13,11 +13,12 @@ const headMenu = [
   { nameLink: "Lịch chiếu", id: "lichchieu" },
   { nameLink: "Cụm rạp", id: "cumrap" },
   { nameLink: "Tin tức", id: "tintuc" },
+  { nameLink: "Phim đang chiếu", id: "phimdangchieu" },
 ];
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.authReducer);
-  const { isLoadingBackToHome } = useSelector((state) => state.lazyReducer);
+  // const { isLoadingBackToHome } = useSelector((state) => state.lazyReducer);
   const dispatch = useDispatch();
   let location = useLocation();
   const history = useHistory();
@@ -36,16 +37,16 @@ export default function Header() {
 
   useEffect(() => {
     // clicklink > push to home > scrollTo after loading
-    if (!isLoadingBackToHome) {
-      setTimeout(() => {
-        scroller.scrollTo(location.state, {
-          duration: 800,
-          smooth: "easeInOutQuart",
-        });
-      }, 200);
-    }
-  }, [isLoadingBackToHome]);
-
+    //   if (!isLoadingBackToHome) {
+    //     setTimeout(() => {
+    //       scroller.scrollTo(location.state, {
+    //         duration: 800,
+    //         smooth: "easeInOutQuart",
+    //       });
+    //     }, 200);
+    //   }
+    // }, [isLoadingBackToHome]);
+  });
   const handleLogout = () => {
     setOpenDrawer(false);
     dispatch({ type: LOGOUT });

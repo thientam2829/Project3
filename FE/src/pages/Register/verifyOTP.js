@@ -16,7 +16,6 @@ export default function VerifyOTP() {
   const email = location.state?.email;
 
   if (!email) {
-    // Nếu không có email được truyền từ trang đăng ký, chuyển hướng về trang đăng ký
     history.push("/register");
   }
 
@@ -35,24 +34,21 @@ export default function VerifyOTP() {
         }
       );
 
-      if (response.data === "Xác thực thành công") {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Xác thực thành công. Bạn có thể đăng nhập ngay bây giờ.",
-          showConfirmButton: false,
-          timer: 3000,
-        });
-        history.push("/login");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Xác thực thất bại",
-          text: "Mã OTP không chính xác. Vui lòng thử lại.",
-        });
-      }
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Xác thực thành công. Bạn có thể đăng nhập ngay bây giờ.",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      history.push("/login");
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Xác thực thất bại",
+        text: error.response.data,
+      });
     } finally {
       setLoading(false);
     }
@@ -65,9 +61,7 @@ export default function VerifyOTP() {
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-8">
               <div className="wrap d-md-flex">
-                <div className="img" style={{ backgroundImage: "" }}>
-                  {/* Hình ảnh xác thực OTP (nếu cần) */}
-                </div>
+                <div className="img" style={{ backgroundImage: "" }}></div>
                 <div className="login-wrap p-4 p-md-5">
                   <div>
                     <Formik

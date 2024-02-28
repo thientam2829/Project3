@@ -81,8 +81,8 @@ const NewsPage = ({ match }) => {
               <h5>{movie.tenPhim}</h5>
             </Link>
           ))}
-          <Link to="/movies" className="btn btn-primary">
-            Xem thêm
+          <Link to="/#phimdangchieu" className="btn btn-primary">
+            Xem Thêm
           </Link>
         </div>
       </div>

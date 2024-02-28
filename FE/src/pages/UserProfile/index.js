@@ -107,9 +107,23 @@ export default function Index() {
     likePosts: 0,
     total: 0,
   });
-  const { successUpdateUser, errorUpdateUser, loadingUpdateUser } = useSelector(
+  const { successUpdateUser } = useSelector(
     (state) => state.usersManagementReducer
   );
+  const { errorUpdateUser, loadingUpdateUser } = useSelector(
+    (state) => state.usersManagementReducer
+  );
+  useEffect(() => {
+    if (successUpdateUser) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Cập nhật thành công",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  }, [successUpdateUser]);
   const [value, setValue] = React.useState(0);
   const [typePassword, settypePassword] = useState("password");
 
@@ -144,18 +158,11 @@ export default function Index() {
       // setdataShort((data) => ({ ...data, ticket, total }));
     }
   }, [commentList, successInfoUser]);
-  useEffect(() => {
-    if (successUpdateUser) {
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Cập nhật thành công",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-    }
-  }, [successUpdateUser]);
 
+  // Sử dụng useEffect để log giá trị khi successUpdateUser thay đổi
+  useEffect(() => {
+    console.log("Giá trị của successUpdateUser:", successUpdateUser);
+  }, [successUpdateUser]);
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const updateUserSchema = yup.object().shape({
@@ -222,7 +229,7 @@ export default function Index() {
                 maLoaiNguoiDung: "KhachHang",
                 hoTen: successInfoUser?.hoTen ?? "",
               }}
-              enableReinitialize // cho phép cập nhật giá trị initialValues
+              enableReinitialize
               validationSchema={updateUserSchema}
               onSubmit={handleSubmit}
             >

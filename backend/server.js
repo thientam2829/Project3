@@ -143,21 +143,44 @@ const transporter = nodemailer.createTransport({
   },
 });
 function sendVerificationEmail(email, otp) {
+  // const mailOptions = {
+  //   from: "Cosmo Cinemas VietNam <cosmocinemaldh@gmail.com>",
+  //   to: email,
+  //   subject: "Xác thực tài khoản",
+  //   html: `
+  //     <p style="font-size: 16px; color: #333; line-height: 1.6;">
+  //       Xin chào.<br><br>
+
+  //       Mã OTP của bạn là: <strong style="color:#0B1F3E ;">${otp}</strong><br><br>
+
+  //       Trân trọng!<br>
+  //       Cosmo Cinemas VietNam Support Team!
+  //     </p>
+  //     <img src="https://res.cloudinary.com/thientam2829/image/upload/v1702947907/imager/jeqkrwnwdhmmnvobdqrb.jpg"
+  //     style="width: 20rem; border-radius: 5px;" alt="thumbnail">
+  //   `,
+  // };
   const mailOptions = {
     from: "Cosmo Cinemas VietNam <cosmocinemaldh@gmail.com>",
     to: email,
     subject: "Xác thực tài khoản",
     html: `
-      <p style="font-size: 16px; color: #333; line-height: 1.6;">
-        Xin chào.<br><br>
-        
-        Mã OTP của bạn là: <strong style="color:#0B1F3E ;">${otp}</strong><br><br>
-        
-        Trân trọng!<br>
-        Cosmo Cinemas VietNam Support Team!
-      </p>
-      <img src="https://res.cloudinary.com/thientam2829/image/upload/v1702947907/imager/jeqkrwnwdhmmnvobdqrb.jpg" 
-      style="width: 20rem; border-radius: 5px;" alt="thumbnail">
+      <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+        <div style="padding: 20px; text-align: center;">
+          <img src="https://res.cloudinary.com/thientam2829/image/upload/v1709083061/hl7eyjomgkfcz9muyoly.png" alt="Cosmo Cinemas Logo" style="width: 200px;">
+        </div>
+        <div style="background: #ffffff; padding: 20px; text-align: center;">
+          <h2 style="color: #264b80;">Xin chào,</h2>
+          <p style="font-size: 18px; color: #333; line-height: 1.6;">
+            Mã OTP của bạn là:<br>
+            <strong style="font-size: 25px; color: #264b80;">${otp}</strong>
+          </p>
+          <p style="font-size: 14px;">Có hiệu lực trong 10 phút. KHÔNG chia sẻ mã này với người khác, kể cả nhân viên Cosmo Cinemas.</p>
+        </div>
+        <div style="background: #264b80; padding: 20px; text-align: center;">
+          <p style="font-size: 14px; color: #fff;">Trân trọng!<br>Cosmo Cinemas VietNam Support Team!</p>
+        </div>
+      </div>
     `,
   };
 
@@ -222,6 +245,7 @@ app.post("/api/QuanLyNguoiDung/DangKy", async (req, res) => {
         maLoaiNguoiDung: req.body.maLoaiNguoiDung,
         hoTen: req.body.hoTen,
         otp: otp, // Lưu mã OTP vào cột otp
+        otpCreatedAt: new Date(),
       },
       function (error, results, fields) {
         if (error) throw error;
@@ -234,16 +258,48 @@ app.post("/api/QuanLyNguoiDung/DangKy", async (req, res) => {
   });
   return final;
 });
+// app.post("/api/QuanLyNguoiDung/XacThucOTP", async (req, res) => {
+//   const { email, otp } = req.body;
+
+//   const user = await new Promise((resolve, reject) => {
+//     dbConn.query(
+//       "SELECT * FROM nguoidungvm WHERE email = ? AND otp = ?",
+//       [email, otp],
+//       function (error, results, fields) {
+//         if (error) throw error;
+//         resolve(results[0]);
+//       }
+//     );
+//   });
+
+//   if (user) {
+//     // Cập nhật trạng thái xác thực và xoá mã OTP
+//     dbConn.query(
+//       "UPDATE nguoidungvm SET otp = NULL, daXacThuc = true WHERE id = ?",
+//       [user.id],
+//       function (error, results, fields) {
+//         if (error) throw error;
+//         res.send("Xác thực thành công");
+//       }
+//     );
+//   } else {
+//     res.status(400).send("Mã OTP không hợp lệ");
+//   }
+// });
 app.post("/api/QuanLyNguoiDung/XacThucOTP", async (req, res) => {
   const { email, otp } = req.body;
 
   const user = await new Promise((resolve, reject) => {
     dbConn.query(
-      "SELECT * FROM nguoidungvm WHERE email = ? AND otp = ?",
+      "SELECT *, TIMESTAMPDIFF(MINUTE, otpCreatedAt, NOW()) AS otpAge FROM nguoidungvm WHERE email = ? AND otp = ?",
       [email, otp],
       function (error, results, fields) {
         if (error) throw error;
-        resolve(results[0]);
+        if (results.length > 0 && results[0].otpAge <= 10) {
+          resolve(results[0]);
+        } else {
+          resolve(null);
+        }
       }
     );
   });
@@ -251,7 +307,7 @@ app.post("/api/QuanLyNguoiDung/XacThucOTP", async (req, res) => {
   if (user) {
     // Cập nhật trạng thái xác thực và xoá mã OTP
     dbConn.query(
-      "UPDATE nguoidungvm SET otp = NULL, daXacThuc = true WHERE id = ?",
+      "UPDATE nguoidungvm SET otp = NULL, otpCreatedAt = NULL, daXacThuc = true WHERE id = ?",
       [user.id],
       function (error, results, fields) {
         if (error) throw error;
@@ -259,7 +315,7 @@ app.post("/api/QuanLyNguoiDung/XacThucOTP", async (req, res) => {
       }
     );
   } else {
-    res.status(400).send("Mã OTP không hợp lệ");
+    res.status(400).send("Mã OTP không hợp lệ hoặc đã hết hạn");
   }
 });
 
@@ -973,10 +1029,6 @@ app.post("/api/QuanLyPhim/CapNhatPhim", async (req, res) => {
   return final;
 });
 
-// app.post('/api/QuanLyPhim/XoaPhim', async (req, res) => {
-//     console.log(req);
-// });
-
 app.delete("/api/QuanLyPhim/XoaPhim", function (req, res) {
   dbConn.query(
     "DELETE FROM phiminsert WHERE MaPhim=?",
@@ -990,19 +1042,35 @@ app.delete("/api/QuanLyPhim/XoaPhim", function (req, res) {
 app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
   const { email } = req.body;
 
+  // Tìm kiếm người dùng trong database
   const user = await new Promise((resolve, reject) => {
     dbConn.query(
       "SELECT * FROM nguoidungvm WHERE email = ?",
       [email],
       (error, results) => {
-        if (error) {
-          return reject(error);
-        }
+        if (error) return reject(error);
         resolve(results[0]);
       }
     );
   });
+  if (!user)
+    return res.status(404).send("Email không tồn tại, vui lòng kiểm tra lại.");
+
   const token = jwt.sign({ email: email }, "secretKey", { expiresIn: "1h" });
+
+  await new Promise((resolve, reject) => {
+    dbConn.query(
+      "UPDATE nguoidungvm SET resetPasswordToken = ? WHERE email = ?",
+      [token, email],
+      (error, results) => {
+        if (error) {
+          reject(error);
+          return res.status(500).send("Lỗi khi lưu token");
+        }
+        resolve();
+      }
+    );
+  });
 
   const resetLink = `http://localhost:3000/reset-password/${token}`;
   if (!user) {
@@ -1013,23 +1081,24 @@ app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
     to: email,
     subject: "Đặt lại mật khẩu",
     html: `
-      <p style="font-size: 16px; color: #333; line-height: 1.6;">
-        Xin chào!<br><br>
-        
-        Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Nhấn vào đường link bên dưới để thực hiện thao tác này:<br><br>
-        
-        <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; background-color: #0B1F3E; color: #fff; text-decoration: none; border-radius: 5px;">
-          Đặt lại mật khẩu
-        </a><br><br>
-  
-        Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email.<br><br>
-  
-        Trân trọng!<br>
-        Cosmo Cinemas VietNam Support Team !
-    
-      </p>
-      <img src="https://res.cloudinary.com/thientam2829/image/upload/v1702947907/imager/jeqkrwnwdhmmnvobdqrb.jpg" 
-        style="width: 20rem; border-radius: 5px;" alt="thumbnail">
+      <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+        <div style="padding: 20px; text-align: center;">
+          <img src="https://res.cloudinary.com/thientam2829/image/upload/v1709083061/hl7eyjomgkfcz9muyoly.png" alt="Cosmo Cinemas Logo" style="width: 200px;">
+        </div>
+        <div style="background: #ffffff; padding: 20px; text-align: center;">
+          <h2 style="color:#0B1F3E;">Xin chào,</h2>
+          <p style="font-size: 18px; color: #333; line-height: 1.6;">
+            Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Nhấn vào đường link bên dưới để thực hiện thao tác này:
+          </p>
+          <a href="${resetLink}" style="display: inline-block; padding: 20px 40px; background-color: #264b80; color: #fff; text-decoration: none; border-radius: 5px; margin: 20px 0;">
+            Đặt lại mật khẩu
+          </a>
+          <p style="font-size: 14px;">Nếu bạn không thực hiện yêu cầu , vui lòng bỏ qua email này.</p>
+        </div>
+        <div style="background: #264b80; padding: 20px; text-align: center;">
+          <p style="font-size: 14px; color: #fff;">Trân trọng!<br>Cosmo Cinemas VietNam Support Team!</p>
+        </div>
+      </div>
     `,
   };
 
@@ -1046,6 +1115,37 @@ app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
   });
 });
 
+// app.post(
+//   "/api/QuanLyNguoiDung/XacMinhTokenVaCapNhatMatKhau",
+//   async (req, res) => {
+//     const { token, newPassword } = req.body;
+//     try {
+//       if (!token) {
+//         return res.status(400).send("Token không được cung cấp.");
+//       }
+
+//       const decoded = jwt.verify(token, "secretKey");
+//       const email = decoded.email;
+
+//       const hashPassword = md5(newPassword);
+//       dbConn.query(
+//         "UPDATE nguoidungvm SET matKhau = ? WHERE email = ?",
+//         [hashPassword, email],
+//         function (error, results) {
+//           if (error) {
+//             return res.status(500).send("Lỗi khi cập nhật mật khẩu");
+//           }
+//           res.send("Cập nhật mật khẩu thành công");
+//         }
+//       );
+//     } catch (error) {
+//       console.log("Error:", error.message);
+//       res
+//         .status(400)
+//         .send("Token không hợp lệ hoặc đã hết hạn: " + error.message);
+//     }
+//   }
+// );
 app.post(
   "/api/QuanLyNguoiDung/XacMinhTokenVaCapNhatMatKhau",
   async (req, res) => {
@@ -1054,23 +1154,40 @@ app.post(
     try {
       const decoded = jwt.verify(token, "secretKey");
       const email = decoded.email;
+      const user = await new Promise((resolve, reject) => {
+        dbConn.query(
+          "SELECT * FROM nguoidungvm WHERE resetPasswordToken = ?",
+          [token],
+          (error, results) => {
+            if (error || results.length === 0) {
+              reject("Token không hợp lệ hoặc đã hết hạn");
+            } else {
+              resolve(results[0]);
+            }
+          }
+        );
+      });
+      if (user.email !== email)
+        return res.status(400).send("Token không hợp lệ.");
 
       const hashPassword = md5(newPassword);
       dbConn.query(
-        "UPDATE nguoidungvm SET matKhau = ? WHERE email = ?",
+        "UPDATE nguoidungvm SET matKhau = ?, resetPasswordToken = NULL WHERE email = ?",
         [hashPassword, email],
-        function (error, results) {
-          if (error) {
-            return res.status(500).send("Lỗi khi cập nhật mật khẩu");
-          }
+        (error, results) => {
+          if (error) return res.status(500).send("Lỗi khi cập nhật mật khẩu");
           res.send("Cập nhật mật khẩu thành công");
         }
       );
     } catch (error) {
-      res.status(400).send("Token không hợp lệ hoặc đã hết hạn");
+      console.log("Error:", error.message);
+      res
+        .status(400)
+        .send("Token không hợp lệ hoặc đã hết hạn: " + error.message);
     }
   }
 );
+
 app.get("/api/QuanLyTinTuc/LayTatCaTinTuc", function (req, res) {
   dbConn.query("SELECT * FROM tintuc", [], function (error, results, fields) {
     if (error) throw error;
@@ -1131,6 +1248,24 @@ app.put("/api/QuanLyTinTuc/ChinhSuaTinTuc/:id", function (req, res) {
         } else {
           res.status(404).send("Không tìm thấy tin tức để cập nhật");
         }
+      }
+    }
+  );
+});
+app.post("/api/QuanLyTinTuc/ThemTinTuc", function (req, res) {
+  const { tieude, noidung, hinhAnh } = req.body;
+  dbConn.query(
+    "INSERT INTO tintuc (tieude, noidung, hinhAnh) VALUES (?, ?, ?)",
+    [tieude, noidung, hinhAnh],
+    function (error, results, fields) {
+      if (error) {
+        console.error("Lỗi khi thêm tin tức vào cơ sở dữ liệu:", error);
+        res.status(500).send("Lỗi khi thêm tin tức vào cơ sở dữ liệu");
+      } else {
+        res.status(201).send({
+          message: "Tin tức đã được thêm mới thành công",
+          id: results.insertId,
+        });
       }
     }
   );

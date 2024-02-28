@@ -37,6 +37,7 @@ import ForgotPassword from "./pages/ResetPassword/forgotpass";
 import VerifyOTP from "./pages/Register/verifyOTP";
 import NewsPage from "./pages/NewDetails";
 import NewsList from "./pages/AdminNews";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -116,7 +117,6 @@ function App() {
   return (
     <BrowserRouter>
       <Loading />
-
       <ModalTrailer />
       <Suspense fallback={<LazyLoad />}>
         <Switch>
@@ -167,6 +167,7 @@ function App() {
               <NewsPage />
             </MainLayout>
           </Route>
+
           <CheckoutRoute
             exact
             path="/datve/:maLichChieu"
@@ -175,7 +176,7 @@ function App() {
           <Route
             exact
             path={[
-              "/admin/users",
+              // "/admin/users",
               "/admin/movies",
               "/admin/showtimes",
               "/admin/films/addnew",
@@ -184,11 +185,11 @@ function App() {
             ]}
           >
             <AdminLayout>
-              <AdminRoute
+              {/* <AdminRoute
                 exact
                 path="/admin/users"
                 component={UsersManagement}
-              />
+              /> */}
               <AdminRoute
                 exact
                 path="/admin/movies"
@@ -210,10 +211,9 @@ function App() {
               <Route exact path="/signUp" component={Register} />
             </MainLayout>
           </Route>
-          <Route path="/reset-password/:token" element={ResetPassword} />
+          <Route path="/reset-password/:token" component={ResetPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/verify-otp" component={VerifyOTP} />
-
           <Route component={Page404} />
         </Switch>
       </Suspense>

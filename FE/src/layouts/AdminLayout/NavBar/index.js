@@ -35,11 +35,11 @@ const items = [
     icon: MovieIcon,
     title: "Phim",
   },
-  {
-    href: "/admin/users",
-    icon: PeopleAltIcon,
-    title: "Người Dùng",
-  },
+  // {
+  //   href: "/admin/users",
+  //   icon: PeopleAltIcon,
+  //   title: "Người Dùng",
+  // },
   {
     href: "/admin/showtimes",
     icon: PostAddIcon,

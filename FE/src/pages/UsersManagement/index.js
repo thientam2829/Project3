@@ -15,7 +15,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import EditIcon from "@material-ui/icons/Edit";
 import slugify from "slugify";
-import Dialog from '@material-ui/core/Dialog';
+import Dialog from "@material-ui/core/Dialog";
 import AddUser from "../AddUser";
 import useStyles from "./styles";
 import {
@@ -220,7 +220,7 @@ export default function UsersManagement() {
   useEffect(() => {
     if (userListDelete.userListDelete.length) {
       let newUserListDelete = [...userListDelete.userListDelete]; // copy
-      const userDelete = newUserListDelete.shift(); 
+      const userDelete = newUserListDelete.shift();
       setUserListDelete((data) => ({
         ...data,
         userListDelete: newUserListDelete,
@@ -238,7 +238,7 @@ export default function UsersManagement() {
       dispatch(resetUserList());
       setSelectionModel([]);
     }
-  }, [userListDelete.triggerDelete]); 
+  }, [userListDelete.triggerDelete]);
 
   useEffect(() => {
     if (userListmodified.userListmodified.length) {
@@ -264,7 +264,7 @@ export default function UsersManagement() {
   const handleEditCellChange = useCallback(
     ({ id, field, props }) => {
       if (field === "email") {
-        const data = props; 
+        const data = props;
         const isValid = validateEmail(data.value);
         const newState = {};
         newState[id] = {
@@ -303,20 +303,19 @@ export default function UsersManagement() {
           addUser.data[0].email !== "" &&
           addUser.data[0].soDt !== "";
         setaddUser((data) => ({ ...data, readyAdd, isFilledIn }));
-        return; 
+        return;
       }
-      const userOriginal = usersList.find((user) => user.taiKhoan === id); 
+      const userOriginal = usersList.find((user) => user.taiKhoan === id);
       const valueDisplay = value;
       let valueModified = value;
       if (field === "maLoaiNguoiDung") {
         valueModified = value ? "QuanTri" : "KhachHang";
       }
-      const isChange = userOriginal[field] === valueModified ? false : true; 
+      const isChange = userOriginal[field] === valueModified ? false : true;
       const indexUserExist = userListmodified.userListmodified.findIndex(
         (user) => user.taiKhoan === id
-      ); 
+      );
       if (isChange) {
-       
         const updatedUsersListDisplay = usersListDisplay.map((row) => {
           if (row.id === id) {
             return { ...row, ismodify: true, [field]: valueDisplay };
@@ -345,7 +344,7 @@ export default function UsersManagement() {
             ...userListmodified.userListmodified,
             { ...userOriginal, [field]: valueModified, maNhom: "GP09" },
           ],
-        })); 
+        }));
         return;
       }
       if (indexUserExist !== -1) {
@@ -514,87 +513,86 @@ export default function UsersManagement() {
   }, [sortBy]);
 
   const columns = useMemo(
-    () =>
-      [
-        {
-          field: "xoa",
-          headerName: "Xóa",
-          width: 100,
-          renderCell: (params) => (
-            <ButtonDelete
-              onDeleted={handleDeleteOne}
-              taiKhoan={params.row.taiKhoan}
-            />
-          ),
-          headerAlign: "center",
-          align: "center",
-          headerClassName: "custom-header",
-          hide: addUser.toggle,
-        },
-        {
-          field: "taiKhoan",
-          headerName: "Tài Khoản",
-          width: 250,
-          editable: addUser.toggle,
-          headerAlign: "center",
-          align: "left",
-          headerClassName: "custom-header",
-        },
-        {
-          field: "matKhau",
-          headerName: "Mật Khẩu",
-          width: 300,
-          editable: true,
-          headerAlign: "center",
-          align: "left",
-          headerClassName: "custom-header",
-        },
-        {
-          field: "hoTen",
-          headerName: "Họ tên",
-          width: 300,
-          editable: true,
-          headerAlign: "center",
-          align: "left",
-          headerClassName: "custom-header",
-        },
-        {
-          field: "email",
-          headerName: "Email",
-          width: 300,
-          editable: true,
-          headerAlign: "center",
-          align: "left",
-          headerClassName: "custom-header",
-        },
-        {
-          field: "soDt",
-          headerName: "Số điện thoại",
-          width: 200,
-          editable: true,
-          type: "number",
-          headerAlign: "center",
-          align: "left",
-          headerClassName: "custom-header",
-        },
-        {
-          field: "maLoaiNguoiDung",
-          headerName: "isAdmin",
-          width: 145,
-          editable: true,
-          type: "boolean",
-          headerAlign: "center",
-          align: "center",
-          headerClassName: "custom-header",
-        },
-        {
-          field: "ismodify",
-          width: 0,
-          type: "boolean",
-          headerClassName: "custom-header",
-          hide: true,
-        },
-      ],
+    () => [
+      {
+        field: "xoa",
+        headerName: "Xóa",
+        width: 100,
+        renderCell: (params) => (
+          <ButtonDelete
+            onDeleted={handleDeleteOne}
+            taiKhoan={params.row.taiKhoan}
+          />
+        ),
+        headerAlign: "center",
+        align: "center",
+        headerClassName: "custom-header",
+        hide: addUser.toggle,
+      },
+      {
+        field: "taiKhoan",
+        headerName: "Tài Khoản",
+        width: 250,
+        editable: addUser.toggle,
+        headerAlign: "center",
+        align: "left",
+        headerClassName: "custom-header",
+      },
+      {
+        field: "matKhau",
+        headerName: "Mật Khẩu",
+        width: 300,
+        editable: true,
+        headerAlign: "center",
+        align: "left",
+        headerClassName: "custom-header",
+      },
+      {
+        field: "hoTen",
+        headerName: "Họ tên",
+        width: 300,
+        editable: true,
+        headerAlign: "center",
+        align: "left",
+        headerClassName: "custom-header",
+      },
+      {
+        field: "email",
+        headerName: "Email",
+        width: 300,
+        editable: true,
+        headerAlign: "center",
+        align: "left",
+        headerClassName: "custom-header",
+      },
+      {
+        field: "soDt",
+        headerName: "Số điện thoại",
+        width: 200,
+        editable: true,
+        type: "number",
+        headerAlign: "center",
+        align: "left",
+        headerClassName: "custom-header",
+      },
+      {
+        field: "maLoaiNguoiDung",
+        headerName: "isAdmin",
+        width: 145,
+        editable: true,
+        type: "boolean",
+        headerAlign: "center",
+        align: "center",
+        headerClassName: "custom-header",
+      },
+      {
+        field: "ismodify",
+        width: 0,
+        type: "boolean",
+        headerClassName: "custom-header",
+        hide: true,
+      },
+    ],
     [addUser.toggle]
   );
 
@@ -605,7 +603,7 @@ export default function UsersManagement() {
   }
 
   return (
-    <div style={{ height: "100vh", width: "100%", paddingBottom:'100px' }}>
+    <div style={{ height: "100vh", width: "100%", paddingBottom: "100px" }}>
       <div className="container-fluid pb-3">
         <div className="">
           <div className="">
@@ -697,8 +695,14 @@ export default function UsersManagement() {
         // sort
         sortModel={sortModel}
       />
-      <Dialog fullWidth={true} maxWidth={'lg'} style={{width: '100%'}} onClose={handleToggleAddUser} open={addUser.toggle}>
-        <AddUser/>
+      <Dialog
+        fullWidth={true}
+        maxWidth={"lg"}
+        style={{ width: "100%" }}
+        onClose={handleToggleAddUser}
+        open={addUser.toggle}
+      >
+        <AddUser />
       </Dialog>
     </div>
   );

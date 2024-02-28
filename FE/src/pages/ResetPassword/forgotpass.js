@@ -66,9 +66,7 @@ const ForgotPassword = () => {
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-8">
               <div className="wrap d-md-flex">
-                <div className="img" style={{ backgroundImage: "" }}>
-                  {/* Hình ảnh bất kỳ hoặc để trống */}
-                </div>
+                <div className="img" style={{ backgroundImage: "" }}></div>
                 <div className="login-wrap p-4 p-md-5">
                   <Formik
                     initialValues={{ email: "" }}

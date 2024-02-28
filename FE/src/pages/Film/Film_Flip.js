@@ -6,13 +6,28 @@ import { Link } from "react-router-dom";
 export default function MoviesList() {
   const [movies, setMovies] = useState([]);
 
+  // const fetchMoviesData = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim`
+  //     );
+  //     console.log("Response data:", response.data);
+  //     setMovies(response.data);
+  //   } catch (error) {
+  //     console.error("Failed to fetch movies data:", error);
+  //   }
+  // };
   const fetchMoviesData = async () => {
     try {
       const response = await axios.get(
         `http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim`
       );
-      console.log("Response data:", response.data);
-      setMovies(response.data);
+
+      const sortedMovies = response.data
+        .sort((a, b) => new Date(b.ngayKhoiChieu) - new Date(a.ngayKhoiChieu))
+        .slice(0, 8);
+
+      setMovies(sortedMovies);
     } catch (error) {
       console.error("Failed to fetch movies data:", error);
     }
@@ -22,7 +37,7 @@ export default function MoviesList() {
     fetchMoviesData();
   }, []);
   return (
-    <div className="filmcard">
+    <div className="filmcard" id="phimdangchieu">
       <h4 className="movie-header">Phim đang chiếu</h4>
       <div className="movies-list">
         {movies.map((movie) => (

@@ -13,11 +13,11 @@ const homeCarouselData = [
   },
   {
     hinhAnh:
-      "https://res.cloudinary.com/thientam2829/image/upload/v1704963145/vte2avnq9tpxc4f6zm13.png",
-    trailer: "https://www.youtube.com/watch?v=GwLG8dIz8z0",
-    tenPhim: "Hậu Cung Chân Hoàn Truyện",
-    biDanh: "chan-hoan-truyen",
-    maPhim: 1337,
+      "https://res.cloudinary.com/thientam2829/image/upload/v1708940752/twon6edxym4kx5xxgofv.jpg",
+    trailer: "https://www.youtube.com/watch?v=EX6clvId19s",
+    tenPhim: "MAI",
+    biDanh: "mai",
+    maPhim: 1355,
   },
   {
     hinhAnh:

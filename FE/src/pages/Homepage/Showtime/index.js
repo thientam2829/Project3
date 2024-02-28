@@ -73,19 +73,49 @@ export default function SimpleTabs() {
     };
   }, []);
 
+  // useEffect(() => {
+  //   let dailyMovieList = filterByDay(
+  //     movieList,
+  //     DATE_BEGIN_DANGCHIEU,
+  //     DATE_END_DANGCHIEU
+  //   );
+  //   dailyMovieList = dailyMovieList?.slice(dailyMovieList.length - 16);
+  //   let comingMovieList = filterByDay(
+  //     movieList,
+  //     DATE_BEGIN_SAPCHIEU,
+  //     DATE_END_SAPCHIEU
+  //   );
+  //   comingMovieList = comingMovieList?.slice(comingMovieList.length - 16);
+  //   setarrayData({ dailyMovieList, comingMovieList });
+  // }, [movieList]);
   useEffect(() => {
-    let dailyMovieList = filterByDay(
-      movieList,
-      DATE_BEGIN_DANGCHIEU,
-      DATE_END_DANGCHIEU
-    );
-    dailyMovieList = dailyMovieList?.slice(dailyMovieList.length - 16);
-    let comingMovieList = filterByDay(
-      movieList,
-      DATE_BEGIN_SAPCHIEU,
-      DATE_END_SAPCHIEU
-    );
-    comingMovieList = comingMovieList?.slice(comingMovieList.length - 16);
+    const currentDate = new Date().getTime(); // Lấy thời gian hiện tại
+    let dailyMovieList = [];
+    let comingMovieList = [];
+
+    const isDailyMoviesValid =
+      currentDate <= new Date(DATE_END_DANGCHIEU).getTime();
+    const isComingMoviesValid =
+      currentDate <= new Date(DATE_END_SAPCHIEU).getTime();
+
+    if (isDailyMoviesValid) {
+      dailyMovieList = filterByDay(
+        movieList,
+        DATE_BEGIN_DANGCHIEU,
+        DATE_END_DANGCHIEU
+      );
+      dailyMovieList = dailyMovieList?.slice(dailyMovieList.length - 16);
+    }
+
+    if (isComingMoviesValid) {
+      comingMovieList = filterByDay(
+        movieList,
+        DATE_BEGIN_SAPCHIEU,
+        DATE_END_SAPCHIEU
+      );
+      comingMovieList = comingMovieList?.slice(comingMovieList.length - 16);
+    }
+
     setarrayData({ dailyMovieList, comingMovieList });
   }, [movieList]);
 
