@@ -128,6 +128,11 @@ body {
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 }
+@media (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
 
 *,
 *::before,
@@ -179,7 +184,7 @@ hr {
   overflow: visible;
 }
 
-h1,
+h1
 h2,
 h3,
 h4,

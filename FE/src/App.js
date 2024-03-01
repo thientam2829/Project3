@@ -37,7 +37,9 @@ import ForgotPassword from "./pages/ResetPassword/forgotpass";
 import VerifyOTP from "./pages/Register/verifyOTP";
 import NewsPage from "./pages/NewDetails";
 import NewsList from "./pages/AdminNews";
-
+import TermsOfService from "./pages/Term/TermOfUse";
+import FAQPage from "./pages/Term/FAQ/FAQ";
+import PrivacyPolicy from "./pages/Term/PrivacyPolicy/PrivacyPolicy";
 const style = {
   position: "absolute",
   top: "50%",
@@ -167,7 +169,21 @@ function App() {
               <NewsPage />
             </MainLayout>
           </Route>
-
+          <Route path="/dieukhoansudung">
+            <MainLayout>
+              <TermsOfService />
+            </MainLayout>
+          </Route>
+          <Route path="/chinhsachbaomat">
+            <MainLayout>
+              <PrivacyPolicy />
+            </MainLayout>
+          </Route>
+          <Route path="/faq">
+            <MainLayout>
+              <FAQPage />
+            </MainLayout>
+          </Route>
           <CheckoutRoute
             exact
             path="/datve/:maLichChieu"

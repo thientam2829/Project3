@@ -6,7 +6,6 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const { token } = useParams();
-  console.log(token);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {

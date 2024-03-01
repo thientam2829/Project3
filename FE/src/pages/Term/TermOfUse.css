@@ -1,0 +1,67 @@
+.terms-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px; /* Tùy chỉnh theo nhu cầu */
+  margin: 100px auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.terms-of-service {
+  font-family: "Arial", sans-serif;
+  color: #4a4a4a;
+  max-width: 800px;
+  margin: 4px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.terms-sidebar {
+  width: 300px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 0 4px 4px 0;
+  border-left: 1px solid #eaeaea;
+}
+.terms-of-service h1 {
+  font-size: 24px;
+  color: #000000;
+  margin-bottom: 16px;
+}
+.sidebar-link {
+  display: block;
+  margin-bottom: 10px;
+  color: #000;
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  text-decoration: underline;
+}
+
+.terms-of-service p,
+.terms-of-service h2 {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+.terms-of-service section {
+  border-top: 1px solid #eaeaea;
+  padding-top: 16px;
+}
+
+.terms-of-service section h2 {
+  font-size: 18px;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .terms-of-service {
+    padding: 10px;
+    margin: 10px;
+  }
+}

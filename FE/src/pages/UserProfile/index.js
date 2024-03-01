@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 import * as yup from "yup";
@@ -23,6 +23,7 @@ import {
   putUserUpdate,
   resetUserList,
 } from "../../reducers/actions/UsersManagement";
+
 const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: "transparent",
@@ -101,16 +102,12 @@ export default function Index() {
   );
   const { currentUser } = useSelector((state) => state.authReducer);
   const { commentList } = useSelector((state) => state.movieDetailReducer);
-  const [dataShort, setdataShort] = useState({
+  const [dataShort, setDataShort] = useState({
     ticket: 0,
-    posts: 0,
-    likePosts: 0,
     total: 0,
   });
-  const { successUpdateUser } = useSelector(
-    (state) => state.usersManagementReducer
-  );
-  const { errorUpdateUser, loadingUpdateUser } = useSelector(
+
+  const { successUpdateUser, errorUpdateUser, loadingUpdateUser } = useSelector(
     (state) => state.usersManagementReducer
   );
   useEffect(() => {
@@ -126,6 +123,53 @@ export default function Index() {
   }, [successUpdateUser]);
   const [value, setValue] = React.useState(0);
   const [typePassword, settypePassword] = useState("password");
+  const fetchTongTienMuaVe = async (taiKhoan) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/QuanLyVe/TongTienMuaVe/${taiKhoan}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Lỗi khi gọi API:", error);
+      return null;
+    }
+  };
+  const fetchTongSoVeDaMua = async (taiKhoan) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/QuanLyVe/TongSoVeDaMua/${taiKhoan}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Lỗi khi gọi API:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const taiKhoan = currentUser?.taiKhoan;
+    if (taiKhoan) {
+      Promise.all([fetchTongTienMuaVe(taiKhoan), fetchTongSoVeDaMua(taiKhoan)])
+        .then(([tongTienData, tongSoVeData]) => {
+          if (tongTienData && tongTienData.success) {
+            setDataShort((prevData) => ({
+              ...prevData,
+              total: tongTienData.tongTien,
+            }));
+          }
+
+          if (tongSoVeData && tongSoVeData.success) {
+            setDataShort((prevData) => ({
+              ...prevData,
+              ticket: tongSoVeData.soVeDaMua,
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error("Lỗi khi gọi API:", error);
+        });
+    }
+  }, [currentUser]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -135,21 +179,6 @@ export default function Index() {
     return () => dispatch(resetUserList());
   }, []);
   useEffect(() => {
-    if (commentList) {
-      const { posts, likePosts } = commentList.reduce(
-        (obj, post) => {
-          let posts = obj.posts;
-          let likePosts = obj.likePosts;
-          if (post.avtId === currentUser.taiKhoan) {
-            posts++;
-            likePosts += post.userLikeThisComment.length;
-          }
-          return { ...obj, posts, likePosts };
-        },
-        { posts: 0, likePosts: 0 }
-      );
-      setdataShort((data) => ({ ...data, posts, likePosts }));
-    }
     if (successInfoUser) {
       // const ticket = successInfoUser.thongTinDatVe.length;
       // const total = successInfoUser.thongTinDatVe.reduce((total, ticket) => {
@@ -159,10 +188,6 @@ export default function Index() {
     }
   }, [commentList, successInfoUser]);
 
-  // Sử dụng useEffect để log giá trị khi successUpdateUser thay đổi
-  useEffect(() => {
-    console.log("Giá trị của successUpdateUser:", successUpdateUser);
-  }, [successUpdateUser]);
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const updateUserSchema = yup.object().shape({
@@ -199,6 +224,7 @@ export default function Index() {
       }, [])
       .join(", ");
   };
+
   return (
     <div className="container rounded mb-5">
       <div className="row bg-white ">
@@ -211,7 +237,7 @@ export default function Index() {
               }`}
               alt="avatar"
             />
-            <h1 className="my-2">{successInfoUser?.taiKhoan}</h1>
+            <h1 className="my-2">{successInfoUser?.hoTen}</h1>
           </div>
         </div>
         <div className="col-md-5 border-right">
@@ -346,24 +372,8 @@ export default function Index() {
             {" "}
             <li className="list-group-item text-muted">Hoạt động</li>{" "}
             <li className="list-group-item text-right">
-              {" "}
               <span className="float-left">
-                {" "}
-                <strong>Bình luận</strong>{" "}
-              </span>{" "}
-              {dataShort.posts}{" "}
-            </li>{" "}
-            <li className="list-group-item text-right">
-              {" "}
-              <span className="float-left">
-                {" "}
-                <strong>Bình luận được thích </strong>{" "}
-              </span>{" "}
-              {dataShort.likePosts}{" "}
-            </li>{" "}
-            <li className="list-group-item text-right">
-              <span className="float-left">
-                <strong>Số lần thanh toán</strong>
+                <strong>Số vé đã mua</strong>
               </span>
               {dataShort.ticket}
             </li>
@@ -371,7 +381,7 @@ export default function Index() {
               <span className="float-left">
                 <strong>Tổng tiền $</strong>
               </span>
-              {dataShort.total}
+              {dataShort.total} VNĐ
             </li>
           </ul>
         </div>

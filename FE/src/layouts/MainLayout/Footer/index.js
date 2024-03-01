@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import useStyles from "./style";
 export default function Footer() {
   const classes = useStyles();
@@ -9,13 +10,7 @@ export default function Footer() {
           <div className={classes.tix__text}>
             <div className="d-none d-lg-block d-xl-block">
               <p>CosmoCinema</p>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.cgv.vn/"
-              >
-                FAQ
-              </a>
+
               <a
                 target="_blank"
                 rel="noopener noreferrer"
@@ -25,22 +20,15 @@ export default function Footer() {
               </a>
             </div>
             <div className="row">
-              <a
-                className="col-6 col-lg-12"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.cgv.vn/"
-              >
-                Thỏa thuận sử dụng
-              </a>
-              <a
-                className="col-6 col-lg-12"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.cgv.vn/"
-              >
+              <Link to="/dieukhoansudung" className="col-6 col-lg-12">
+                Điều khoản sử dụng
+              </Link>
+              <Link to="/chinhsachbaomat" className="col-6 col-lg-12">
                 Chính sách bảo mật
-              </a>
+              </Link>
+              <Link to="/dieukhoansudung" className="col-6 col-lg-12">
+                FAQ
+              </Link>
             </div>
           </div>
         </div>

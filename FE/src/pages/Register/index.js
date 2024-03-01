@@ -135,8 +135,18 @@ export default function Register() {
                         maNhom: "GP09",
                         maLoaiNguoiDung: "KhachHang",
                         hoTen: "",
+                        agreedToTerms: false,
                       }}
-                      validationSchema={signupUserSchema}
+                      validationSchema={signupUserSchema.concat(
+                        yup.object().shape({
+                          agreedToTerms: yup
+                            .bool()
+                            .oneOf(
+                              [true],
+                              "*Bạn phải đồng ý với các Điều Khoản Sử Dụng để đăng ký."
+                            ),
+                        })
+                      )}
                       onSubmit={handleSubmit}
                     >
                       {(formikProps) => (
@@ -213,7 +223,26 @@ export default function Register() {
                               className="form-control"
                             />
                           </div>
-
+                          <div className="form-group form-check">
+                            <Field
+                              type="checkbox"
+                              name="agreedToTerms"
+                              className="form-check-input"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="agreedToTerms"
+                            >
+                              Tôi đồng ý với Điều Khoản Sử Dụng của Cosmo
+                              Cinemas
+                            </label>
+                            <ErrorMessage
+                              name="agreedToTerms"
+                              render={(msg) => (
+                                <div className="text-danger">{msg}</div>
+                              )}
+                            />
+                          </div>
                           <div className="text-center">
                             <button
                               style={{
