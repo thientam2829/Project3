@@ -147,9 +147,6 @@ const TermsOfService = () => {
             <Link to="/faq" className="sidebar-link">
               FAQ
             </Link>
-            <Link to="/contact" className="sidebar-link">
-              Liên hệ
-            </Link>
           </div>
         </div>
       </div>

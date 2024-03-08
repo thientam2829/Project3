@@ -15,7 +15,8 @@ const useStyle = makeStyles((theme) => ({
     backgroundColor: "#222",
     color: "white",
     fontSize: "14px",
-    padding: "150px 50px",
+    marginTop: "250px",
+
     "& a": {
       color: "#949494",
       display: "block",

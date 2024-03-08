@@ -144,23 +144,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 function sendVerificationEmail(email, otp) {
-  // const mailOptions = {
-  //   from: "Cosmo Cinemas VietNam <cosmocinemaldh@gmail.com>",
-  //   to: email,
-  //   subject: "Xác thực tài khoản",
-  //   html: `
-  //     <p style="font-size: 16px; color: #333; line-height: 1.6;">
-  //       Xin chào.<br><br>
-
-  //       Mã OTP của bạn là: <strong style="color:#0B1F3E ;">${otp}</strong><br><br>
-
-  //       Trân trọng!<br>
-  //       Cosmo Cinemas VietNam Support Team!
-  //     </p>
-  //     <img src="https://res.cloudinary.com/thientam2829/image/upload/v1702947907/imager/jeqkrwnwdhmmnvobdqrb.jpg"
-  //     style="width: 20rem; border-radius: 5px;" alt="thumbnail">
-  //   `,
-  // };
   const mailOptions = {
     from: "Cosmo Cinemas VietNam <cosmocinemaldh@gmail.com>",
     to: email,
@@ -900,7 +883,7 @@ app.post("/api/QuanLyDatVe/TaoLichChieu", async (req, res) => {
       dbConn.query(
         "INSERT INTO lich_chieu SET ? ",
         {
-          phiminsert: req.body.maPhim,
+          chi_tiet_phim: req.body.maPhim,
           lichchieuinsert: results.insertId,
         },
         function (error, results0, fields) {
@@ -1250,24 +1233,34 @@ app.put("/api/QuanLyTinTuc/ChinhSuaTinTuc/:id", function (req, res) {
     }
   );
 });
-app.post("/api/QuanLyTinTuc/ThemTinTuc", function (req, res) {
-  const { tieude, noidung, hinhAnh } = req.body;
-  dbConn.query(
-    "INSERT INTO tintuc (tieude, noidung, hinhAnh) VALUES (?, ?, ?)",
-    [tieude, noidung, hinhAnh],
-    function (error, results, fields) {
-      if (error) {
-        console.error("Lỗi khi thêm tin tức vào cơ sở dữ liệu:", error);
-        res.status(500).send("Lỗi khi thêm tin tức vào cơ sở dữ liệu");
-      } else {
-        res.status(201).send({
-          message: "Tin tức đã được thêm mới thành công",
-          id: results.insertId,
-        });
-      }
-    }
-  );
+
+app.post("/api/QuanLyTinTuc/ThemTinTuc", async (req, res) => {
+  try {
+    await new Promise((resolve, reject) => {
+      dbConn.query(
+        "INSERT INTO tintuc SET ?",
+        {
+          tieude: req.body.tieude,
+          noidung: req.body.noidung,
+          hinhAnh: req.body.hinhAnh,
+        },
+        function (error, results, fields) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+
+    res.send({ message: "Tin tức đã được thêm mới thành công" });
+  } catch (error) {
+    console.error("Error while adding news:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 });
+
 app.get("/api/QuanLyVe/TongTienMuaVe/:taiKhoan", function (req, res) {
   const taiKhoan = req.params.taiKhoan;
 

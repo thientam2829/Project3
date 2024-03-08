@@ -1,18 +1,18 @@
-import { makeStyles } from "@material-ui/core"
-import { underLineDashed } from '../../../styles/materialUi';
+import { makeStyles } from "@material-ui/core";
+import { underLineDashed } from "../../../styles/materialUi";
 
 const useStyles = makeStyles({
   resultBookTicket: {
-    textAlign: 'left',
-    lineHeight: '30px',
-    padding: props => props.isMobile ? 23 : 40,
+    textAlign: "left",
+    lineHeight: "30px",
+    padding: (props) => (props.isMobile ? 23 : 40),
     width: "100%",
   },
   infoTicked: {
-    display: 'flex',
-    gap: '5%',
+    display: "flex",
+    gap: "5%",
   },
-  infoTicked__img: props => ({
+  infoTicked__img: (props) => ({
     flex: "30%",
     backgroundImage: `url(${props.thongTinPhim?.hinhAnh})`,
     borderRadius: "4px",
@@ -26,9 +26,9 @@ const useStyles = makeStyles({
   },
   tenPhim: {
     fontSize: 19,
-    ...underLineDashed
+    ...underLineDashed,
   },
-  text__first: props => ({
+  text__first: (props) => ({
     color: `${props.color}`,
     fontWeight: "500",
   }),
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     fontWeight: "500",
   },
   diaChi: {
-    color: '#9B9B9B'
+    color: "#9B9B9B",
   },
   table: {
     marginTop: 10,
@@ -48,15 +48,14 @@ const useStyles = makeStyles({
     fontWeight: 400,
   },
   paymentColor: {
-    color: '#f79320'
+    color: "#f79320",
   },
   errorColor: {
-    color: 'rgb(238, 130, 59)'
+    color: "rgb(238, 130, 59)",
   },
   noteresult: {
-    fontStyle: 'italic',
+    fontStyle: "italic",
     fontWeight: 500,
   },
-
-})
-export default useStyles
+});
+export default useStyles;

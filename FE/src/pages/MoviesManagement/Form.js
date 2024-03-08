@@ -21,7 +21,6 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
     var reader = new FileReader();
     reader.readAsDataURL(file.files[0]);
     reader.onload = function () {
-      // sau khi thực hiên xong lênh trên thì set giá trị có được
       setSrcImage(reader.result);
     };
   };

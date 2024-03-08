@@ -21,26 +21,26 @@ article {
 
 /* Style cho tiêu đề */
 article h1 {
-  font-size: 2em; /* Cỡ chữ cho tiêu đề */
+  font-weight: bolder;
+  font-size: 3em; /* Cỡ chữ cho tiêu đề */
   margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
-  color: black; /* Màu chữ */
+  color: whitesmoke; /* Màu chữ */
 }
 
-/* Style cho đoạn văn */
 .noidung {
-  line-height: 1.6; /* Khoảng cách giữa các dòng */
-  margin-bottom: 20px; /* Khoảng cách dưới mỗi đoạn văn */
-  text-align: justify; /* Canh đều đoạn văn */
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
   color: #fff;
   flex: 1;
   margin-right: 20px;
 }
 .noidung img {
-  display: block; /* Đảm bảo hình ảnh không nằm trên cùng dòng với văn bản */
-  max-width: 100%; /* Hình ảnh không vượt quá chiều rộng của container */
-  height: auto; /* Giữ nguyên tỷ lệ chiều rộng và chiều cao */
-  margin: 20px auto; /* Căn giữa hình ảnh và tạo khoảng cách trên và dưới */
-  border-radius: 8px; /* Nếu bạn muốn bo tròn góc của hình ảnh */
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
+  border-radius: 8px;
 }
 .movies-sidebar {
   width: 250px; /* Adjust the width as needed */

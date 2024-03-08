@@ -88,10 +88,7 @@ export default function SimpleTabs() {
                 </a>
               </div>
               <div className={classes.repons}>
-                <a
-                  href="https://tuoitre.vn/hospital-playlist-chua-lanh-cam-xuc-ve-nhung-bac-si-tai-hoa-va-duc-do-20210809205640694.htm"
-                  className={classes.news}
-                >
+                <a href="http://localhost:3000/news/3" className={classes.news}>
                   <img
                     className={classes.fullImg}
                     src="https://res.cloudinary.com/thientam2829/image/upload/v1705914256/hqxtskgdrmfxguyxu9xx.png"

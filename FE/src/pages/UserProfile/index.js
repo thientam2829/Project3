@@ -105,11 +105,31 @@ export default function Index() {
   const [dataShort, setDataShort] = useState({
     ticket: 0,
     total: 0,
+    membershipLevel: "Hội viên Đồng",
   });
 
   const { successUpdateUser, errorUpdateUser, loadingUpdateUser } = useSelector(
     (state) => state.usersManagementReducer
   );
+  useEffect(() => {
+    const membershipLevel = getMembershipLevel(dataShort.total);
+    setDataShort((prevData) => ({
+      ...prevData,
+      membershipLevel,
+    }));
+  }, [dataShort.total]);
+  const getMembershipLevel = (total) => {
+    if (total > 3000000) {
+      return "Hội viên Kim cương";
+    } else if (total >= 1000000) {
+      return "Hội viên Vàng";
+    } else if (total > 0) {
+      return "Hội viên Bạc";
+    } else {
+      return "Hội viên Đồng";
+    }
+  };
+
   useEffect(() => {
     if (successUpdateUser) {
       Swal.fire({
@@ -155,6 +175,7 @@ export default function Index() {
             setDataShort((prevData) => ({
               ...prevData,
               total: tongTienData.tongTien,
+              rewardPoints: Math.floor(tongTienData.tongTien / 1000),
             }));
           }
 
@@ -382,6 +403,18 @@ export default function Index() {
                 <strong>Tổng tiền $</strong>
               </span>
               {dataShort.total} VNĐ
+            </li>
+            <li className="list-group-item text-right">
+              <span className="float-left">
+                <strong>Cấp độ hội viên:</strong>
+              </span>
+              {dataShort.membershipLevel}
+            </li>
+            <li className="list-group-item text-right">
+              <span className="float-left">
+                <strong>Điểm thưởng:</strong>
+              </span>
+              {dataShort.rewardPoints} {""}điểm
             </li>
           </ul>
         </div>

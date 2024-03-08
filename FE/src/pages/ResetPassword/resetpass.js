@@ -27,12 +27,18 @@ const ResetPassword = () => {
 
   return (
     <>
-      <section className="ftco-section">
+      <section className="ftco-section" style={{ padding: "6em" }}>
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-8">
               <div className="wrap d-md-flex">
-                <div className="img" style={{ backgroundImage: "" }}></div>
+                <div className="img" style={{ backgroundImage: "" }}>
+                  <img
+                    style={{ marginTop: "20px" }}
+                    className="rounded-md"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1709452945/yiogehwbo4yefreukipq.jpg"
+                  />
+                </div>
                 <div className="login-wrap p-4 p-md-5">
                   <h3 className="mb-4">Đặt lại mật khẩu</h3>
                   <form onSubmit={handleSubmit} className="signin-form">

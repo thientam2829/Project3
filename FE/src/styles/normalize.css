@@ -184,8 +184,7 @@ hr {
   overflow: visible;
 }
 
-h1
-h2,
+h1 h2,
 h3,
 h4,
 h5,
@@ -11960,7 +11959,7 @@ h5,
 }
 
 .ftco-section {
-  padding: 7em 0;
+  padding: 12em 0;
 }
 
 .ftco-no-pt {
@@ -12013,7 +12012,6 @@ h5,
 .login-wrap {
   position: relative;
   background: #fff h3;
-  background-font-weight: 300;
 }
 
 .form-group {

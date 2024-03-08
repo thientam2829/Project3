@@ -6,7 +6,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import Swal from "sweetalert2";
 import "./style.css";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 import { register, resetErrorLoginRegister } from "../../reducers/actions/Auth";
 
 export default function Register() {
@@ -82,7 +82,7 @@ export default function Register() {
           title:
             "Bạn đã đăng ký thành công. Vui lòng kiểm tra email để nhập OTP.",
           showConfirmButton: false,
-          timer: 3000,
+          timer: 5000,
         });
 
         history.push("/verify-otp", { email: user.email });
@@ -113,9 +113,12 @@ export default function Register() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-10">
+              <div className="text-center">
+                <h1 className="text-white">Đăng ký</h1>
+              </div>
               <div className="wrap d-md-flex">
                 <div className="img" style={{ backgroundImage: "" }}>
-                  <img src="https://p4.wallpaperbetter.com/wallpaper/852/644/1008/alien-movie-poster-sigourney-weaver-movie-poster-wallpaper-preview.jpg" />
+                  <img src="https://res.cloudinary.com/thientam2829/image/upload/v1709453120/wjkn0lecvqqf7bzxw9vn.jpg" />
                 </div>
                 <div className="alert-message">
                   {emailExistMessage && (
@@ -233,8 +236,14 @@ export default function Register() {
                               className="form-check-label"
                               htmlFor="agreedToTerms"
                             >
-                              Tôi đồng ý với Điều Khoản Sử Dụng của Cosmo
-                              Cinemas
+                              Tôi đồng ý với{" "}
+                              <Link
+                                to="/dieukhoansudung"
+                                style={{ color: "blue" }}
+                              >
+                                Điều Khoản Sử Dụng
+                              </Link>{" "}
+                              của Cosmo Cinemas
                             </label>
                             <ErrorMessage
                               name="agreedToTerms"

@@ -5,10 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import * as yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Swal from "sweetalert2";
-import "./style.css"
+import "./style.css";
 
 import { register, resetErrorLoginRegister } from "../../reducers/actions/Auth";
-import logoTix from "./logo/logoTix.png";
 
 export default function AddUser() {
   const { responseRegister, loadingRegister, errorRegister } = useSelector(
@@ -156,17 +155,17 @@ export default function AddUser() {
                               className="form-control"
                             />
                           </div>
-                      
+
                           <div className="text-center">
                             <button
-                             style={{
-                              backgroundColor: "rgb(238, 130, 59)",
-                              borderColor: "rgb(238, 130, 59)",
-                              cursor: "pointer",
-                              width:'100%'
-                            }}
+                              style={{
+                                backgroundColor: "rgb(238, 130, 59)",
+                                borderColor: "rgb(238, 130, 59)",
+                                cursor: "pointer",
+                                width: "100%",
+                              }}
                               type="submit"
-                              className ="btn btn-success mt-3 container"
+                              className="btn btn-success mt-3 container"
                               disable={loadingRegister.toString()}
                             >
                               Thêm User

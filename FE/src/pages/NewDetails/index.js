@@ -70,7 +70,7 @@ const NewsPage = ({ match }) => {
           )}
         </div>
         <div className="movies-sidebar">
-          <h4>Phim Đang Chiếu</h4>
+          <h4 style={{ color: "#ee823b" }}>Phim Đang Chiếu</h4>
           {movies.map((movie, index) => (
             <Link
               key={index}
@@ -78,7 +78,7 @@ const NewsPage = ({ match }) => {
               className="movie-item"
             >
               <img src={movie.hinhAnh} alt={movie.tenPhim} />
-              <h5>{movie.tenPhim}</h5>
+              <h5 style={{ color: "white" }}>{movie.tenPhim}</h5>
             </Link>
           ))}
           <Link to="/#phimdangchieu" className="btn btn-primary">

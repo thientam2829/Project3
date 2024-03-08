@@ -96,7 +96,7 @@ export default function Login() {
                 <div className="img" style={{ backgroundImage: "" }}>
                   <img
                     className="rounded-md"
-                    src="https://p4.wallpaperbetter.com/wallpaper/852/644/1008/alien-movie-poster-sigourney-weaver-movie-poster-wallpaper-preview.jpg"
+                    src="https://res.cloudinary.com/thientam2829/image/upload/v1709453120/wjkn0lecvqqf7bzxw9vn.jpg"
                   />
                 </div>
                 <div className="login-wrap p-4 p-md-5">
