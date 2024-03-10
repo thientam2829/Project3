@@ -48,3 +48,8 @@
   padding: 10px;
   text-align: center;
 }
+.see-more-button {
+  margin-top: 20px;
+  width: 50%;
+  align-items: center;
+}

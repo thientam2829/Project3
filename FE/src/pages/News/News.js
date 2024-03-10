@@ -5,10 +5,10 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Fade from "@material-ui/core/Fade";
-
+import { Link } from "react-router-dom";
 import useStyles from "./style";
 import Seperate from "../../components/Seperate";
-
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -68,7 +68,7 @@ export default function SimpleTabs() {
           <TabPanel value={value} index={0}>
             <div className="row">
               <div className={classes.repons}>
-                <a href="http://localhost:3000/news/1" className={classes.news}>
+                <a href="/news/1" className={classes.news}>
                   <img
                     className={classes.fullImg}
                     src="https://res.cloudinary.com/thientam2829/image/upload/v1705913821/gsulnvf5uajdu9hgjbnm.jpg"
@@ -88,7 +88,7 @@ export default function SimpleTabs() {
                 </a>
               </div>
               <div className={classes.repons}>
-                <a href="http://localhost:3000/news/3" className={classes.news}>
+                <a href="/news/3" className={classes.news}>
                   <img
                     className={classes.fullImg}
                     src="https://res.cloudinary.com/thientam2829/image/upload/v1705914256/hqxtskgdrmfxguyxu9xx.png"
@@ -261,7 +261,7 @@ export default function SimpleTabs() {
                 </a>
               </div>
               <div className={classes.repons}>
-                <a href="http://localhost:3000/news/2" className={classes.news}>
+                <a href="/news/2" className={classes.news}>
                   <img
                     className={classes.fullImg}
                     src="https://res.cloudinary.com/thientam2829/image/upload/v1706346585/gbjvipkfl0pb9vouqr2i.webp"
@@ -584,6 +584,11 @@ export default function SimpleTabs() {
             </div>
           </TabPanel>
         </Fade>
+      </div>
+      <div className="see-more-button">
+        <Link to="/phimdangchieu" className="btn btn-secondary">
+          Xem Thêm <NavigateNextIcon />
+        </Link>
       </div>
     </div>
   );

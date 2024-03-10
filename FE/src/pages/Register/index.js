@@ -239,7 +239,7 @@ export default function Register() {
                               Tôi đồng ý với{" "}
                               <Link
                                 to="/dieukhoansudung"
-                                style={{ color: "blue" }}
+                                style={{ color: "#17a2b8" }}
                               >
                                 Điều Khoản Sử Dụng
                               </Link>{" "}

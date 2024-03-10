@@ -2,37 +2,24 @@ import React, { useState, useEffect } from "react";
 import "./Film_Flip.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 export default function MoviesList() {
   const [movies, setMovies] = useState([]);
-
-  // const fetchMoviesData = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim`
-  //     );
-  //     console.log("Response data:", response.data);
-  //     setMovies(response.data);
-  //   } catch (error) {
-  //     console.error("Failed to fetch movies data:", error);
-  //   }
-  // };
   const fetchMoviesData = async () => {
     try {
       const response = await axios.get(
         `http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim`
       );
 
-      const sortedMovies = response.data
-        .sort((a, b) => new Date(b.ngayKhoiChieu) - new Date(a.ngayKhoiChieu))
-        .slice(0, 8);
+      const sortedMovies = response.data.sort(
+        (a, b) => new Date(b.ngayKhoiChieu) - new Date(a.ngayKhoiChieu)
+      );
 
       setMovies(sortedMovies);
     } catch (error) {
       console.error("Failed to fetch movies data:", error);
     }
   };
-
   useEffect(() => {
     fetchMoviesData();
   }, []);
@@ -57,9 +44,11 @@ export default function MoviesList() {
             </div>
           </div>
         ))}
-      </div>
-      <div className="text-center mt-3">
-        <button className="btn btn-primary">Xem Thêm</button>
+        <div className="see-more-button">
+          <Link to="/phimdangchieu" className="btn btn-secondary">
+            Xem Thêm <NavigateNextIcon />
+          </Link>
+        </div>
       </div>
     </div>
   );

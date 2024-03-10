@@ -1,15 +1,13 @@
-import { makeStyles } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
-  desktop: {
-  },
+const useStyles = makeStyles((theme) => ({
+  desktop: {},
   bannerBlur: {
     position: "absolute",
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    
   },
   gradient: {
     position: "absolute",
@@ -17,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     bottom: 0,
     right: 0,
-    background: "linear-gradient(to top, rgb(10, 32, 41), transparent 100%)"
+    background: "linear-gradient(to top, rgb(10, 32, 41), transparent 100%)",
   },
   topInfo: {
     width: "100%",
@@ -25,9 +23,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "center",
     color: "#e9e9e9",
-    height: '100vh',
+    height: "100vh",
     // marginTop: '100px'
-
   },
   imgTrailer: {
     width: "25%",
@@ -36,16 +33,15 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",
-    '&:hover > div ': { opacity: 1 },
+    "&:hover > div ": { opacity: 1 },
   },
   img: {
     width: "100%",
     borderRadius: 4,
-
   },
   shortInfo: {
     width: "59%",
-    padding: "0px 15px"
+    padding: "0px 15px",
   },
   movieName: {
     fontSize: 24,
@@ -60,24 +56,24 @@ const useStyles = makeStyles(theme => ({
     padding: "0 5px",
     display: "inline-block",
     textAlign: "center",
-    minWidth: "33px"
+    minWidth: "33px",
   },
   btnMuaVe: {
     fontSize: "16px",
-    width : "130px",
+    width: "130px",
     borderRadius: "4px",
     padding: "8px 11px",
     transition: "all .2s",
     marginTop: "20px",
     marginBottom: "20px",
-    margin: '0 2px',
+    margin: "0 2px",
     backgroundColor: "rgb(238, 130, 59)",
     border: "none",
     color: "#fff",
-    fontWeight:'600',
+    fontWeight: "600",
     "&:hover": {
       backgroundColor: "#b42a14",
-    }
+    },
   },
 
   rate: {
@@ -90,39 +86,50 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
   },
   circular: {
-    position: 'relative',
+    position: "relative",
     height: 126,
     width: 126,
   },
   danhGia: {
     fontSize: 53,
-    position: 'absolute',
+    position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%,-50%)",
   },
   fabProgress: {
     color: "#7ed321",
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
   },
   behined: {
     color: "#829869",
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
   },
   rateStar: {
     width: "fit-content",
-    '& .MuiRating-iconEmpty': {
+    "& .MuiRating-iconEmpty": {
       color: "rgba(255, 180, 0, 0.3)",
-    }
+    },
+  },
+  shortInfo: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: theme.spacing(2),
+  },
+  btnMuaVe: {
+    margin: theme.spacing(1),
+    textTransform: "none",
   },
 
   withOutImage: {
     borderRadius: 4,
-    width: "100%", height: "100%",
+    width: "100%",
+    height: "100%",
     animationName: `$myEffect`,
     animationDuration: "3s",
     animationTimingFunction: `${theme.transitions.easing.easeInOut}`,
@@ -135,6 +142,5 @@ const useStyles = makeStyles(theme => ({
     "50%": { backgroundPosition: "100% 50%" },
     "100%": { backgroundPosition: "0% 50%" },
   },
-
-}))
-export default useStyles
+}));
+export default useStyles;

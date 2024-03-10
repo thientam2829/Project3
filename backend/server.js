@@ -1025,39 +1025,35 @@ app.delete("/api/QuanLyPhim/XoaPhim", function (req, res) {
 });
 app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
   const { email } = req.body;
-
-  // Tìm kiếm người dùng trong database
   const user = await new Promise((resolve, reject) => {
     dbConn.query(
       "SELECT * FROM nguoi_dung WHERE email = ?",
       [email],
       (error, results) => {
         if (error) return reject(error);
+        if (results.length === 0) return reject("User not found");
         resolve(results[0]);
       }
     );
   });
   if (!user)
     return res.status(404).send("Email không tồn tại, vui lòng kiểm tra lại.");
-  const token = jwt.sign({ email: email }, "secretKey");
+
+  const otp = Math.floor(100000 + Math.random() * 900000); // Tạo OTP 6 chữ số
   await new Promise((resolve, reject) => {
     dbConn.query(
-      "UPDATE nguoi_dung SET resetPasswordToken = ? WHERE email = ?",
-      [token, email],
+      "UPDATE nguoi_dung SET otp = ?, otpCreatedAt = NOW() WHERE email = ?",
+      [otp, email],
       (error, results) => {
         if (error) {
           reject(error);
-          return res.status(500).send("Lỗi khi lưu token");
+          return;
         }
         resolve();
       }
     );
   });
 
-  const resetLink = `http://localhost:3000/reset-password/${token}`;
-  if (!user) {
-    return res.status(404).send("Email không tồn tại, vui lòng kiểm tra lại.");
-  }
   const mailOptions = {
     from: "Cosmo Cinemas VietNam <cosmocinemaldh@gmail.com>",
     to: email,
@@ -1068,14 +1064,16 @@ app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
           <img src="https://res.cloudinary.com/thientam2829/image/upload/v1709083061/hl7eyjomgkfcz9muyoly.png" alt="Cosmo Cinemas Logo" style="width: 200px;">
         </div>
         <div style="background: #ffffff; padding: 20px; text-align: center;">
-          <h2 style="color:#0B1F3E;">Xin chào,</h2>
+          <h2 style="color:#264b80;">Xin chào,</h2>
           <p style="font-size: 18px; color: #333; line-height: 1.6;">
-            Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Nhấn vào đường link bên dưới để thực hiện thao tác này:
+            Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. 
           </p>
-          <a href="${resetLink}" style="display: inline-block; padding: 20px 40px; background-color: #264b80; color: #fff; text-decoration: none; border-radius: 5px; margin: 20px 0;">
-            Đặt lại mật khẩu
-          </a>
-          <p style="font-size: 14px;">Nếu bạn không thực hiện yêu cầu , vui lòng bỏ qua email này.</p>
+          <p style="font-size: 18px; color: #333; line-height: 1.6;">
+            Mã OTP của bạn là:<br>
+            <strong style="font-size: 25px; color: #264b80;">${otp}</strong>
+          </p>
+          <p style="font-size: 14px;">Có hiệu lực trong 10 phút. KHÔNG chia sẻ mã này với người khác, kể cả nhân viên Cosmo Cinemas.</p>
+        </div>
         </div>
         <div style="background: #264b80; padding: 20px; text-align: center;">
           <p style="font-size: 14px; color: #fff;">Trân trọng!<br>Cosmo Cinemas VietNam Support Team!</p>
@@ -1087,87 +1085,63 @@ app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
-      res.status(500).send("Lỗi khi gửi mail");
-    } else {
-      console.log("Email sent: " + info.response);
-      res.send(
-        "Email xác nhận đã được gửi, vui lòng kiểm tra hòm thư của bạn."
-      );
+      return res.status(500).send("Lỗi khi gửi mail");
     }
+    res.send("Email xác nhận đã được gửi, vui lòng kiểm tra hòm thư của bạn.");
   });
 });
 
-// app.post(
-//   "/api/QuanLyNguoiDung/XacMinhTokenVaCapNhatMatKhau",
-//   async (req, res) => {
-//     const { token, newPassword } = req.body;
-//     try {
-//       if (!token) {
-//         return res.status(400).send("Token không được cung cấp.");
-//       }
+app.post("/api/QuanLyNguoiDung/CapNhatMatKhau", async (req, res) => {
+  const { email, otp, newPassword } = req.body;
 
-//       const decoded = jwt.verify(token, "secretKey");
-//       const email = decoded.email;
-
-//       const hashPassword = md5(newPassword);
-//       dbConn.query(
-//         "UPDATE nguoi_dung SET matKhau = ? WHERE email = ?",
-//         [hashPassword, email],
-//         function (error, results) {
-//           if (error) {
-//             return res.status(500).send("Lỗi khi cập nhật mật khẩu");
-//           }
-//           res.send("Cập nhật mật khẩu thành công");
-//         }
-//       );
-//     } catch (error) {
-//       console.log("Error:", error.message);
-//       res
-//         .status(400)
-//         .send("Token không hợp lệ hoặc đã hết hạn: " + error.message);
-//     }
-//   }
-// );
-app.post(
-  "/api/QuanLyNguoiDung/XacMinhTokenVaCapNhatMatKhau",
-  async (req, res) => {
-    const { token, newPassword } = req.body;
-    try {
-      const decoded = jwt.verify(token, "secretKey");
-      const email = decoded.email;
-      const user = await new Promise((resolve, reject) => {
-        dbConn.query(
-          "SELECT * FROM nguoi_dung WHERE resetPasswordToken = ?",
-          [token],
-          (error, results) => {
-            if (error || results.length === 0) {
-              reject("Token không hợp lệ hoặc đã hết hạn");
-            } else {
-              resolve(results[0]);
-            }
-          }
-        );
-      });
-      if (user.email !== email)
-        return res.status(400).send("Token không hợp lệ.");
-
-      const hashPassword = md5(newPassword);
+  try {
+    const storedData = await new Promise((resolve, reject) => {
       dbConn.query(
-        "UPDATE nguoi_dung SET matKhau = ?, resetPasswordToken = NULL WHERE email = ?",
-        [hashPassword, email],
+        "SELECT otp, otpCreatedAt FROM nguoi_dung WHERE email = ?",
+        [email],
         (error, results) => {
-          if (error) return res.status(500).send("Lỗi khi cập nhật mật khẩu");
-          res.send("Cập nhật mật khẩu thành công");
+          if (error || results.length === 0) {
+            reject("Không tìm thấy người dùng hoặc lỗi cơ sở dữ liệu");
+          } else {
+            resolve(results[0]);
+          }
         }
       );
-    } catch (error) {
-      console.log("Error:", error.message);
-      res
-        .status(400)
-        .send("Token không hợp lệ hoặc đã hết hạn: " + error.message);
+    });
+
+    if (!storedData || !storedData.otp) {
+      return res.status(400).send("Mã OTP không tồn tại hoặc đã hết hạn.");
     }
+
+    const storedOTP = storedData.otp;
+    const otpCreatedAt = new Date(storedData.otpCreatedAt);
+    const currentTime = new Date();
+
+    const timeDifference = Math.abs(currentTime - otpCreatedAt);
+    const timeDifferenceInMinutes = Math.floor(timeDifference / (1000 * 60));
+
+    if (otp !== storedOTP || timeDifferenceInMinutes > 10) {
+      return res.status(400).send("Mã OTP không hợp lệ hoặc đã hết hạn.");
+    }
+
+    const hashPassword = md5(newPassword);
+    await new Promise((resolve, reject) => {
+      dbConn.query(
+        "UPDATE nguoi_dung SET matKhau = ?, otp = NULL, otpCreatedAt = NULL WHERE email = ?",
+        [hashPassword, email],
+        (error, results) => {
+          if (error) reject(error);
+          resolve(results);
+        }
+      );
+    });
+
+    res.send("Cập nhật mật khẩu thành công");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Lỗi khi xử lý yêu cầu");
   }
-);
+});
 
 app.get("/api/QuanLyTinTuc/LayTatCaTinTuc", function (req, res) {
   dbConn.query("SELECT * FROM tintuc", [], function (error, results, fields) {

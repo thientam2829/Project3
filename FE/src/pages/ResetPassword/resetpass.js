@@ -1,27 +1,51 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 const ResetPassword = () => {
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const { token } = useParams();
-  const handleSubmit = async (e) => {
+  const history = useHistory();
+  const handleVerifyAndResetPassword = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      setMessage("Mật khẩu xác nhận không khớp.");
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi",
+        text: "Mật khẩu xác nhận không khớp.",
+      });
       return;
     }
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/QuanLyNguoiDung/XacMinhTokenVaCapNhatMatKhau",
-        { newPassword },
-        { headers: { Authorization: `Bearer ${token}` } }
+        "http://localhost:4000/api/QuanLyNguoiDung/CapNhatMatKhau",
+        { email, otp, newPassword }
       );
-      setMessage(response.data);
+      if (response.data === "Cập nhật mật khẩu thành công") {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Mật khẩu của bạn đã được cập nhật thành công.",
+          timer: 3000,
+        }).then(() => {
+          history.push("/");
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Thất bại",
+          text: "Có lỗi xảy ra, vui lòng thử lại.",
+        });
+      }
     } catch (error) {
-      setMessage(error.response.data);
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi",
+        text: error.response?.data || "Có lỗi xảy ra khi đặt lại mật khẩu.",
+      });
     }
   };
 
@@ -34,16 +58,40 @@ const ResetPassword = () => {
               <div className="wrap d-md-flex">
                 <div className="img" style={{ backgroundImage: "" }}>
                   <img
-                    style={{ marginTop: "20px" }}
+                    style={{ marginTop: "20px", marginBottom: "20px" }}
                     className="rounded-md"
                     src="https://res.cloudinary.com/thientam2829/image/upload/v1709452945/yiogehwbo4yefreukipq.jpg"
+                    alt="Reset Password"
                   />
                 </div>
                 <div className="login-wrap p-4 p-md-5">
                   <h3 className="mb-4">Đặt lại mật khẩu</h3>
-                  <form onSubmit={handleSubmit} className="signin-form">
+                  <form
+                    onSubmit={handleVerifyAndResetPassword}
+                    className="signin-form"
+                  >
                     <div className="form-group">
-                      <label>Mật khẩu mới * </label>
+                      <label>Email *</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>OTP *</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Mật khẩu mới *</label>
                       <input
                         type="password"
                         className="form-control"
@@ -53,7 +101,7 @@ const ResetPassword = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label>Xác nhận mật khẩu * </label>
+                      <label>Xác nhận mật khẩu *</label>
                       <input
                         type="password"
                         className="form-control"
@@ -62,7 +110,7 @@ const ResetPassword = () => {
                         required
                       />
                     </div>
-                    <div className="form-group">
+                    <div className="text-center">
                       <button
                         style={{
                           backgroundColor: "rgb(238, 130, 59)",
@@ -70,13 +118,12 @@ const ResetPassword = () => {
                           cursor: "pointer",
                           width: "100%",
                         }}
-                        type="submit"
                         className="btn btn-success mt-3 container"
+                        type="submit"
                       >
                         Đặt lại mật khẩu
                       </button>
                     </div>
-                    {message && <p className="text-danger">{message}</p>}
                   </form>
                 </div>
               </div>

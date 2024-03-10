@@ -3,16 +3,17 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-
   const [loading, setLoading] = useState(false);
-
   const emailValidationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Email không hợp lệ")
       .required("Email không được để trống"),
   });
+  const history = useHistory();
 
   const handleForgotPassword = async (values) => {
     setLoading(true);
@@ -36,6 +37,8 @@ const ForgotPassword = () => {
             "Email xác nhận đã được gửi, vui lòng kiểm tra hòm thư của bạn.",
           showConfirmButton: false,
           timer: 3000,
+        }).then(() => {
+          history.push("/reset-password");
         });
       } else {
         Swal.fire({

@@ -24,14 +24,16 @@ export default function RightSection({ currentSelectedHeThongRapChieu }) {
           <div
             className={classes.dayItem}
             key={day}
-            style={{ color: i === indexSelected ? "rgb(238, 130, 59)" : "#000" }}
+            style={{
+              color: i === indexSelected ? "rgb(238, 130, 59)" : "#000",
+            }}
             onClick={() => handleSelectDay(i)}
           >
             <p>{formatDate(day).dayToday}</p>
             <p
               style={{
                 transition: "all .2s",
-                marginLeft:'5px'
+                marginLeft: "5px",
               }}
             >
               {formatDate(day).YyMmDd}

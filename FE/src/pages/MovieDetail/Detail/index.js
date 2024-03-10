@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { useParams } from "react-router-dom";
 import Rating from "@material-ui/lab/Rating";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -11,6 +10,9 @@ import useApiThoiLuongDanhGia from "../../../utilities/useApiThoiLuongDanhGia";
 import Tap from "../Tap";
 import { useDispatch } from "react-redux";
 import { OPEN_MODAL } from "../../../reducers/constants/ModalTrailer";
+import ConfirmationNumberTwoToneIcon from "@material-ui/icons/ConfirmationNumberTwoTone";
+import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
+import { Button } from "@material-ui/core";
 const play = "/img/carousel/play-video.png";
 export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
   const [onClickBtnMuave, setOnClickBtnMuave] = useState(0);
@@ -115,12 +117,24 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
             </div>
 
             <div className={classes.shortInfo}>
-              <button className={classes.btnMuaVe} onClick={handleBtnMuaVe}>
+              <Button
+                className={classes.btnMuaVe}
+                variant="contained"
+                color="primary"
+                onClick={handleBtnMuaVe}
+                startIcon={<ConfirmationNumberTwoToneIcon />}
+              >
                 {location.state?.comingMovie ? "Thông tin phim" : "Mua vé"}
-              </button>
-              <button className={classes.btnMuaVe} onClick={() => openModal()}>
-                {location.state?.comingMovie ? "Thông tin phim" : "Xem demo"}
-              </button>
+              </Button>
+              <Button
+                className={classes.btnMuaVe}
+                variant="contained"
+                color="secondary"
+                onClick={openModal}
+                startIcon={<PlayCircleOutlineIcon />}
+              >
+                {location.state?.comingMovie ? "Thông tin phim" : "Xem trailer"}
+              </Button>
             </div>
           </div>
         </div>

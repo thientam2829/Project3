@@ -27,18 +27,11 @@ export default function Login() {
         title: "Đăng nhập thành công",
         showConfirmButton: false,
         timer: 2000,
+      }).then(() => {
+        history.goBack();
       });
-      history.push("/", location.state);
-      if (location.state === "/") {
-        dispatch({ type: LOADING_BACKTO_HOME });
-        setTimeout(() => {
-          history.push("/");
-        }, 50);
-        return undefined;
-      }
-      history.push(location.state);
     }
-  }, [currentUser]);
+  }, [currentUser, history]);
   useEffect(() => {
     return () => {
       dispatch(resetErrorLoginRegister());

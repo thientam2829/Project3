@@ -5,7 +5,7 @@ import "./style.css";
 import { useLocation } from "react-router-dom";
 import { useHistory, Link } from "react-router-dom";
 import ScrollToTopOnPathChange from "../../components/Scroll";
-
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 const Breadcrumb = ({ title }) => {
   const history = useHistory();
   return (
@@ -81,8 +81,8 @@ const NewsPage = ({ match }) => {
               <h5 style={{ color: "white" }}>{movie.tenPhim}</h5>
             </Link>
           ))}
-          <Link to="/#phimdangchieu" className="btn btn-primary">
-            Xem Thêm
+          <Link to="/phimdangchieu" className="btn btn-primary">
+            Xem Thêm <NavigateNextIcon />
           </Link>
         </div>
       </div>

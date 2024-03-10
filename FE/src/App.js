@@ -20,6 +20,7 @@ import MovieDetail from "./pages/MovieDetail";
 import UserProfile from "./pages/UserProfile";
 import BookTicket from "./pages/BookTicket";
 import UsersManagement from "./pages/UsersManagement";
+import MovieList from "./pages/NowShowing";
 import MoviesManagement from "./pages/MoviesManagement";
 import CreateShowtime from "./pages/CreateShowtime";
 import Book from "./pages/Book";
@@ -169,6 +170,11 @@ function App() {
               <NewsPage />
             </MainLayout>
           </Route>
+          <Route path="/phimdangchieu">
+            <MainLayout>
+              <MovieList />
+            </MainLayout>
+          </Route>
           <Route path="/dieukhoansudung">
             <MainLayout>
               <TermsOfService />
@@ -227,7 +233,7 @@ function App() {
               <Route exact path="/signUp" component={Register} />
             </MainLayout>
           </Route>
-          <Route path="/reset-password/:token" component={ResetPassword} />
+          <Route path="/reset-password" component={ResetPassword} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/verify-otp" component={VerifyOTP} />
           <Route component={Page404} />
