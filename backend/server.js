@@ -1292,3 +1292,37 @@ app.get("/api/QuanLyVe/TongSoVeDaMua/:taiKhoan", function (req, res) {
     }
   });
 });
+app.get("/api/QuanLyPhim/TongDoanhThuTheoPhim", function (req, res) {
+  const sql = `
+    SELECT ctp.maPhim, ctp.tenPhim, SUM(dv.giaVe) AS tongDoanhThu
+    FROM datve dv
+    JOIN lichchieuinsert lci ON dv.maLichChieu = lci.maLichChieu
+    JOIN lich_chieu lc ON lci.maLichChieu = lc.lichchieuinsert
+    JOIN chi_tiet_phim ctp ON lc.chi_tiet_phim = ctp.maPhim
+    GROUP BY ctp.maPhim, ctp.tenPhim;
+  `;
+
+  dbConn.query(sql, function (error, results, fields) {
+    if (error) {
+      console.error("Error:", error);
+      return res.status(500).send({
+        success: false,
+        message: "Lỗi khi truy vấn cơ sở dữ liệu",
+      });
+    }
+
+    // Kiểm tra xem có kết quả trả về hay không
+    if (results.length > 0) {
+      return res.send({
+        success: true,
+        data: results,
+      });
+    } else {
+      return res.send({
+        success: true,
+        message: "Không tìm thấy dữ liệu",
+        data: [],
+      });
+    }
+  });
+});

@@ -119,17 +119,17 @@ export default function Header() {
                 <i className="fa fa-user"></i> Cá nhân
               </li>
               <li className="btn-up" onClick={handleLogout}>
-                Đăng xuất
+                <i class="fa fa-sign-out"></i> Đăng xuất
               </li>
             </ul>
           ) : (
             <>
               <ul className="flexAl">
                 <li className="btn-up" onClick={handleLogin}>
-                  Đăng Nhập
+                  <i class="fa fa-sign-in"></i> Đăng Nhập
                 </li>
                 <li className="btn-up" onClick={handleRegister}>
-                  Đăng Ký
+                  <i class="fa fa-registered"></i> Đăng Ký
                 </li>
               </ul>
             </>
