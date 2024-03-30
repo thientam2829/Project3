@@ -62,59 +62,56 @@ export default function Modal() {
       classes={{ paper: classes.modal }}
       maxWidth="md"
     >
-      {timeOut &&
-        !isBookTicket && (
-          <div className={classes.padding}>
-            <p>
-              Đã hết thời gian giữ ghế. Vui lòng thực hiện đơn hàng trong thời
-              hạn 5 phút.
-              <span className={classes.txtClick} onClick={handleTimeOut}>
-                Đặt vé lại
-              </span>
-            </p>
+      {timeOut && !isBookTicket && (
+        <div className={classes.padding}>
+          <p>
+            Đã hết thời gian giữ ghế. Vui lòng thực hiện đơn hàng trong thời hạn
+            5 phút.
+            <span className={classes.txtClick} onClick={handleTimeOut}>
+              Đặt vé lại
+            </span>
+          </p>
+        </div>
+      )}
+      {alertOver10 && !timeOut && (
+        <div className={classes.over10}>
+          <div className={classes.notification}>
+            <img
+              width="100%"
+              src="/img/bookticket/exclamation.png"
+              alt="Post-notification"
+            />
           </div>
-        )}
-      {alertOver10 &&
-        !timeOut && (
-          <div className={classes.over10}>
-            <div className={classes.notification}>
-              <img
-                width="100%"
-                src="/img/BookTicket/Post-notification.png"
-                alt="Post-notification"
-              />
-            </div>
-            <p className={classes.textOver}>Bạn không thể chọn quá 10 ghế</p>
+          <p className={classes.textOver}>Bạn không thể chọn quá 10 ghế</p>
+          <Button
+            variant="outlined"
+            classes={{ root: classes.btnOver }}
+            onClick={handleAlertOver10}
+          >
+            ok
+          </Button>
+        </div>
+      )}
+      {!isMobile && isBookTicket && (
+        <>
+          <ResultBookTicket />
+          <div className={classes.spaceEvenly}>
             <Button
-              variant="outlined"
-              classes={{ root: classes.btnOver }}
-              onClick={handleAlertOver10}
+              classes={{ root: classes.btnResult }}
+              onClick={handleReBookTicket}
             >
-              ok
+              {successBookTicketTicketMessage && "Mua thêm vé phim này"}
+              {errorBookTicketMessage && "Thử mua lại"}
+            </Button>
+            <Button
+              classes={{ root: classes.btnResult }}
+              onClick={handleCombackHome}
+            >
+              Quay về trang chủ
             </Button>
           </div>
-        )}
-      {!isMobile &&
-        isBookTicket && ( 
-          <>
-            <ResultBookTicket />
-            <div className={classes.spaceEvenly}>
-              <Button
-                classes={{ root: classes.btnResult }}
-                onClick={handleReBookTicket}
-              >
-                {successBookTicketTicketMessage && "Mua thêm vé phim này"}
-                {errorBookTicketMessage && "Thử mua lại"}
-              </Button>
-              <Button
-                classes={{ root: classes.btnResult }}
-                onClick={handleCombackHome}
-              >
-                Quay về trang chủ
-              </Button>
-            </div>
-          </>
-        )}
+        </>
+      )}
     </Dialog>
   );
 }

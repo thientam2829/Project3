@@ -37,7 +37,7 @@ const NewsPage = ({ match }) => {
         const responseMovies = await axios.get(
           `http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim`
         );
-        setMovies(responseMovies.data.slice(0, 3)); // Lấy 3 phim đầu tiên
+        setMovies(responseMovies.data.slice(0, 3));
       } catch (err) {
         setError(err.message);
       }
@@ -46,10 +46,20 @@ const NewsPage = ({ match }) => {
 
     fetchNews();
   }, [id]);
+  function splitContentIntoThreeParts(content) {
+    const partLength = Math.ceil(content.length / 5);
+    return [
+      content.substring(0, partLength),
+      content.substring(partLength, 2 * partLength),
+      content.substring(2 * partLength),
+    ];
+  }
 
   if (loading) return <p>Đang tải...</p>;
   if (error) return <p>{error}</p>;
-
+  const contentParts = newsItem
+    ? splitContentIntoThreeParts(newsItem.noidung)
+    : [];
   return (
     <>
       <ScrollToTopOnPathChange />

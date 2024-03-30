@@ -45,12 +45,12 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
     theLoai: yup.string().required("*Không được bỏ trống!"),
     dinhDang: yup.string().required("*Không được bỏ trống!"),
     ngayKhoiChieu: yup.string().required("*Chưa chọn ngày!"),
-    danhGia: yup
-      .number()
-      .required("*Không được bỏ trống!")
-      .min(0, "*Điểm đánh giá phải từ 0 đến 10")
-      .integer("*Điểm đánh giá phải từ 0 đến 10")
-      .max(10, "*Điểm đánh giá phải từ 0 đến 10"),
+    // danhGia: yup
+    //   .number()
+    //   .required("*Không được bỏ trống!")
+    //   .min(0, "*Điểm đánh giá phải từ 0 đến 10")
+    //   .integer("*Điểm đánh giá phải từ 0 đến 10")
+    //   .max(10, "*Điểm đánh giá phải từ 0 đến 10"),
   });
 
   const handleSubmit = (movieObj) => {
@@ -65,16 +65,33 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
       theLoai: movieObj.theLoai,
       dinhDang: movieObj.dinhDang,
     };
-    if (selectedPhim.maPhim) {
-      onUpdate(movieObj, hinhAnh, fakeImage);
-      return;
-    }
-    const newMovieObj = { ...movieObj };
-    delete newMovieObj.maPhim;
-    delete newMovieObj.biDanh;
+    // if (selectedPhim.maPhim) {
+    //   onUpdate(movieObj, hinhAnh, fakeImage);
+    //   return;
+    // }
+    // const newMovieObj = { ...movieObj };
+    // delete newMovieObj.maPhim;
+    // delete newMovieObj.biDanh;
 
-    delete newMovieObj.danhGia;
-    onAddMovie(newMovieObj);
+    // delete newMovieObj.danhGia;
+    // onAddMovie(newMovieObj);
+    if (selectedPhim.maPhim) {
+      onUpdate(movieObj, hinhAnh, fakeImage)
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("Error submitting the form: ", error);
+        });
+    } else {
+      onAddMovie(movieObj)
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("Error submitting the form: ", error);
+        });
+    }
   };
 
   return (
@@ -95,7 +112,7 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
         ngayKhoiChieu: selectedPhim?.ngayKhoiChieu
           ? new Date(selectedPhim.ngayKhoiChieu)
           : new Date(),
-        danhGia: selectedPhim.danhGia,
+        // danhGia: selectedPhim.danhGia,
       }}
       validationSchema={movieSchema}
       onSubmit={handleSubmit}
@@ -223,7 +240,7 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
               </MuiPickersUtilsProvider>
             </FormControl>
           </div>
-          <div
+          {/* <div
             className="form-group"
             hidden={selectedPhim.maPhim ? false : true}
           >
@@ -233,7 +250,7 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
               render={(msg) => <span className="text-danger">{msg}</span>}
             />
             <Field name="danhGia" type="number" className="form-control" />
-          </div>
+          </div> */}
           <button type="submit" className="form-control">
             Submit
           </button>

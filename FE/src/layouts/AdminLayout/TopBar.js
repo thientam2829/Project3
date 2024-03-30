@@ -32,11 +32,7 @@ const TopBar = ({ onMobileNavOpen, ...rest }) => {
     <AppBar elevation={0} position="static" {...rest}>
       <Toolbar>
         <div onClick={handleClickLogo} style={{ cursor: "pointer" }}>
-          <img
-            src="../img/cosmologo.png"
-            alt="logo"
-            style={{ height: 70, width: 100 }}
-          />
+          <img src="../img/cosmologo.png" alt="logo" style={{ width: 200 }} />
         </div>
         <Box flexGrow={1} />
         <Hidden mdDown>

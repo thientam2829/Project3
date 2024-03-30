@@ -170,7 +170,7 @@ export default function MoviesManagement() {
         ...movieObj,
         hinhAnh: url,
         biDanh: movieObj.tenPhim.toLowerCase().replace(/ /g, "-"),
-        danhGia: 5,
+        // danhGia: 5,
       };
       dispatch(updateMovie(newObj));
     }
@@ -184,7 +184,7 @@ export default function MoviesManagement() {
           ...movieObj,
           hinhAnh: url,
           biDanh: movieObj.tenPhim.toLowerCase().replace(/ /g, "-"),
-          danhGia: 5,
+          // danhGia: 5,
         };
         dispatch(addMovieUpload(newObj));
       }
@@ -201,7 +201,7 @@ export default function MoviesManagement() {
       moTa: "",
       maNhom: "",
       ngayKhoiChieu: "",
-      danhGia: 10,
+      // danhGia: 10,
     };
     selectedPhim.current = emtySelectedPhim;
     setOpenModal(true);

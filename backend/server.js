@@ -10,7 +10,6 @@ const { application } = require("express");
 const CryptoJS = require("crypto-js");
 const axios = require("axios");
 const crypto = require("crypto");
-
 const nodemailer = require("nodemailer");
 const router = express.Router();
 app.use(cors());
@@ -112,30 +111,82 @@ app.get("/api/QuanLyRap/LayThongTinCumRapTheoHeThong", async (req, res) => {
     }
   );
 });
+app.get("/api/QuanLyBanner/LayDanhSachBanner", (req, res) => {
+  const query = `
+    SELECT * FROM banner;
+  `;
+  dbConn.query(query, (error, results) => {
+    if (error) {
+      console.error("Error querying database:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+    res.json(results);
+  });
+});
+app.delete("/api/QuanLyBanner/XoaBanner/:id", function (req, res) {
+  const id = req.params.id;
+  dbConn.query(
+    "DELETE FROM banner WHERE id = ?",
+    [id],
+    function (error, results, fields) {
+      if (error) {
+        console.error("Lỗi khi truy vấn cơ sở dữ liệu:", error);
+        res.status(500).send("Lỗi khi xóa banner từ cơ sở dữ liệu");
+      } else {
+        if (results.affectedRows > 0) {
+          res.send({ message: "Banner đã được xóa thành công" });
+        } else {
+          res.status(404).send("Banner không tồn tại hoặc đã bị xóa trước đó");
+        }
+      }
+    }
+  );
+});
+
+app.post("/api/QuanLyBanner/ThemBanner", async (req, res) => {
+  try {
+    await new Promise((resolve, reject) => {
+      dbConn.query(
+        "INSERT INTO banner SET ?",
+        {
+          maPhim: req.body.maPhim,
+          tenPhim: req.body.tenPhim,
+          hinhAnh: req.body.hinhAnh,
+        },
+        function (error, results, fields) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+
+    res.send({ message: "Banner đã được thêm mới thành công" });
+  } catch (error) {
+    console.error("Error while adding banner:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/api/getFilmOptions", function (req, res) {
+  const query = `
+    SELECT maPhim, tenPhim
+    FROM chi_tiet_phim
+  `;
+  dbConn.query(query, function (error, results) {
+    if (error) {
+      console.error("Error:", error);
+      return res.status(500).send("Lỗi khi truy vấn cơ sở dữ liệu");
+    }
+    res.send(results);
+  });
+});
 
 // QuanLyNguoiDung
 
-// app.post("/api/QuanLyNguoiDung/DangKy", async (req, res) => {
-//   const final = await new Promise((resolve, reject) => {
-//     dbConn.query(
-//       "INSERT INTO nguoi_dung SET ? ",
-//       {
-//         taiKhoan: req.body.taiKhoan,
-//         matKhau: md5(req.body.matKhau),
-//         email: req.body.email,
-//         soDt: req.body.soDt,
-//         maNhom: req.body.maNhom,
-//         maLoaiNguoiDung: req.body.maLoaiNguoiDung,
-//         hoTen: req.body.hoTen,
-//       },
-//       function (error, results, fields) {
-//         if (error) throw error;
-//         resolve(res.send("Success"));
-//       }
-//     );
-//   });
-//   return final;
-// });
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -214,7 +265,7 @@ app.get("/api/check-email/:email", async (req, res) => {
 });
 
 app.post("/api/QuanLyNguoiDung/DangKy", async (req, res) => {
-  const otp = generateOTP(); // Hàm để tạo mã OTP (ví dụ: Math.random())
+  const otp = generateOTP();
   const hashedPassword = md5(req.body.matKhau);
 
   const final = await new Promise((resolve, reject) => {
@@ -228,7 +279,7 @@ app.post("/api/QuanLyNguoiDung/DangKy", async (req, res) => {
         maNhom: req.body.maNhom,
         maLoaiNguoiDung: req.body.maLoaiNguoiDung,
         hoTen: req.body.hoTen,
-        otp: otp, // Lưu mã OTP vào cột otp
+        otp: otp,
         otpCreatedAt: new Date(),
       },
       function (error, results, fields) {
@@ -289,7 +340,6 @@ app.post("/api/QuanLyNguoiDung/XacThucOTP", async (req, res) => {
   });
 
   if (user) {
-    // Cập nhật trạng thái xác thực và xoá mã OTP
     dbConn.query(
       "UPDATE nguoi_dung SET otp = NULL, otpCreatedAt = NULL, daXacThuc = true WHERE id = ?",
       [user.id],
@@ -564,14 +614,13 @@ app.get("/api/QuanLyRap/LayThongTinLichChieuPhim", function (req, res) {
           dinhDang: results0[0].dinhDang,
           maNhom: "GP09",
           ngayKhoiChieu: results0[0].ngayKhoiChieu,
-          danhGia: results0[0].danhGia,
         };
         return res.send(final);
       } else {
         console.error(
           "Không tìm thấy thông tin phim trong kết quả truy vấn hoặc maPhim không được định nghĩa."
         );
-        // Xử lý trường hợp không tìm thấy dữ liệu hoặc lỗi khác
+
         return res
           .status(404)
           .send("Không tìm thấy thông tin phim hoặc có lỗi khác.");
@@ -663,7 +712,7 @@ app.get("/api/QuanLyPhim/LayDanhSachPhim", function (req, res) {
 app.get("/api/QuanLyPhim/LayThongTinPhim", async function (req, res) {
   try {
     const results0 = await queryAsync(
-      "SELECT * FROM chi_tiet_phim JOIN lich_chieu ON chi_tiet_phim.maPhim = lich_chieu.chi_tiet_phim JOIN lichchieuinsert ON lichchieuinsert.maLichChieu = lich_chieu.lichchieuinsert WHERE chi_tiet_phim.maPhim = ?",
+      "SELECT maPhim FROM chi_tiet_phim WHERE maPhim = ?",
       [req.query.MaPhim]
     );
 
@@ -675,7 +724,7 @@ app.get("/api/QuanLyPhim/LayThongTinPhim", async function (req, res) {
 
     for (const result0 of results0) {
       const results1 = await queryAsync(
-        "SELECT * FROM lichchieuinsert JOIN cumrap_va_lichchieu ON lichchieuinsert.maLichChieu = cumrap_va_lichchieu.lichchieuinsert JOIN cumrap ON cumrap.id = cumrap_va_lichchieu.cumrap WHERE lichchieuinsert.maLichChieu = ?",
+        "SELECT * FROM lichchieuinsert JOIN cumrap_va_lichchieu ON lichchieuinsert.maLichChieu = cumrap_va_lichchieu.lichchieuinsert JOIN cumrap ON cumrap.cid = cumrap_va_lichchieu.cumrap WHERE lichchieuinsert.maLichChieu = ?",
         [result0.maLichChieu]
       );
 
@@ -683,7 +732,7 @@ app.get("/api/QuanLyPhim/LayThongTinPhim", async function (req, res) {
 
       for (const result1 of results1) {
         const results2 = await queryAsync(
-          "SELECT * FROM danhsachrap JOIN cumrap ON danhsachrap.maCumRap = cumrap.id JOIN hethongrapvacumrap ON cumrap.id = hethongrapvacumrap.cumrap JOIN hethongrap ON hethongrap.id = hethongrapvacumrap.hethongrap WHERE danhsachrap.maRap = ?",
+          "SELECT * FROM danhsachrap JOIN cumrap ON danhsachrap.maCumRap = cumrap.cid JOIN hethongrapvacumrap ON cumrap.cid = hethongrapvacumrap.cumrap JOIN hethongrap ON hethongrap.hid = hethongrapvacumrap.hethongrap WHERE danhsachrap.maRap = ?",
           [result1.maRap]
         );
 
@@ -726,7 +775,6 @@ app.get("/api/QuanLyPhim/LayThongTinPhim", async function (req, res) {
       dinhDang: results0[0].dinhDang,
       maNhom: "GP09",
       ngayKhoiChieu: results0[0].ngayKhoiChieu,
-      danhGia: results0[0].danhGia,
     };
 
     return res.send(final);
@@ -751,50 +799,118 @@ function queryAsync(sql, values) {
 
 // QuanLyDatVe
 
+// app.get("/api/QuanLyDatVe/LayDanhSachPhongVe", function (req, res) {
+//   dbConn.query(
+//     "SELECT * FROM lichchieuinsert JOIN lich_chieu ON lichchieuinsert.maLichChieu = lich_chieu.lichchieuinsert JOIN chi_tiet_phim ON chi_tiet_phim.maPhim = lich_chieu.chi_tiet_phim JOIN cumrap_va_lichchieu ON lichchieuinsert.maLichChieu = cumrap_va_lichchieu.lichchieuinsert JOIN cumrap ON cumrap.cid = cumrap_va_lichchieu.cumrap WHERE maLichChieu = ?",
+//     [req.query.MaLichChieu],
+//     async (error, results, fields) => {
+//       if (error) throw error;
+//       let danhSachGhe = Array.apply(null, Array(160)).map(function () {});
+//       danhSachGhe = await new Promise((resolve, reject) => {
+//         dbConn.query(
+//           "SELECT * FROM datve WHERE maLichChieu = ?",
+//           [req.query.MaLichChieu],
+//           async (error, results1, fields) => {
+//             if (error) throw error;
+//             for (const result1 of results1) {
+//               danhSachGhe[result1.tenGhe] = {
+//                 maGhe: result1.maGhe,
+//                 tenGhe: result1.tenGhe,
+//                 maRap: result1.maRap,
+//                 loaiGhe: result1.loaiGhe,
+//                 stt: result1.tenGhe,
+//                 giaVe: result1.giaVe,
+//                 daDat: true,
+//                 taiKhoanNguoiDat: result1.taiKhoanNguoiDat,
+//               };
+//             }
+//             resolve(danhSachGhe);
+//           }
+//         );
+//       });
+//       for (let i = 0; i < 160; i++) {
+//         if (danhSachGhe[i] === undefined) {
+//           danhSachGhe[i] = {
+//             maGhe: i,
+//             tenGhe: i > 9 ? String(i) : "0" + String(i),
+//             // maRap: results[0].maRap,
+//             loaiGhe: i > 44 && i < 90 ? "Vip" : "Thuong",
+//             stt: i > 9 ? String(i) : "0" + String(i),
+//             giaVe:
+//               i > 44 && i < 90 ? results[0].giaVe + 20000 : results[0].giaVe,
+//             daDat: false,
+//             taiKhoanNguoiDat: null,
+//           };
+//         }
+//       }
+//       return res.send({
+//         thongTinPhim: {
+//           maLichChieu: results[0].maLichChieu,
+//           tenCumRap: results[0].tenCumRap,
+//           tenRap: results[0].tenRap,
+//           diaChi: results[0].diaChi,
+//           tenPhim: results[0].tenPhim,
+//           hinhAnh: results[0].hinhAnh,
+//           ngayChieu: results[0].ngayChieuGioChieu,
+//           gioChieu: results[0].ngayChieuGioChieu,
+//           giaVe: results[0].giaVe,
+//         },
+//         danhSachGhe: danhSachGhe,
+//       });
+//     }
+//   );
+// });
 app.get("/api/QuanLyDatVe/LayDanhSachPhongVe", function (req, res) {
   dbConn.query(
     "SELECT * FROM lichchieuinsert JOIN lich_chieu ON lichchieuinsert.maLichChieu = lich_chieu.lichchieuinsert JOIN chi_tiet_phim ON chi_tiet_phim.maPhim = lich_chieu.chi_tiet_phim JOIN cumrap_va_lichchieu ON lichchieuinsert.maLichChieu = cumrap_va_lichchieu.lichchieuinsert JOIN cumrap ON cumrap.cid = cumrap_va_lichchieu.cumrap WHERE maLichChieu = ?",
     [req.query.MaLichChieu],
     async (error, results, fields) => {
-      if (error) throw error;
-      let danhSachGhe = Array.apply(null, Array(160)).map(function () {});
-      danhSachGhe = await new Promise((resolve, reject) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).send("Lỗi máy chủ");
+      }
+
+      // Kiểm tra xem có kết quả trả về không
+      if (results.length === 0) {
+        return res.status(404).send("Không tìm thấy thông tin lịch chiếu");
+      }
+
+      let maRap = results[0].maRap;
+      let giaVeCoBan = results[0].giaVe; // Giả sử có một trường giaVe trong kết quả truy vấn
+
+      let danhSachGhe = await new Promise((resolve, reject) => {
         dbConn.query(
           "SELECT * FROM datve WHERE maLichChieu = ?",
           [req.query.MaLichChieu],
-          async (error, results1, fields) => {
-            if (error) throw error;
-            for (const result1 of results1) {
-              danhSachGhe[result1.tenGhe] = {
-                maGhe: result1.maGhe,
-                tenGhe: result1.tenGhe,
-                maRap: result1.maRap,
-                loaiGhe: result1.loaiGhe,
-                stt: result1.tenGhe,
-                giaVe: result1.giaVe,
-                daDat: true,
-                taiKhoanNguoiDat: result1.taiKhoanNguoiDat,
-              };
+          (error, results1, fields) => {
+            if (error) {
+              reject(error);
             }
-            resolve(danhSachGhe);
+            resolve(results1);
           }
         );
       });
-      for (let i = 0; i < 160; i++) {
-        if (danhSachGhe[i] === undefined) {
-          danhSachGhe[i] = {
-            maGhe: i,
-            tenGhe: i > 9 ? String(i) : "0" + String(i),
-            maRap: results[0].maRap,
-            loaiGhe: i > 44 && i < 90 ? "Vip" : "Thuong",
-            stt: i > 9 ? String(i) : "0" + String(i),
-            giaVe:
-              i > 44 && i < 90 ? results[0].giaVe + 15000 : results[0].giaVe,
-            daDat: false,
-            taiKhoanNguoiDat: null,
+
+      let danhSachGhePhong = Array.from({ length: 160 }, (_, i) => ({
+        maGhe: i + 1,
+        tenGhe: i > 9 ? String(i + 1) : "0" + String(i + 1),
+        maRap: maRap,
+        loaiGhe: i > 44 && i < 90 ? "Vip" : "Thuong",
+        stt: i > 9 ? String(i + 1) : "0" + String(i + 1),
+        giaVe: i > 44 && i < 90 ? giaVeCoBan + 20000 : giaVeCoBan,
+        daDat: false,
+        taiKhoanNguoiDat: null,
+      }));
+      danhSachGhe.forEach((ghe) => {
+        const index = parseInt(ghe.tenGhe) - 1;
+        if (danhSachGhePhong[index]) {
+          danhSachGhePhong[index] = {
+            ...danhSachGhePhong[index],
+            daDat: true,
+            taiKhoanNguoiDat: ghe.taiKhoanNguoiDat,
           };
         }
-      }
+      });
       return res.send({
         thongTinPhim: {
           maLichChieu: results[0].maLichChieu,
@@ -805,8 +921,9 @@ app.get("/api/QuanLyDatVe/LayDanhSachPhongVe", function (req, res) {
           hinhAnh: results[0].hinhAnh,
           ngayChieu: results[0].ngayChieuGioChieu,
           gioChieu: results[0].ngayChieuGioChieu,
+          giaVe: results[0].giaVe,
         },
-        danhSachGhe: danhSachGhe,
+        danhSachGhe: danhSachGhePhong,
       });
     }
   );
@@ -849,6 +966,7 @@ function sortObject(o) {
 app.post("/api/QuanLyDatVe/DatVe", async (req, res) => {
   for (const ve of req.body.danhSachVe) {
     await new Promise((resolve, reject) => {
+      const now = new Date();
       dbConn.query(
         "INSERT INTO datve SET ? ",
         {
@@ -857,6 +975,7 @@ app.post("/api/QuanLyDatVe/DatVe", async (req, res) => {
           giaVe: ve.giaVe,
           taiKhoanNguoiDat: req.body.taiKhoanNguoiDung,
           maLichChieu: req.body.maLichChieu,
+          ngayDat: now,
         },
         function (error, results, fields) {
           if (error) throw error;
@@ -931,6 +1050,46 @@ app.post("/api/QuanLyDatVe/TaoLichChieu", async (req, res) => {
     }
   );
 });
+app.delete("/api/QuanLyDatVe/XoaLichChieu/:id", async (req, res) => {
+  const { id } = req.params;
+
+  dbConn.query(
+    "DELETE FROM cumrap_va_lichchieu WHERE lichchieuinsert = ?",
+    [id],
+    function (error, results) {
+      if (error) {
+        console.error("Lỗi khi xoá mối quan hệ cumrap_va_lichchieu:", error);
+        return res.status(500).send("Lỗi khi xoá lịch chiếu");
+      }
+      dbConn.query(
+        "DELETE FROM lich_chieu WHERE lichchieuinsert = ?",
+        [id],
+        function (error, results) {
+          if (error) {
+            console.error("Lỗi khi xoá mối quan hệ lich_chieu:", error);
+            return res.status(500).send("Lỗi khi xoá lịch chiếu");
+          }
+          dbConn.query(
+            "DELETE FROM lichchieuinsert WHERE maLichChieu = ?",
+            [id],
+            function (error, results) {
+              if (error) {
+                console.error("Lỗi khi xoá lịch chiếu:", error);
+                return res.status(500).send("Lỗi khi xoá lịch chiếu");
+              }
+              if (results.affectedRows === 0) {
+                return res
+                  .status(404)
+                  .send("Lịch chiếu không tồn tại hoặc đã được xoá trước đó");
+              }
+              return res.send("Lịch chiếu đã được xoá thành công");
+            }
+          );
+        }
+      );
+    }
+  );
+});
 
 // QuanLyPhim
 
@@ -963,7 +1122,6 @@ app.post("/api/QuanLyPhim/ThemPhim", async (req, res) => {
           dinhDang: req.body.dinhDang,
           maNhom: req.body.maNhom,
           ngayKhoiChieu: req.body.ngayKhoiChieu,
-          danhGia: req.body.danhGia,
         },
         function (error, results, fields) {
           if (error) {
@@ -1000,7 +1158,6 @@ app.post("/api/QuanLyPhim/CapNhatPhim", async (req, res) => {
           dinhDang: req.body.dinhDang,
           maNhom: req.body.maNhom,
           ngayKhoiChieu: req.body.ngayKhoiChieu,
-          danhGia: req.body.danhGia,
         },
         req.body.maPhim,
       ],
@@ -1264,7 +1421,7 @@ app.get("/api/QuanLyVe/TongTienMuaVe/:taiKhoan", function (req, res) {
   );
 });
 app.get("/api/QuanLyVe/TongSoVeDaMua/:taiKhoan", function (req, res) {
-  const { taiKhoan } = req.params; // Lấy tài khoản từ parameter trên URL
+  const { taiKhoan } = req.params;
 
   const query = `
       SELECT COUNT(*) AS soVeDaMua
@@ -1292,37 +1449,104 @@ app.get("/api/QuanLyVe/TongSoVeDaMua/:taiKhoan", function (req, res) {
     }
   });
 });
-app.get("/api/QuanLyPhim/TongDoanhThuTheoPhim", function (req, res) {
-  const sql = `
-    SELECT ctp.maPhim, ctp.tenPhim, SUM(dv.giaVe) AS tongDoanhThu
-    FROM datve dv
-    JOIN lichchieuinsert lci ON dv.maLichChieu = lci.maLichChieu
-    JOIN lich_chieu lc ON lci.maLichChieu = lc.lichchieuinsert
-    JOIN chi_tiet_phim ctp ON lc.chi_tiet_phim = ctp.maPhim
-    GROUP BY ctp.maPhim, ctp.tenPhim;
+app.get("/api/QuanLyVe/TenPhimDaMua/:taiKhoan", function (req, res) {
+  const { taiKhoan } = req.params;
+
+  const query = `
+    SELECT DISTINCT chi_tiet_phim.tenphim
+    FROM datve
+    JOIN lichchieuinsert ON datve.malichchieu = lichchieuinsert.malichchieu
+    JOIN lich_chieu ON lichchieuinsert.maLichChieu = lich_chieu.lichchieuinsert
+    JOIN chi_tiet_phim ON lich_chieu.chi_tiet_phim = chi_tiet_phim.maPhim
+    WHERE datve.taiKhoanNguoiDat = ?
   `;
 
-  dbConn.query(sql, function (error, results, fields) {
+  dbConn.query(query, [taiKhoan], function (error, results) {
     if (error) {
       console.error("Error:", error);
-      return res.status(500).send({
-        success: false,
-        message: "Lỗi khi truy vấn cơ sở dữ liệu",
-      });
+      return res.status(500).send("Lỗi khi truy vấn cơ sở dữ liệu");
     }
-
-    // Kiểm tra xem có kết quả trả về hay không
     if (results.length > 0) {
-      return res.send({
+      res.send({
         success: true,
-        data: results,
+        data: results.map((item) => item.tenphim),
       });
     } else {
-      return res.send({
+      res.send({
         success: true,
-        message: "Không tìm thấy dữ liệu",
+        message: "Không tìm thấy phim nào cho tài khoản này",
         data: [],
       });
     }
+  });
+});
+app.get("/api/ThongKe/DoanhThuPhim", async function (req, res) {
+  try {
+    const query = `
+    SELECT cp.tenPhim, SUM(dv.giaVe) AS TongDoanhThu FROM datve dv JOIN lichchieuinsert lci ON dv.maLichChieu = lci.maLichChieu JOIN lich_chieu lc ON lci.maLichChieu = lc.lichchieuinsert JOIN chi_tiet_phim cp ON lc.chi_tiet_phim = cp.maPhim GROUP BY cp.tenPhim ORDER BY TongDoanhThu DESC;;
+    `;
+
+    const results = await queryAsync(query);
+
+    if (results.length === 0) {
+      return res.status(404).send("Không tìm thấy dữ liệu.");
+    }
+
+    return res.send(results);
+  } catch (error) {
+    console.error("Lỗi trong quá trình xử lý: ", error);
+    return res.status(500).send("Đã xảy ra lỗi trong quá trình xử lý.");
+  }
+});
+app.get("/api/ThongKe/doanhthuphimtheorap", async (req, res) => {
+  try {
+    const query = `
+    SELECT cr.tenCumRap, SUM(dv.giaVe) AS TongDoanhThu FROM datve dv JOIN lichchieuinsert lci ON dv.maLichChieu = lci.maLichChieu JOIN cumrap_va_lichchieu crv ON lci.maLichChieu = crv.lichchieuinsert JOIN cumrap cr ON crv.cumRap = cr.cid GROUP BY cr.tenCumRap ORDER BY TongDoanhThu DESC;
+    `;
+    const results = await queryAsync(query);
+    res.json(results);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+app.get("/api/ThongKe/DoanhThuTheoThang", async (req, res) => {
+  try {
+    const query = `SELECT cp.tenPhim, cr.tenCumRap, DATE_FORMAT(dv.ngayDat, '%Y-%m') AS Thang, SUM(dv.giaVe) AS TongDoanhThu FROM datve dv JOIN lichchieuinsert lci ON dv.maLichChieu = lci.maLichChieu JOIN lich_chieu lc ON lci.maLichChieu = lc.lichchieuinsert JOIN chi_tiet_phim cp ON lc.chi_tiet_phim = cp.maPhim JOIN cumrap_va_lichchieu crv ON lci.maLichChieu = crv.lichchieuinsert JOIN cumrap cr ON crv.cumRap = cr.cid GROUP BY cp.tenPhim, cr.tenCumRap, Thang ORDER BY Thang DESC, cp.tenPhim, cr.tenCumRap;`;
+    const results = await queryAsync(query);
+    res.json(results);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+app.post("/api/QuanLyDatVe/ThemDanhGia", (req, res) => {
+  const { hoTen, email, noiDung, maPhim, soSao, thoiGian } = req.body;
+  const query = `INSERT INTO danhGia (hoTen, email, noiDung, maPhim, soSao, thoiGian) VALUES (?, ?, ?, ?, ?, ?)`;
+
+  dbConn.query(
+    query,
+    [hoTen, email, noiDung, maPhim, soSao, thoiGian],
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).send("Lỗi khi thêm đánh giá");
+      }
+      return res.send({
+        message: "Thêm đánh giá thành công",
+        id: results.insertId,
+      });
+    }
+  );
+});
+app.get("/api/QuanLyDanhGia/danhgia/:maPhim", (req, res) => {
+  const maPhim = req.params.maPhim;
+  const sqlQuery = "SELECT * FROM danhGia WHERE maPhim = ?";
+
+  dbConn.query(sqlQuery, [maPhim], (err, results) => {
+    if (err) {
+      return res.status(500).send("Lỗi server");
+    }
+    res.json(results);
   });
 });

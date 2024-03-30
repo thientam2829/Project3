@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { DataGrid, GridToolbar, GridOverlay } from "@material-ui/data-grid";
 import { useSelector, useDispatch } from "react-redux";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import { IconButton } from "@material-ui/core";
+import axios from "axios";
 import Button from "@material-ui/core/Button";
 import { useSnackbar } from "notistack";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -401,6 +404,28 @@ export default function MoviesManagement() {
     return searchLichChieuDisplay;
   };
 
+  const handleDeleteShowtime = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:4000/api/QuanLyDatVe/XoaLichChieu/${id}`
+      );
+      if (response.data) {
+        // Assuming you have a way to update your UI accordingly,
+        // For example, if you have a state to keep track of the showtimes list, update it here
+        // setLichChieuDisplay(lichChieuDisplay.filter((lichChieu) => lichChieu.id !== id));
+        enqueueSnackbar("Successfully deleted showtime", {
+          variant: "success",
+        });
+        dispatch(getTheaters2()); // Refresh the list or take any other action as needed
+      }
+    } catch (error) {
+      console.error("Error deleting showtime:", error);
+      enqueueSnackbar("An error occurred, please try again", {
+        variant: "error",
+      });
+    }
+  };
+
   const columns = [
     {
       field: "maLichChieu",
@@ -470,7 +495,7 @@ export default function MoviesManagement() {
     },
     {
       field: "ngayChieuGioChieu",
-      headerName: "Ngày chiếu giờ chiếu",
+      headerName: "Ngày giờ chiếu",
       width: 200,
       type: "dateTime",
       headerAlign: "center",
@@ -485,6 +510,22 @@ export default function MoviesManagement() {
       headerAlign: "center",
       align: "center",
       headerClassName: "custom-header",
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      sortable: false,
+      width: 100,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <IconButton
+          onClick={() => handleDeleteShowtime(params.id)}
+          aria-label="delete"
+        >
+          <DeleteForeverIcon />
+        </IconButton>
+      ),
     },
   ];
 
@@ -509,7 +550,6 @@ export default function MoviesManagement() {
         <div className="">
           <div className={``}>
             <Button
-             
               classes={{
                 root: classes.btn,
                 disabled: classes.btnDisabled,
@@ -529,12 +569,12 @@ export default function MoviesManagement() {
                     fullWidth
                   >
                     <Select
-                      open={data.openCtr.phim} 
+                      open={data.openCtr.phim}
                       onClose={handleClosePhim}
                       onOpen={handleOpenPhim}
                       onChange={handleSelectPhim}
                       value={data.setPhim}
-                      displayEmpty 
+                      displayEmpty
                       IconComponent={ExpandMoreIcon}
                       MenuProps={menuProps}
                     >
@@ -543,16 +583,11 @@ export default function MoviesManagement() {
                         style={{
                           display: data.openCtr?.phim ? "none" : "block",
                         }}
-                       
                       >
                         Chọn Phim
                       </MenuItem>
                       {movieList2?.map((phim) => (
-                        <MenuItem
-                          value={phim.maPhim}
-                          key={phim.maPhim}
-                         
-                        >
+                        <MenuItem value={phim.maPhim} key={phim.maPhim}>
                           {phim.tenPhim}
                         </MenuItem>
                       ))}
@@ -573,7 +608,7 @@ export default function MoviesManagement() {
                       value={data.setHeThongRap}
                       renderValue={(value) =>
                         `${value ? value : "Chọn hệ thống rạp"}`
-                      } 
+                      }
                       displayEmpty
                       IconComponent={ExpandMoreIcon}
                       MenuProps={menuProps}
@@ -586,7 +621,6 @@ export default function MoviesManagement() {
                               ? "none"
                               : "block",
                         }}
-                      
                       >
                         {data.setPhim
                           ? `${
@@ -597,11 +631,7 @@ export default function MoviesManagement() {
                           : "Vui lòng chọn phim"}
                       </MenuItem>
                       {data.heThongRapRender.map((item) => (
-                        <MenuItem
-                          value={item}
-                          key={item.maHeThongRap}
-                        
-                        >
+                        <MenuItem value={item} key={item.maHeThongRap}>
                           {item.tenHeThongRap}
                         </MenuItem>
                       ))}
@@ -633,7 +663,6 @@ export default function MoviesManagement() {
                           display:
                             data.cumRapRender?.length > 0 ? "none" : "block",
                         }}
-                       
                       >
                         {data.setHeThongRap
                           ? `${
@@ -717,13 +746,13 @@ export default function MoviesManagement() {
                           onOpen={handleOpenNgayChieuGioChieu}
                           inputValue={
                             selectedDate ? null : "Chọn ngày, giờ chiếu"
-                          } 
+                          }
                           invalidDateMessage={
                             selectedDate ? "Invalid Date Format" : ""
-                          } 
+                          }
                           value={selectedDate}
                           onChange={handleDateChange}
-                          format="yyyy-MM-dd, HH:mm" 
+                          format="yyyy-MM-dd, HH:mm"
                           onAccept={handleDateAccept}
                           ampm={false}
                         />
@@ -767,10 +796,10 @@ export default function MoviesManagement() {
                 </div>
               </div>
               <Button
-             classes={{
-               root: classes.btn,
-               disabled: classes.btnDisabled,
-             }}
+                classes={{
+                  root: classes.btn,
+                  disabled: classes.btnDisabled,
+                }}
                 onClick={() => setShowForm(false)}
               >
                 Hủy
@@ -812,9 +841,9 @@ export default function MoviesManagement() {
         pageSize={25}
         rowsPerPageOptions={[10, 25, 50]}
         loading={loadingTheaterList2}
-        style={{ 
-          height : '300px'
-         }}
+        style={{
+          height: "300px",
+        }}
         components={{
           LoadingOverlay: CustomLoadingOverlay,
           Toolbar: GridToolbar,

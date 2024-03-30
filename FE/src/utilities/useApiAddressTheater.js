@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 export default function UseThoiLuongDanhGia(maLichChieu) {
   const [data, setData] = useState({ diaChi: "loading..." });
-  const url = `https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${maLichChieu}`;
+  const url = `http://localhost:4000/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${maLichChieu}`;
   useEffect(() => {
     if (!maLichChieu) {
       return;

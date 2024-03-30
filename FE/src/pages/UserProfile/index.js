@@ -97,6 +97,8 @@ export default function Index() {
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [watchedMovies, setWatchedMovies] = useState([]);
+
   const { successInfoUser, loadingInfoUser } = useSelector(
     (state) => state.usersManagementReducer
   );
@@ -165,12 +167,27 @@ export default function Index() {
       return null;
     }
   };
+  const fetchWatchedMovies = async (taiKhoan) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/QuanLyVe/TenPhimDaMua/${taiKhoan}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Lỗi khi gọi API:", error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const taiKhoan = currentUser?.taiKhoan;
     if (taiKhoan) {
-      Promise.all([fetchTongTienMuaVe(taiKhoan), fetchTongSoVeDaMua(taiKhoan)])
-        .then(([tongTienData, tongSoVeData]) => {
+      Promise.all([
+        fetchTongTienMuaVe(taiKhoan),
+        fetchTongSoVeDaMua(taiKhoan),
+        fetchWatchedMovies(taiKhoan),
+      ])
+        .then(([tongTienData, tongSoVeData, watchedMoviesData]) => {
           if (tongTienData && tongTienData.success) {
             setDataShort((prevData) => ({
               ...prevData,
@@ -184,6 +201,10 @@ export default function Index() {
               ...prevData,
               ticket: tongSoVeData.soVeDaMua,
             }));
+          }
+
+          if (watchedMoviesData && watchedMoviesData.success) {
+            setWatchedMovies(watchedMoviesData.data);
           }
         })
         .catch((error) => {
@@ -400,19 +421,29 @@ export default function Index() {
             </li>
             <li className="list-group-item text-right">
               <span className="float-left">
+                <strong>Phim đã xem:</strong>
+              </span>
+              <ul>
+                {watchedMovies.map((watchedMovies, index) => (
+                  <li key={index}>{watchedMovies}</li>
+                ))}
+              </ul>
+            </li>
+            <li className="list-group-item text-right">
+              <span className="float-left">
                 <strong>Tổng tiền $</strong>
               </span>
               {dataShort.total} VNĐ
             </li>
             <li className="list-group-item text-right">
               <span className="float-left">
-                <strong>Cấp độ hội viên:</strong>
+                <strong>Cấp độ hội viên</strong>
               </span>
               {dataShort.membershipLevel}
             </li>
             <li className="list-group-item text-right">
               <span className="float-left">
-                <strong>Điểm thưởng:</strong>
+                <strong>Điểm thưởng</strong>
               </span>
               {dataShort.rewardPoints} {""}điểm
             </li>

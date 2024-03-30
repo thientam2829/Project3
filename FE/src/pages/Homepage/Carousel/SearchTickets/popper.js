@@ -65,7 +65,7 @@ export default function CustomPopper(props) {
               />
               {imagePage404 && <div className=""></div>}
               <div className="">
-                <p>{`120 phút - Điểm: ${phim.danhGia}`}</p>
+                <p>{`120 phút `}</p>
               </div>
               <button
                 className=""

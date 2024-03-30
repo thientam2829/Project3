@@ -41,6 +41,8 @@ import NewsList from "./pages/AdminNews";
 import TermsOfService from "./pages/Term/TermOfUse";
 import FAQPage from "./pages/Term/FAQ/FAQ";
 import PrivacyPolicy from "./pages/Term/PrivacyPolicy/PrivacyPolicy";
+import BannerList from "./pages/AdminBanner";
+import Statistical from "./pages/Statistical/Statistical";
 const style = {
   position: "absolute",
   top: "50%",
@@ -204,6 +206,8 @@ function App() {
               "/admin/films/addnew",
               "/admin/book",
               "/admin/news",
+              "/admin/banners",
+              "/admin/statistical",
             ]}
           >
             <AdminLayout>
@@ -225,6 +229,12 @@ function App() {
               <AdminRoute exact path="/admin/book" component={Book} />
               <AdminRoute exact path="/admin/films/addnew" />
               <AdminRoute exact path="/admin/news" component={NewsList} />
+              <AdminRoute exact path="/admin/banners" component={BannerList} />
+              <AdminRoute
+                exact
+                path="/admin/statistical"
+                component={Statistical}
+              />
             </AdminLayout>
           </Route>
           <Route exact path={["/login", "/signUp"]}>

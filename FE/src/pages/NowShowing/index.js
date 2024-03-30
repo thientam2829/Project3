@@ -34,19 +34,35 @@ const Breadcrumb = () => {
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
   const classes = useStyles();
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim"
-        );
-        setMovies(response.data);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    };
+  const fetchMoviesData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim`
+      );
 
-    fetchMovies();
+      const moviesWithDateObjects = response.data.map((movie) => {
+        // Giả định ngayKhoiChieu có định dạng dd/mm/yyyy, chuyển đổi nó sang yyyy/mm/dd
+        const [day, month, year] = movie.ngayKhoiChieu.split("/");
+        const correctDateFormat = `${year}-${month}-${day}`;
+
+        return {
+          ...movie,
+          ngayKhoiChieuDate: new Date(correctDateFormat),
+        };
+      });
+
+      const sortedMovies = moviesWithDateObjects.sort(
+        (a, b) => b.ngayKhoiChieuDate - a.ngayKhoiChieuDate
+      );
+      // Chỉ gán trường dữ liệu cần thiết để không thay đổi cấu trúc ban đầu của dữ liệu phim
+      setMovies(sortedMovies.map(({ ngayKhoiChieuDate, ...rest }) => rest));
+    } catch (error) {
+      console.error("Failed to fetch movies data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMoviesData();
   }, []);
   const dispatch = useDispatch();
   const openModal = (urlYoutube) => {

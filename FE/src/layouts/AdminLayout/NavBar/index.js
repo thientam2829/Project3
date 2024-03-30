@@ -5,6 +5,7 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import ListIcon from "@material-ui/icons/List";
 import NoteIcon from "@material-ui/icons/Note";
+import ViewCarouselIcon from "@material-ui/icons/ViewCarousel";
 import EqualizerSharpIcon from "@material-ui/icons/EqualizerSharp";
 import { useLocation, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -26,7 +27,7 @@ import { FAKE_AVATAR } from "../../../constants/config";
 
 const items = [
   {
-    href: "/admin/movies",
+    href: "/admin/statistical",
     icon: EqualizerSharpIcon,
     title: "Thống Kê",
   },
@@ -54,6 +55,11 @@ const items = [
     href: "/admin/news",
     icon: NoteIcon,
     title: "Tin Tức",
+  },
+  {
+    href: "/admin/banners",
+    icon: ViewCarouselIcon,
+    title: "Banner",
   },
 ];
 

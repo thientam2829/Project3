@@ -7,8 +7,7 @@ CheckIsUserBookTicket.propTypes = {
 };
 export default function CheckIsUserBookTicket(taiKhoan) {
   const [isUserBookTicket, setisUserBookTicket] = useState(true);
-  const url =
-    "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/ThongTinTaiKhoan";
+  const url = "http://localhost:4000/api/QuanLyNguoiDung/ThongTinTaiKhoan";
   useEffect(() => {
     let cancel = Axios.CancelToken.source();
     const loadData = async () => {
