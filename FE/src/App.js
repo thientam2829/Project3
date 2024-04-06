@@ -43,6 +43,8 @@ import FAQPage from "./pages/Term/FAQ/FAQ";
 import PrivacyPolicy from "./pages/Term/PrivacyPolicy/PrivacyPolicy";
 import BannerList from "./pages/AdminBanner";
 import Statistical from "./pages/Statistical/Statistical";
+import AllNews from "./pages/News/NewPage";
+import Employee from "./pages/Employee";
 const style = {
   position: "absolute",
   top: "50%",
@@ -172,6 +174,11 @@ function App() {
               <NewsPage />
             </MainLayout>
           </Route>
+          <Route path="/tintuc">
+            <MainLayout>
+              <AllNews />
+            </MainLayout>
+          </Route>
           <Route path="/phimdangchieu">
             <MainLayout>
               <MovieList />
@@ -208,6 +215,7 @@ function App() {
               "/admin/news",
               "/admin/banners",
               "/admin/statistical",
+              "/admin/employee",
             ]}
           >
             <AdminLayout>
@@ -230,6 +238,7 @@ function App() {
               <AdminRoute exact path="/admin/films/addnew" />
               <AdminRoute exact path="/admin/news" component={NewsList} />
               <AdminRoute exact path="/admin/banners" component={BannerList} />
+              <AdminRoute exact path="/admin/employee" component={Employee} />
               <AdminRoute
                 exact
                 path="/admin/statistical"

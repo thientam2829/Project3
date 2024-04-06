@@ -44,13 +44,8 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
     quocGia: yup.string().required("*Không được bỏ trống!"),
     theLoai: yup.string().required("*Không được bỏ trống!"),
     dinhDang: yup.string().required("*Không được bỏ trống!"),
+    phanLoai: yup.string().required("*Không được để trống!"),
     ngayKhoiChieu: yup.string().required("*Chưa chọn ngày!"),
-    // danhGia: yup
-    //   .number()
-    //   .required("*Không được bỏ trống!")
-    //   .min(0, "*Điểm đánh giá phải từ 0 đến 10")
-    //   .integer("*Điểm đánh giá phải từ 0 đến 10")
-    //   .max(10, "*Điểm đánh giá phải từ 0 đến 10"),
   });
 
   const handleSubmit = (movieObj) => {
@@ -108,11 +103,11 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
         quocGia: selectedPhim.quocGia,
         theLoai: selectedPhim.theLoai,
         dinhDang: selectedPhim.dinhDang,
+        phanLoai: selectedPhim.phanLoai,
         maNhom: "GP09",
         ngayKhoiChieu: selectedPhim?.ngayKhoiChieu
           ? new Date(selectedPhim.ngayKhoiChieu)
           : new Date(),
-        // danhGia: selectedPhim.danhGia,
       }}
       validationSchema={movieSchema}
       onSubmit={handleSubmit}
@@ -219,6 +214,21 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
             />
             <Field name="dinhDang" className="form-control" />
           </div>
+          <div className="form-group">
+            <label>Phân loại&nbsp;</label>
+            <ErrorMessage
+              name="phanLoai"
+              render={(msg) => <span className="text-danger">{msg}</span>}
+            />
+            <Field as="select" name="phanLoai" className="form-control">
+              <option value="">Chọn phân loại</option>
+              <option value="P">P - Phổ thông</option>
+              <option value="K">K - Kinh dị</option>
+              <option value="T13">T13 - Trên 13 tuổi</option>
+              <option value="T16">T16 - Trên 16 tuổi</option>
+              <option value="T18">T18 - Trên 18 tuổi</option>
+            </Field>
+          </div>
 
           <div className="form-group">
             <label>Ngày khởi chiếu&nbsp;</label>
@@ -240,17 +250,7 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
               </MuiPickersUtilsProvider>
             </FormControl>
           </div>
-          {/* <div
-            className="form-group"
-            hidden={selectedPhim.maPhim ? false : true}
-          >
-            <label>Đánh giá&nbsp;</label>
-            <ErrorMessage
-              name="danhGia"
-              render={(msg) => <span className="text-danger">{msg}</span>}
-            />
-            <Field name="danhGia" type="number" className="form-control" />
-          </div> */}
+
           <button type="submit" className="form-control">
             Submit
           </button>

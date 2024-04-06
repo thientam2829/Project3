@@ -1,0 +1,50 @@
+/* NewPage.css */
+.news-list .news-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  display: flex;
+  align-items: center; /* This will vertically align your items in the center */
+  justify-content: start; /* This aligns items to the start of the main axis */
+  gap: 20px;
+}
+
+.news-list .news-item:last-child {
+  border-bottom: none;
+}
+
+.news-list img {
+  width: 50%;
+  height: auto;
+}
+
+.news-content h3 {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.news-sidebar .movie-item {
+  margin-bottom: 20px;
+  display: block;
+}
+
+.news-sidebar .movie-item img {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.news-sidebar .movie-item img:hover {
+  transform: scale(1.05);
+}
+
+.movies-sidebar {
+  width: 250px; /* Adjust the width as needed */
+  margin-left: 20px; /* Adjust as needed */
+  margin-right: 80px;
+}
+
+.movies-sidebar h4 {
+  color: #ee823b;
+  margin-bottom: 20px;
+}

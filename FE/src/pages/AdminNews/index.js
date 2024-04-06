@@ -118,6 +118,7 @@ import "./style.css";
 const NewsList = () => {
   const [newsItems, setNewsItems] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [currentNews, setCurrentNews] = useState(null);
 
   const fetchNews = async () => {
     try {
@@ -168,11 +169,16 @@ const NewsList = () => {
       </div>
       <AddNewsForm
         open={showAddForm}
-        onClose={() => setShowAddForm(false)}
-        onAddNews={() => {
+        onClose={() => {
+          setShowAddForm(false);
+          setCurrentNews(null);
+        }}
+        onAddOrEditNews={() => {
           fetchNews();
           setShowAddForm(false);
+          setCurrentNews(null);
         }}
+        currentNews={currentNews}
       />
 
       <Table aria-label="simple table">
@@ -208,6 +214,10 @@ const NewsList = () => {
                 <IconButton
                   aria-label="edit"
                   style={{ color: "rgb(238, 130, 59)" }}
+                  onClick={() => {
+                    setCurrentNews(newsItem); // Đặt tin tức hiện tại để chỉnh sửa
+                    setShowAddForm(true); // Mở form
+                  }}
                 >
                   <EditIcon />
                 </IconButton>

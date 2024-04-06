@@ -61,6 +61,11 @@ const items = [
     icon: ViewCarouselIcon,
     title: "Banner",
   },
+  {
+    href: "/admin/employee",
+    icon: PeopleAltIcon,
+    title: "Nhân Viên",
+  },
 ];
 
 const useStyles = makeStyles(() => ({

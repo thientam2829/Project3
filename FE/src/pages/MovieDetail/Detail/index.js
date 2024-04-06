@@ -30,6 +30,14 @@ import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect } from "react";
 import { ErrorMessage } from "formik";
+
+const phanLoaiImages = {
+  K: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/zxdfisgfqftyz9ww3jht.jpg",
+  P: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/aycnuu1ywue6dky5jgqy.png",
+  T13: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/hshdxztahqcwkg94dg3t.png",
+  T16: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/j143mnq0r8cfgv2qwcly.png",
+  T18: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/j2zoijbegsdpdfuk5gr6.png",
+};
 const reviewValidationSchema = yup.object().shape({
   hoTen: yup.string().required("Tên không được bỏ trống"),
   email: yup
@@ -163,38 +171,34 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
                 {data.tenPhim}
               </p>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <a href="#section-reviews" style={{ textDecoration: "none" }}>
-                  <span
-                    style={{
-                      fontSize: "2rem",
-                      color: "rgb(238, 130, 59)",
-                      marginRight: 8,
-                    }}
-                  >
-                    ★
-                  </span>
-                  <span
-                    style={{
-                      marginLeft: 8,
-                      fontWeight: "bold",
-                      fontSize: "25px",
-                      color: "rgb(238, 130, 59)",
-                    }}
-                  >
-                    {totalReviews > 0
-                      ? averageRating.toFixed(1) + "/10"
-                      : "0/10"}
-                  </span>
-                  <span
-                    style={{
-                      marginLeft: 8,
-                      fontSize: "15px",
-                      color: "#666",
-                    }}
-                  >
-                    ({totalReviews} lượt đánh giá)
-                  </span>
-                </a>
+                <span
+                  style={{
+                    fontSize: "2rem",
+                    color: "rgb(238, 130, 59)",
+                    marginRight: 8,
+                  }}
+                >
+                  ★
+                </span>
+                <span
+                  style={{
+                    marginLeft: 8,
+                    fontWeight: "bold",
+                    fontSize: "25px",
+                    color: "rgb(238, 130, 59)",
+                  }}
+                >
+                  {totalReviews > 0 ? averageRating.toFixed(1) + "/10" : "0/10"}
+                </span>
+                <span
+                  style={{
+                    marginLeft: 8,
+                    fontSize: "15px",
+                    color: "#666",
+                  }}
+                >
+                  ({totalReviews} lượt đánh giá)
+                </span>
               </div>
             </div>
 
@@ -205,6 +209,21 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
                   {formatDate(data.ngayKhoiChieu?.slice(0, 10)).YyMmDd}
                 </p>
               </div>
+              <div className="row">
+                <p className={`col-lg-3`}>Phân Loại</p>
+                <div className={`col-lg-9`}>
+                  {data.phanLoai && phanLoaiImages[data.phanLoai] ? (
+                    <img
+                      src={phanLoaiImages[data.phanLoai]}
+                      alt={`Phân loại ${data.phanLoai}`}
+                      style={{ maxWidth: "35px", height: "auto" }}
+                    />
+                  ) : (
+                    <p>Không có dữ liệu</p>
+                  )}
+                </div>
+              </div>
+
               <div className="row">
                 <p className={`col-lg-3`}>Đạo diễn</p>
                 <p className={`col-lg-9`}> {data.daoDien} </p>
@@ -221,6 +240,7 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
                 <p className={`col-lg-3`}>Định dạng</p>
                 <p className={`col-lg-3`}>{data.dinhDang}</p>
               </div>
+
               <div className="row">
                 <p className={`col-lg-3`}>Quốc Gia</p>
                 <p className={`col-lg-3`}>{data.quocGia}</p>
@@ -267,10 +287,14 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
               <Button
                 className={classes.btnMuaVe}
                 variant="contained"
-                onClick={handleOpenCommentDialog}
+                onClick={() => {
+                  document
+                    .getElementById("section-reviews")
+                    .scrollIntoView({ behavior: "smooth" });
+                }}
                 startIcon={<ThumbsUpDownTwoToneIcon />}
               >
-                Đánh Giá Phim
+                Đánh Giá
               </Button>
             </div>
 
@@ -412,7 +436,17 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
           >
             ĐÁNH GIÁ
           </span>
-
+          <Button
+            variant="outlined"
+            style={{
+              marginBottom: "1rem",
+              borderColor: "rgb(238, 130, 59)",
+              color: "rgb(238, 130, 59)",
+            }}
+            onClick={handleOpenCommentDialog}
+          >
+            Viết đánh giá
+          </Button>
           {reviews.length > 0 ? (
             <div className="row">
               {reviews.map((review, index) => (

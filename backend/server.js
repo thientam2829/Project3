@@ -593,7 +593,7 @@ app.get("/api/QuanLyRap/LayThongTinLichChieuPhim", function (req, res) {
           );
         });
       }
-      // Kiểm tra xem results0 có phần tử và maPhim không phải là undefined hay không
+
       if (
         results0.length > 0 &&
         results0[0] &&
@@ -614,6 +614,7 @@ app.get("/api/QuanLyRap/LayThongTinLichChieuPhim", function (req, res) {
           dinhDang: results0[0].dinhDang,
           maNhom: "GP09",
           ngayKhoiChieu: results0[0].ngayKhoiChieu,
+          phanLoai: results0[0].phanLoai,
         };
         return res.send(final);
       } else {
@@ -775,6 +776,7 @@ app.get("/api/QuanLyPhim/LayThongTinPhim", async function (req, res) {
       dinhDang: results0[0].dinhDang,
       maNhom: "GP09",
       ngayKhoiChieu: results0[0].ngayKhoiChieu,
+      phanLoai: results0[0].phanLoai,
     };
 
     return res.send(final);
@@ -1090,6 +1092,49 @@ app.delete("/api/QuanLyDatVe/XoaLichChieu/:id", async (req, res) => {
     }
   );
 });
+app.put("/api/QuanLyDatVe/ChinhSuaLichChieu/:maLichChieu", async (req, res) => {
+  const { maLichChieu } = req.params;
+  const { ngayChieuGioChieu, maRap, tenRap, giaVe, maPhim, cumRap } = req.body;
+  dbConn.query(
+    "UPDATE lichchieuinsert SET ngayChieuGioChieu = ?, maRap = ?, tenRap = ?, giaVe = ? WHERE maLichChieu = ?",
+    [ngayChieuGioChieu, maRap, tenRap, giaVe, maLichChieu],
+    function (error, results) {
+      if (error) {
+        console.error("Lỗi khi cập nhật lịch chiếu:", error);
+        return res.status(500).send("Lỗi khi cập nhật lịch chiếu");
+      }
+      if (cumRap) {
+        dbConn.query(
+          "SELECT cid FROM cumrap WHERE tenCumRap = ?",
+          [cumRap],
+          function (error, results1) {
+            if (error || results1.length == 0) {
+              console.error("Lỗi khi tìm cụm rạp:", error);
+              return res.status(404).send("Không tìm thấy cụm rạp");
+            }
+
+            const cumRapId = results1[0].cid;
+            dbConn.query(
+              "UPDATE cumrap_va_lichchieu SET cumrap = ? WHERE lichchieuinsert = (SELECT id FROM lichchieuinsert WHERE maLichChieu = ?)",
+              [cumRapId, maLichChieu],
+              function (error) {
+                if (error) {
+                  console.error("Lỗi khi cập nhật cụm rạp:", error);
+                  return res
+                    .status(500)
+                    .send("Lỗi khi cập nhật cụm rạp và lịch chiếu");
+                }
+                res.send("Lịch chiếu đã được cập nhật thành công");
+              }
+            );
+          }
+        );
+      } else {
+        res.send("Lịch chiếu đã được cập nhật thành công");
+      }
+    }
+  );
+});
 
 // QuanLyPhim
 
@@ -1122,6 +1167,7 @@ app.post("/api/QuanLyPhim/ThemPhim", async (req, res) => {
           dinhDang: req.body.dinhDang,
           maNhom: req.body.maNhom,
           ngayKhoiChieu: req.body.ngayKhoiChieu,
+          phanLoai: req.body.phanLoai, // Thêm trường phanLoai
         },
         function (error, results, fields) {
           if (error) {
@@ -1158,12 +1204,16 @@ app.post("/api/QuanLyPhim/CapNhatPhim", async (req, res) => {
           dinhDang: req.body.dinhDang,
           maNhom: req.body.maNhom,
           ngayKhoiChieu: req.body.ngayKhoiChieu,
+          phanLoai: req.body.phanLoai, // Thêm trường phanLoai
         },
         req.body.maPhim,
       ],
       function (error, results, fields) {
-        if (error) throw error;
-        resolve(res.send("Success"));
+        if (error) {
+          reject(error);
+        } else {
+          resolve(res.send("Success"));
+        }
       }
     );
   });
@@ -1549,4 +1599,51 @@ app.get("/api/QuanLyDanhGia/danhgia/:maPhim", (req, res) => {
     }
     res.json(results);
   });
+});
+app.post("/api/QuanLyNhanVien/ThemNhanVien", async (req, res) => {
+  try {
+    await new Promise((resolve, reject) => {
+      dbConn.query(
+        "INSERT INTO nhan_vien SET ?",
+        {
+          hoten: req.body.hoten,
+          ngaysinh: req.body.ngaysinh,
+          email: req.body.email,
+          sdt: req.body.sdt,
+          diachi: req.body.diachi,
+          ngayvaolam: req.body.ngayvaolam,
+          loainhanvien: req.body.loainhanvien,
+          noilamviec: req.body.noilamviec,
+          luong: req.body.luong,
+          trangthai: req.body.trangthai,
+        },
+        function (error, results, fields) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+
+    res.send({ message: "Nhân viên đã được thêm mới thành công" });
+  } catch (error) {
+    console.error("Error while adding employee:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+app.get("/api/QuanLyNhanVien/LayTatCaNhanVien", async (req, res) => {
+  try {
+    dbConn.query("SELECT * FROM nhan_vien", (error, results, fields) => {
+      if (error) {
+        console.error("Error fetching employees:", error);
+        return res.status(500).send({ message: "Internal Server Error" });
+      }
+      res.send(results);
+    });
+  } catch (error) {
+    console.error("Error while fetching employees:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 });

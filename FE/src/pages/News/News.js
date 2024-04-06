@@ -586,7 +586,7 @@ export default function SimpleTabs() {
         </Fade>
       </div>
       <div className="see-more-button">
-        <Link to="/phimdangchieu" className="btn btn-secondary">
+        <Link to="/tintuc" className="btn btn-secondary">
           Xem Thêm <NavigateNextIcon />
         </Link>
       </div>

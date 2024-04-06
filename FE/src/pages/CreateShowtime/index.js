@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { DataGrid, GridToolbar, GridOverlay } from "@material-ui/data-grid";
 import { useSelector, useDispatch } from "react-redux";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import EditIcon from "@material-ui/icons/Edit";
 import { IconButton } from "@material-ui/core";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
@@ -16,6 +17,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import DateFnsUtils from "@date-io/date-fns";
+import EditShowtimeForm from "./EditShowTime";
 import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
@@ -84,6 +86,7 @@ export default function MoviesManagement() {
       giaVe: false,
     },
   });
+
   const [isReadyTaoLichChieu, setIsReadyTaoLichChieu] = useState(false);
   const classes = useStyles({ srcImg: data.hinhAnhPhimSelected });
 
@@ -410,9 +413,6 @@ export default function MoviesManagement() {
         `http://localhost:4000/api/QuanLyDatVe/XoaLichChieu/${id}`
       );
       if (response.data) {
-        // Assuming you have a way to update your UI accordingly,
-        // For example, if you have a state to keep track of the showtimes list, update it here
-        // setLichChieuDisplay(lichChieuDisplay.filter((lichChieu) => lichChieu.id !== id));
         enqueueSnackbar("Successfully deleted showtime", {
           variant: "success",
         });
@@ -425,7 +425,23 @@ export default function MoviesManagement() {
       });
     }
   };
-
+  const [openEditForm, setOpenEditForm] = useState(false);
+  const [selectedShowtime, setSelectedShowtime] = useState(null);
+  const handleOpenEditForm = (showtime) => {
+    setSelectedShowtime(showtime);
+    setOpenEditForm(true);
+  };
+  const fetchPhongVeInfo = async (maLichChieu) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${maLichChieu}`
+      );
+      // Cập nhật trạng thái với thông tin phòng vé mới
+      // setPhongVeInfo(response.data);
+    } catch (error) {
+      console.error("Có lỗi xảy ra khi lấy thông tin phòng vé:", error);
+    }
+  };
   const columns = [
     {
       field: "maLichChieu",
@@ -519,18 +535,25 @@ export default function MoviesManagement() {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
-        <IconButton
-          onClick={() => handleDeleteShowtime(params.id)}
-          aria-label="delete"
-        >
-          <DeleteForeverIcon />
-        </IconButton>
+        // <IconButton
+        //   onClick={() => handleDeleteShowtime(params.id)}
+        //   aria-label="delete"
+        // >
+        //   <DeleteForeverIcon />
+        // </IconButton>
+        <>
+          <IconButton onClick={() => handleDeleteShowtime(params.id)}>
+            <DeleteForeverIcon />
+          </IconButton>
+          <IconButton onClick={() => handleOpenEditForm(params.row)}>
+            <EditIcon />
+          </IconButton>
+        </>
       ),
     },
   ];
 
   const menuProps = {
-    // props và class của menu(Popover)
     classes: { paper: classes.menu },
     getContentAnchorEl: null,
     anchorOrigin: {
@@ -850,6 +873,16 @@ export default function MoviesManagement() {
         }}
         sortModel={[{ field: "tenHeThongRap", sort: "asc" }]}
       />
+      {openEditForm && (
+        <EditShowtimeForm
+          showtimeDetails={selectedShowtime}
+          onClose={() => setOpenEditForm(false)}
+          onUpdateSuccess={() => {
+            setOpenEditForm(false);
+            fetchPhongVeInfo(selectedShowtime.maLichChieu);
+          }}
+        />
+      )}
     </div>
   );
 }
