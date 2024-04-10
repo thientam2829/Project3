@@ -32,7 +32,7 @@ export default function Homepage() {
       <ScrollToTopOnPathChange />
       <Carousel />
       {/* <UpcomingMovie /> */}
-      <MoviesList />
+      {/* <MoviesList /> */}
       <Showtime />
       <Theaters />
 

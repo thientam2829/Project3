@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import usersApi from "../../api/usersApi";
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -20,10 +20,11 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/QuanLyNguoiDung/CapNhatMatKhau",
-        { email, otp, newPassword }
-      );
+      const response = await usersApi.postResetMatKhau({
+        email,
+        otp,
+        newPassword,
+      });
       if (response.data === "Cập nhật mật khẩu thành công") {
         Swal.fire({
           icon: "success",

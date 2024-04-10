@@ -89,7 +89,7 @@ export default function SimpleTabs() {
   //   setarrayData({ dailyMovieList, comingMovieList });
   // }, [movieList]);
   useEffect(() => {
-    const currentDate = new Date().getTime(); // Lấy thời gian hiện tại
+    const currentDate = new Date().getTime();
     let dailyMovieList = [];
     let comingMovieList = [];
 

@@ -142,4 +142,9 @@
 }
 .film .film__content .not_hide {
   opacity: 1 !important;
-}/*# sourceMappingURL=movie.css.map */
+} /*# sourceMappingURL=movie.css.map */
+.name__content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

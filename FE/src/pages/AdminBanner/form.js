@@ -62,10 +62,10 @@ const AddBannerForm = ({ open, onClose, onAddBanner }) => {
       );
       alert("Banner đã được thêm thành công!");
       if (typeof onAddBanner === "function") {
-        onAddBanner(); // Call onAddBanner if it's a function
+        onAddBanner();
       }
       resetForm({});
-      onClose(); // Close form after completion
+      onClose();
     } catch (error) {
       console.error("Error when performing:", error);
       alert("Error when performing");

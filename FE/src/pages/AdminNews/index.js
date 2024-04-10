@@ -208,6 +208,7 @@ const NewsList = () => {
                 <IconButton
                   aria-label="delete"
                   onClick={() => handleDeleteNewsItem(newsItem.id)}
+                  style={{ color: "#f50057" }}
                 >
                   <DeleteForeverIcon />
                 </IconButton>
@@ -215,8 +216,8 @@ const NewsList = () => {
                   aria-label="edit"
                   style={{ color: "rgb(238, 130, 59)" }}
                   onClick={() => {
-                    setCurrentNews(newsItem); // Đặt tin tức hiện tại để chỉnh sửa
-                    setShowAddForm(true); // Mở form
+                    setCurrentNews(newsItem);
+                    setShowAddForm(true);
                   }}
                 >
                   <EditIcon />

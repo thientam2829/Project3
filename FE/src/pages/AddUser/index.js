@@ -76,7 +76,7 @@ export default function AddUser() {
                         email: "",
                         soDt: "",
                         maNhom: "GP09",
-                        maLoaiNguoiDung: "KhachHang", // điền QuanTri backend cũng áp dụng KhachHang
+                        maLoaiNguoiDung: "KhachHang",
                         hoTen: "",
                       }}
                       validationSchema={signupUserSchema} // validationSchdema:  thu vien yup nhập sai ko submit được

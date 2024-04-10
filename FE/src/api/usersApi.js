@@ -5,6 +5,10 @@ const usersApi = {
     const path = "/QuanLyNguoiDung/DangKy";
     return axiosClient.post(path, user);
   },
+  postXacThucOTP: ({ email, otp }) => {
+    const path = "/QuanLyNguoiDung/XacThucOTP";
+    return axiosClient.post(path, { email, otp });
+  },
   postDangNhap: (user) => {
     const path = "/QuanLyNguoiDung/DangNhap";
     return axiosClient.post(path, user);
@@ -28,7 +32,6 @@ const usersApi = {
 
   deleteUser: (taiKhoan) => {
     const path = `/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${taiKhoan}`;
-
     return axiosClient.delete(path);
   },
 
@@ -44,6 +47,10 @@ const usersApi = {
   postQuenMatKhau: (email) => {
     const path = "/QuanLyNguoiDung/QuenMatKhau";
     return axiosClient.post(path, { email });
+  },
+  postResetMatKhau: ({ email, otp, newPassword }) => {
+    const path = "/QuanLyNguoiDung/CapNhatMatKhau";
+    return axiosClient.post(path, { email, otp, newPassword });
   },
 };
 

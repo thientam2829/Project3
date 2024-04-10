@@ -1,21 +1,21 @@
-import { makeStyles } from "@material-ui/core"
-import { customScrollbar } from '../../../styles/materialUi';
+import { makeStyles } from "@material-ui/core";
+import { customScrollbar } from "../../../styles/materialUi";
 
 const useStyles = makeStyles({
-  listSeat: props => ({
-    position: 'relative',
-    padding: props.isMobile ? "0px" : '0 10%',
-    marginLeft: props.isMobile ? '0%' : '10%',
+  listSeat: (props) => ({
+    position: "relative",
+    padding: props.isMobile ? "0px" : "0 10%",
+    marginLeft: props.isMobile ? "0%" : "10%",
   }),
 
   info_CountDown: {
     width: "100%",
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: props => props.isMobile ? "15px 15px 0px" : '2% 0%',
+    display: "flex",
+    justifyContent: "space-between",
+    padding: (props) => (props.isMobile ? "15px 15px 0px" : "2% 0%"),
   },
   infoTheater: {
-    display: 'flex',
+    display: "flex",
   },
   text: {
     paddingTop: 5,
@@ -36,36 +36,36 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 34,
     color: "rgb(238, 130, 59)",
-    lineHeight: '39px',
+    lineHeight: "39px",
   },
 
   overflowSeat: {
-    overflow: props => props.isMobile ? "auto hidden" : "auto hidden",
-    ...customScrollbar
+    overflow: (props) => (props.isMobile ? "auto hidden" : "auto hidden"),
+    ...customScrollbar,
   },
   invariantWidth: {
-    minWidth: props => props.isMobile ? "600px" : "600px",
-    padding: props => props.isMobile ? "0 7%" : '0%',
+    minWidth: (props) => (props.isMobile ? "600px" : "600px"),
+    padding: (props) => (props.isMobile ? "0 7%" : "0%"),
   },
   screen: {
-    width: '100%',
+    width: "100%",
   },
   seatSelect: {
-    padding: '0% 10%',
+    padding: "0% 10%",
     WebkitUserSelect: "none",
     MozUserSelect: "none",
     msUserSelect: "none",
     userSelect: "none",
   },
   seat: {
-    position: 'relative',
-    width: 'calc(100%/16)',
-    display: 'inline-block',
-    cursor: 'pointer',
+    position: "relative",
+    width: "calc(100%/16)",
+    display: "inline-block",
+    cursor: "pointer",
   },
   label: {
-    color: 'white',
-    position: 'absolute',
+    color: "white",
+    position: "absolute",
     top: "50%",
     left: "-100%",
     transform: "translate(-50%, -50%)",
@@ -73,67 +73,66 @@ const useStyles = makeStyles({
     cursor: "default",
   },
   seatName: {
-    color: 'white',
-    position: 'absolute',
+    color: "white",
+    position: "absolute",
     top: "40%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     zIndex: 2,
-    // fontSize: props => props.widthLabel,
   },
   seatLocked: {
-    position: 'absolute',
+    position: "absolute",
     top: "42%",
     left: "50%",
-    width: '41%',
+    width: "41%",
     transform: "translate(-50%, -50%)",
   },
   seatIcon: {
-    width: '90%',
-    height: '90%',
+    width: "90%",
+    height: "90%",
   },
   viewCenter: {
     position: "absolute",
     top: "68%",
     left: "47.5%",
-    width: '700%',
-    height: '350%',
+    width: "700%",
+    height: "350%",
     transform: "translate(-42.5%,-42%)",
     zIndex: 1,
   },
   areaClick: {
-    width: '100%',
-    height: '100%',
-    color: 'red',
-    position: 'absolute',
+    width: "100%",
+    height: "100%",
+    color: "red",
+    position: "absolute",
     zIndex: 2,
     top: 0,
     left: 0,
   },
 
   noteSeat: {
-    padding: '2% 10% 0',
+    padding: "2% 10% 0",
     fontSize: 13,
-    color: '#9b9b9b'
+    color: "#9b9b9b",
   },
   typeSeats: {
-    color: '#fff',
-    display: 'flex',
-    justifyContent: 'space-evenly',
-    textAlign: 'center',
+    color: "#fff",
+    display: "flex",
+    justifyContent: "space-evenly",
+    textAlign: "center",
     gap: "2px",
   },
   posiX: {
-    position: 'absolute',
+    position: "absolute",
     top: "35%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     fontSize: 18,
-    color: '#fff',
+    color: "#fff",
   },
 
   positionView: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 5,
     paddingBottom: 20,
   },
@@ -155,8 +154,8 @@ const useStyles = makeStyles({
     marginRight: 8,
   },
 
-  modalleft: props => ({
-    display: props.isMobile ? 'none' : 'block',
+  modalleft: (props) => ({
+    display: props.isMobile ? "none" : "block",
     left: 0,
     top: 100,
     height: "calc(100% - 100px)",
@@ -169,11 +168,10 @@ const useStyles = makeStyles({
   }),
 
   opacity: {
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
     background: "#000",
-    opacity: 0.7
-  }
-
-})
-export default useStyles
+    opacity: 0.7,
+  },
+});
+export default useStyles;

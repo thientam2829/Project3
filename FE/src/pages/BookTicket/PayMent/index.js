@@ -45,7 +45,7 @@ export default function PayMent() {
     isReadyPayment,
     isMobile,
     danhSachVe,
-    danhSachPhongVe : { thongTinPhim },
+    danhSachPhongVe: { thongTinPhim },
     maLichChieu,
     taiKhoanNguoiDung,
     isSelectedSeat,
@@ -56,8 +56,8 @@ export default function PayMent() {
   } = useSelector((state) => state.BookTicketReducer);
   const dispatch = useDispatch();
   const emailRef = useRef();
-  const phoneRef = useRef(); 
-  let variClear = useRef(""); 
+  const phoneRef = useRef();
+  let variClear = useRef("");
   const [dataFocus, setDataFocus] = useState({ phone: false, email: false });
   const [isPaySuccess, setIsPaySuccess] = useState(false);
   const [dataSubmit, setdataSubmit] = useState({
@@ -92,9 +92,9 @@ export default function PayMent() {
 
   useEffect(() => {
     if (isPaySuccess) {
-      handleBookTicket()
+      handleBookTicket();
     }
-  },[isPaySuccess])
+  }, [isPaySuccess]);
 
   useEffect(() => {
     clearTimeout(variClear);
@@ -141,7 +141,7 @@ export default function PayMent() {
       },
       errors: { email: emailErrors.email, phone: phoneErrors.phone },
     }));
-  }, [listSeat]); 
+  }, [listSeat]);
 
   const handleBookTicket = () => {
     if (
@@ -160,16 +160,16 @@ export default function PayMent() {
     setDataFocus({ ...dataFocus, [e.target.name]: false });
   };
 
-  const successPaymentHandler =  (paymentResult) => {
+  const successPaymentHandler = (paymentResult) => {
     setIsPaySuccess(true);
   };
-  
+
   const convertVNDtoUSD = (amountInVND) => {
     // Replace the exchangeRate with the current rate
     const exchangeRate = 0.000043; // Example rate (1 VND = 0.000043 USD)
     const amountInUSD = amountInVND * exchangeRate;
     return amountInUSD;
-  }
+  };
 
   return (
     <aside className={classes.payMent}>
@@ -180,7 +180,9 @@ export default function PayMent() {
         <div className={classes.payMentItem}>
           <p className={classes.tenPhim}>{thongTinPhim?.tenPhim}</p>
           <p>{thongTinPhim?.tenCumRap}</p>
-          <p>{`${thongTinPhim && formatDate(thongTinPhim.ngayChieu).dateFull} - ${thongTinPhim?.tenRap}`}</p>
+          <p>{`${
+            thongTinPhim && formatDate(thongTinPhim.ngayChieu).dateFull
+          } - ${thongTinPhim?.tenRap}`}</p>
         </div>
 
         <div className={`${classes.seatInfo} ${classes.payMentItem}`}>
@@ -246,13 +248,17 @@ export default function PayMent() {
           >
             Đặt Vé
           </button> */}
-          {
-            amount && (
-              <PayPalButton className={classes.btnDV} amount={convertVNDtoUSD(amount)} onSuccess={successPaymentHandler} options={{ 
-                clientId:'AaiOR0UuKrkTaDWKtlae81PRr3enX2RBcxrcpX39uHH2VJy1ntxfIu3LuU8wOgey8oHm4SzH3cwqM5N5'
-                }} />
-            )
-          }
+          {amount && (
+            <PayPalButton
+              className={classes.btnDV}
+              amount={convertVNDtoUSD(amount)}
+              onSuccess={successPaymentHandler}
+              options={{
+                clientId:
+                  "AQK36G1D4h6hCWzD4qiyR6eqPYb2RWgvfoyu8bvIrJ_48ctkmHv5HGQqipTi4gGRISal_a7LX9two9JN",
+              }}
+            />
+          )}
         </div>
       </div>
     </aside>

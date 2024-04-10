@@ -10,9 +10,8 @@ import { getMovieList } from "../../../reducers/actions/Movie";
 import { getTheaters } from "../../../reducers/actions/Theater";
 import "./style.css";
 const headMenu = [
-  { nameLink: "Phim đang chiếu", id: "phimdangchieu" },
-  { nameLink: "Lịch chiếu", id: "lichchieu" },
-  { nameLink: "Cụm rạp", id: "cumrap" },
+  { nameLink: "Phim đang chiếu", id: "lichchieu" },
+  { nameLink: "Lịch chiếu", id: "cumrap" },
   { nameLink: "Tin tức", id: "tintuc" },
 ];
 

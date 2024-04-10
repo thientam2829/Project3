@@ -188,7 +188,7 @@ const AddNewsForm = ({
       let imageUrl = currentNews ? currentNews.hinhAnh : "";
       if (values.hinhAnh && values.hinhAnh instanceof File) {
         const imageData = await imageUpload(values.hinhAnh);
-        imageUrl = imageData.secure_url; // Giả sử imageUpload trả về đối tượng có thuộc tính secure_url chứa URL hình ảnh
+        imageUrl = imageData.secure_url;
       }
 
       const formData = {

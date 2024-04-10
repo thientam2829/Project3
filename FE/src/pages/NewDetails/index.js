@@ -12,7 +12,7 @@ const Breadcrumb = ({ title }) => {
     <div className="link">
       <Link to="/">Trang chủ</Link>
       <span> / </span>
-      <Link to="/news">Tin tức</Link>
+      <Link to="/tintuc">Tin tức</Link>
       <span> / </span>
       <span>{title}</span>
     </div>

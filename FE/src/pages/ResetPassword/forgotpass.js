@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
-
+import usersApi from "../../api/usersApi";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,13 +18,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/QuanLyNguoiDung/QuenMatKhau",
-        {
-          email: values.email,
-        }
-      );
-
+      const response = await usersApi.postQuenMatKhau(values.email);
       if (
         response.data ===
         "Email xác nhận đã được gửi, vui lòng kiểm tra hòm thư của bạn."

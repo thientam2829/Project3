@@ -14,7 +14,6 @@ export default function MoviesList() {
       );
 
       const moviesWithDateObjects = response.data.map((movie) => {
-        // Assuming ngayKhoiChieu is in the format dd/mm/yyyy, converting it to yyyy/mm/dd
         const [day, month, year] = movie.ngayKhoiChieu.split("/");
         const correctDateFormat = `${year}-${month}-${day}`;
 
@@ -29,7 +28,6 @@ export default function MoviesList() {
       );
       const latestMovies = sortedMovies.slice(0, 8);
 
-      // Set the state with only the necessary fields to avoid changing the original movie data structure
       setMovies(latestMovies.map(({ ngayKhoiChieuDate, ...rest }) => rest));
     } catch (error) {
       console.error("Failed to fetch movies data:", error);

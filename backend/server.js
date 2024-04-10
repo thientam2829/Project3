@@ -25,18 +25,17 @@ dotenv.config();
 app.get("/", function (req, res) {
   return res.send({ error: true, message: "hello" });
 });
-// chỉnh port
-app.listen(process.env.PORT || 4000, function () {
-  console.log("Node app is running on port 4000");
-});
-module.exports = app;
 var dbConn = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "cosmocinema3",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 dbConn.connect();
+const port = process.env.PORT || 4000;
+app.listen(port, function () {
+  console.log(`Node app is running on port ${port}`);
+});
 
 const validateToken = (req, res) => {
   const tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
@@ -63,7 +62,16 @@ app.get("/api/QuanLyRap/LayThongTinHeThongRap", function (req, res) {
     }
   );
 });
-
+app.get("/api/cumrap", (req, res) => {
+  const sqlQuery = "SELECT * FROM cumrap";
+  dbConn.query(sqlQuery, (err, result) => {
+    if (err) {
+      res.status(500).send("Error when fetching data");
+    } else {
+      res.json(result);
+    }
+  });
+});
 app.get("/api/getBooking", function (req, res) {
   dbConn.query(
     "SELECT datve.*, lichchieuinsert.* FROM datve INNER JOIN lichchieuinsert ON datve.maLichChieu = lichchieuinsert.maLichChieu",
@@ -230,7 +238,7 @@ function sendVerificationEmail(email, otp) {
 function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
-// Hàm kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
+
 const isEmailExist = async (email) => {
   return new Promise((resolve, reject) => {
     dbConn.query(
@@ -249,7 +257,7 @@ const isEmailExist = async (email) => {
 app.get("/api/check-email/:email", async (req, res) => {
   const email = req.params.email;
   try {
-    const emailExist = await isEmailExist(email); // Sử dụng await để đợi kết quả
+    const emailExist = await isEmailExist(email);
 
     if (emailExist) {
       return res
@@ -1204,7 +1212,7 @@ app.post("/api/QuanLyPhim/CapNhatPhim", async (req, res) => {
           dinhDang: req.body.dinhDang,
           maNhom: req.body.maNhom,
           ngayKhoiChieu: req.body.ngayKhoiChieu,
-          phanLoai: req.body.phanLoai, // Thêm trường phanLoai
+          phanLoai: req.body.phanLoai,
         },
         req.body.maPhim,
       ],
@@ -1246,7 +1254,7 @@ app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
   if (!user)
     return res.status(404).send("Email không tồn tại, vui lòng kiểm tra lại.");
 
-  const otp = Math.floor(100000 + Math.random() * 900000); // Tạo OTP 6 chữ số
+  const otp = Math.floor(100000 + Math.random() * 900000);
   await new Promise((resolve, reject) => {
     dbConn.query(
       "UPDATE nguoi_dung SET otp = ?, otpCreatedAt = NOW() WHERE email = ?",
@@ -1457,7 +1465,6 @@ app.get("/api/QuanLyVe/TongTienMuaVe/:taiKhoan", function (req, res) {
         });
       }
 
-      // Kiểm tra xem có kết quả trả về hay không
       if (results.length > 0 && results[0].tongTien !== null) {
         return res.send({ success: true, tongTien: results[0].tongTien });
       } else {
@@ -1646,4 +1653,69 @@ app.get("/api/QuanLyNhanVien/LayTatCaNhanVien", async (req, res) => {
     console.error("Error while fetching employees:", error);
     res.status(500).send({ message: "Internal Server Error" });
   }
+});
+
+app.delete("/api/QuanLyNhanVien/XoaNhanVien/:id", function (req, res) {
+  const id = req.params.id;
+  dbConn.query(
+    "DELETE FROM nhan_vien WHERE id = ?",
+    [id],
+    function (error, results, fields) {
+      if (error) {
+        console.error("Lỗi khi truy vấn cơ sở dữ liệu:", error);
+        res.status(500).send("Lỗi khi xóa nhân viên từ cơ sở dữ liệu");
+      } else {
+        if (results.affectedRows > 0) {
+          res.send({ message: "Nhân viên đã được xóa thành công" });
+        } else {
+          res
+            .status(404)
+            .send("Nhân viên không tồn tại hoặc đã bị xóa trước đó");
+        }
+      }
+    }
+  );
+});
+app.put("/api/QuanLyNhanVien/ChinhSuaNhanVien/:id", function (req, res) {
+  const id = req.params.id;
+  const {
+    hoten,
+    ngaysinh,
+    email,
+    sdt,
+    diachi,
+    ngayvaolam,
+    loainhanvien,
+    noilamviec,
+    luong,
+    trangthai,
+  } = req.body;
+  dbConn.query(
+    "UPDATE nhan_vien SET hoten = ?, ngaysinh = ?, email = ?, sdt = ?, diachi = ?, ngayvaolam = ?, loainhanvien = ?, noilamviec = ?, luong = ?, trangthai = ? WHERE id = ?",
+    [
+      hoten,
+      ngaysinh,
+      email,
+      sdt,
+      diachi,
+      ngayvaolam,
+      loainhanvien,
+      noilamviec,
+      luong,
+      trangthai,
+      id,
+    ],
+    function (error, results, fields) {
+      if (error) {
+        console.error("Lỗi khi cập nhật cơ sở dữ liệu:", error);
+        res.status(500).send("Lỗi khi cập nhật nhân viên trong cơ sở dữ liệu");
+      } else {
+        if (results.affectedRows > 0) {
+          res.send({ message: "Nhân viên đã được cập nhật thành công" });
+        } else {
+          res.status(404).send("Không tìm thấy nhân viên để cập nhật");
+        }
+      }
+    }
+  );
 });

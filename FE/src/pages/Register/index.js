@@ -8,7 +8,7 @@ import "./style.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { register, resetErrorLoginRegister } from "../../reducers/actions/Auth";
-
+import usersApi from "../../api/usersApi";
 export default function Register() {
   const { responseRegister, loadingRegister, errorRegister } = useSelector(
     (state) => state.authReducer
@@ -70,10 +70,7 @@ export default function Register() {
         return;
       }
 
-      const response = await axios.post(
-        "http://localhost:4000/api/QuanLyNguoiDung/DangKy",
-        user
-      );
+      const response = await usersApi.postDangKy(user);
 
       if (response.data === "Success") {
         Swal.fire({

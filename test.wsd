@@ -1,5 +1,5 @@
 @startuml class
-left to right direction
+
 class NguoiDung {
     - id: int
     - taiKhoan: string
@@ -36,27 +36,6 @@ class TinTuc {
     + themTinTuc(tieude, noidung, hinhAnh): bool
     + suaTinTuc(tintucId, tieude, noidung, hinhAnh): bool
     + xoaTinTuc(tintucId): bool
-}
-
-class ChiTietPhim {
-    - maPhim: int
-    - tenPhim: string
-    - biDanh: string
-    - trailer: string
-    - hinhAnh: string
-    - moTa: string
-    - daoDien: string
-    - dienVien: string
-    - quocGia: string
-    - theLoai: string
-    - dinhDang: string
-    - maNhom: string
-    - ngayKhoiChieu: string
-    - danhGia: int
-    + themPhim(...): bool
-    + suaPhim(maPhim, ...): bool
-    + xoaPhim(maPhim): bool
-    
 }
 
 class CumRap {
@@ -150,6 +129,43 @@ class danhGia {
     -thoiGian: int
     + themDanhGia() :bool
 }
+class ChiTietPhim {
+- maPhim: int
+- tenPhim: string
+- biDanh: string
+- trailer: string
+- hinhAnh: string
+- moTa: string
+- daoDien: string
+- dienVien: string
+- quocGia: string
+- theLoai: string
+- dinhDang: string
+- maNhom: string
+- ngayKhoiChieu: string
+- danhGia: int
++ themPhim(...): bool
++ suaPhim(maPhim, ...): bool
++ xoaPhim(maPhim): bool
+}
+
+class NhanVien {
+- id: int
+- hoTen: string
+- ngaySinh: date
+- email: string
+- soDT: string
+- diaChi: string
+- ngayVaoLam: date
+- loaiNhanVien: string
+- noiLamViec: int
+- luong: double
+- trangThai: boolean
++ themNhanVien(...): bool
++ suaNhanVien(id, ...): bool
++ xoaNhanVien(id): bool
++ getDanhSachNhanVien(): List<NhanVien>
+}
 NguoiDung "1" *-- "0..n" DatVe
 ChiTietPhim "1" *-- "0..n" LichChieu
 CumRap "1" *-- "1..n" DanhSachRap
@@ -159,4 +175,5 @@ HeThongRap "1" *-- "1..n" CumRap
 HeThongRap "1" *-- "1..n" ChiTietPhim
 Banner "1"*--"1" ChiTietPhim
 danhGia "1"*--"1" ChiTietPhim
+NhanVien "1" *-- "1" CumRap
 @enduml

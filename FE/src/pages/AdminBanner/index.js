@@ -96,6 +96,7 @@ const BannerList = () => {
               <TableCell align="left">{banner.tenPhim}</TableCell>
               <TableCell>
                 <IconButton
+                  style={{ color: "#f50057" }}
                   aria-label="delete"
                   onClick={() => handleDeleteBanner(banner.id)}
                 >

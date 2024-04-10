@@ -10,7 +10,6 @@ const useStyles = makeStyles({
     borderRadius: 4,
   },
   taps: {
-    // dường line phần chia khi horizontal
     borderBottom: "none",
     minWidth: 92,
   },

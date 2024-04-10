@@ -23,7 +23,6 @@ import {
   putUserUpdate,
   resetUserList,
 } from "../../reducers/actions/UsersManagement";
-
 const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: "transparent",
