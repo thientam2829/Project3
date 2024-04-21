@@ -30,7 +30,7 @@ import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect } from "react";
 import { ErrorMessage } from "formik";
-
+import moviesApi from "../../../api/moviesApi";
 const phanLoaiImages = {
   K: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/zxdfisgfqftyz9ww3jht.jpg",
   P: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/aycnuu1ywue6dky5jgqy.png",
@@ -109,7 +109,7 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
       return;
     }
     try {
-      await axios.post("http://localhost:4000/api/QuanLyDatVe/ThemDanhGia", {
+      await moviesApi.themDanhGia({
         hoTen: values.hoTen,
         email: values.email,
         maPhim: maPhim,
@@ -128,19 +128,21 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
   useEffect(() => {
-    axios
-      .get(`http://localhost:4000/api/QuanLyDanhGia/danhgia/${maPhim}`)
-      .then((response) => {
+    const fetchReviews = async () => {
+      try {
+        const response = await moviesApi.layDanhGiaTheoMaPhim(maPhim);
         setReviews(response.data);
         const ratings = response.data.map((review) => review.soSao);
         const totalRatings = ratings.reduce((acc, rating) => acc + rating, 0);
         const average = totalRatings / ratings.length;
         setTotalReviews(response.data.length);
         setAverageRating(average);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Lỗi khi lấy đánh giá:", error);
-      });
+      }
+    };
+
+    fetchReviews();
   }, [maPhim]);
   const [reviews, setReviews] = useState([]);
   return (

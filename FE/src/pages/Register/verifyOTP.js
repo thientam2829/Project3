@@ -6,7 +6,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { verifyOTP } from "../../reducers/actions/Auth";
-
+import usersApi from "../../api/usersApi";
 export default function VerifyOTP() {
   const location = useLocation();
   const history = useHistory();
@@ -26,13 +26,7 @@ export default function VerifyOTP() {
   const handleVerifyOTP = async (values) => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:4000/api/QuanLyNguoiDung/XacThucOTP",
-        {
-          email,
-          otp: values.otp,
-        }
-      );
+      const response = await usersApi.xacThucOTP(email, values.otp);
 
       Swal.fire({
         position: "center",

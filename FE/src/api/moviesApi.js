@@ -8,6 +8,7 @@ const moviesApi = {
     const path = `/QuanLyPhim/LayThongTinPhim?MaPhim=${maPhim}`;
     return axiosClient.get(path);
   },
+
   getDanhSachPhimTheoNgay: (maNhom, tuNgay, denNgay) => {
     const path = `/QuanLyPhim/LayDanhSachPhimTheoNgay`;
     return axiosClient.get(path, { maNhom, tuNgay, denNgay });
@@ -39,6 +40,12 @@ const moviesApi = {
   deleteMovie: (maPhim) => {
     const path = `/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`;
     return axiosClient.delete(path);
+  },
+  themDanhGia: (reviewData) => {
+    return axiosClient.post("/QuanLyDanhGia/ThemDanhGia", reviewData);
+  },
+  layDanhGiaTheoMaPhim: (maPhim) => {
+    return axiosClient.get(`/QuanLyDanhGia/danhgia/${maPhim}`);
   },
 };
 

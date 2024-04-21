@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
-import "./Film_Flip.css";
+import "./style.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
+import { Link, useHistory } from "react-router-dom";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import BtnPlay from "../../../components/BtnPlay";
 export default function MoviesList() {
   const [movies, setMovies] = useState([]);
-
+  const history = useHistory();
+  const phanLoaiImages = {
+    K: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/zxdfisgfqftyz9ww3jht.jpg",
+    P: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/aycnuu1ywue6dky5jgqy.png",
+    T13: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/hshdxztahqcwkg94dg3t.png",
+    T16: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/j143mnq0r8cfgv2qwcly.png",
+    T18: "https://res.cloudinary.com/thientam2829/image/upload/v1712215919/j2zoijbegsdpdfuk5gr6.png",
+  };
   const fetchMoviesData = async () => {
     try {
       const response = await axios.get(
@@ -39,7 +47,7 @@ export default function MoviesList() {
   }, []);
 
   return (
-    <div className="filmcard" id="phimdangchieu">
+    <div className="filmcard" id="lichchieu">
       <h4 className="movie-header">Phim đang chiếu</h4>
       <div
         className="movies-list"
@@ -58,10 +66,40 @@ export default function MoviesList() {
           >
             <div className="movie-card-inner">
               <div className="movie-card-front">
-                <img src={movie.hinhAnh} alt={movie.tenPhim} />
+                <img
+                  style={{
+                    width: "300px",
+                    height: "450px",
+                    objectFit: "cover",
+                  }}
+                  src={movie.hinhAnh}
+                  alt={movie.tenPhim}
+                />
+                <div className="play-trailer">
+                  <BtnPlay
+                    cssRoot="play"
+                    width={48}
+                    height={48}
+                    urlYoutube={movie.trailer}
+                  />
+                </div>
               </div>
+
               <div className="movie-card-back">
-                <h3>{movie.tenPhim}</h3>
+                <h3>
+                  {movie.tenPhim}
+                  {movie.phanLoai && phanLoaiImages[movie.phanLoai] ? (
+                    <img
+                      src={phanLoaiImages[movie.phanLoai]}
+                      alt={`Phân loại ${movie.phanLoai}`}
+                      style={{
+                        maxWidth: "25px",
+                        height: "auto",
+                        marginLeft: "10px",
+                      }}
+                    />
+                  ) : null}
+                </h3>
               </div>
             </div>
             <div className="movie-card-footer">

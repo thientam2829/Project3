@@ -119,8 +119,6 @@ function App() {
     }
   };
 
-  console.log(banner);
-
   return (
     <BrowserRouter>
       <Loading />

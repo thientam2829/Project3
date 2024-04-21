@@ -13,29 +13,27 @@ import {
   Button,
 } from "@material-ui/core";
 import AddBannerForm from "./form";
+import bannerApi from "../../api/bannerApi";
 const BannerList = () => {
   const [bannerList, setBannerList] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
 
   const fetchBannerList = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/api/QuanLyBanner/LayDanhSachBanner"
-      );
+      const response = await bannerApi.layDanhSachBanner();
       setBannerList(response.data);
     } catch (error) {
       console.error("Error fetching banner list:", error);
     }
   };
+
   useEffect(() => {
     fetchBannerList();
   }, []);
 
   const handleDeleteBanner = async (id) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:4000/api/QuanLyBanner/XoaBanner/${id}`
-      );
+      const response = await bannerApi.xoaBanner(id);
       if (response.data) {
         setBannerList(bannerList.filter((banner) => banner.id !== id));
         alert("Banner đã được xóa thành công");

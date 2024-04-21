@@ -114,7 +114,7 @@ import {
 } from "@material-ui/core";
 import AddNewsForm from "./form";
 import "./style.css";
-
+import newsApi from "../../api/newApi";
 const NewsList = () => {
   const [newsItems, setNewsItems] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -122,9 +122,7 @@ const NewsList = () => {
 
   const fetchNews = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/api/QuanLyTinTuc/LayTatCaTinTuc"
-      );
+      const response = await newsApi.layTatCaTinTuc();
       setNewsItems(response.data);
     } catch (error) {
       console.error("Error fetching news:", error);
@@ -137,9 +135,7 @@ const NewsList = () => {
 
   const handleDeleteNewsItem = async (id) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:4000/api/QuanLyTinTuc/XoaTinTuc/${id}`
-      );
+      const response = await newsApi.xoaTinTuc(id);
       if (response.data) {
         setNewsItems(newsItems.filter((item) => item.id !== id));
         alert("Tin tức đã được xóa thành công");

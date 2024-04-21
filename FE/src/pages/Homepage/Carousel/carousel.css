@@ -64,7 +64,7 @@
 
   content: "•";
   text-align: center;
-  /* trước và sau khi hover luôn cùng opacity */
+
   opacity: 1;
   color: #d8d8d8;
 
@@ -73,10 +73,10 @@
 }
 .slickdotsbanner li.slick-active button:before {
   opacity: 0.75;
-  /* màu sắc của dot khi active */
+
   color: rgb(238, 130, 59);
 }
-/* hover hiện button play */
+
 .slick-slider:hover > .slick-list .slick-track .play {
   opacity: 1;
 }

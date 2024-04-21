@@ -3,8 +3,8 @@
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
   display: flex;
-  align-items: center; /* This will vertically align your items in the center */
-  justify-content: start; /* This aligns items to the start of the main axis */
+  align-items: center;
+  justify-content: start;
   gap: 20px;
 }
 
@@ -39,8 +39,8 @@
 }
 
 .movies-sidebar {
-  width: 250px; /* Adjust the width as needed */
-  margin-left: 20px; /* Adjust as needed */
+  width: 250px;
+  margin-left: 20px;
   margin-right: 80px;
 }
 

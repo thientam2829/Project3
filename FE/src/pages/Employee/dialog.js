@@ -22,7 +22,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import CloseIcon from "@material-ui/icons/Close";
-
+import employeeApi from "../../api/employeeApi";
 const NhanVienSchema = Yup.object().shape({
   hoten: Yup.string().required("Họ tên không được để trống"),
   ngaysinh: Yup.date().required("Ngày sinh không được để trống"),
@@ -72,12 +72,12 @@ const AddOrEditNhanVienForm = ({
   }, []);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    const action = isEditing ? axios.put : axios.post;
-    const url = isEditing
-      ? `http://localhost:4000/api/QuanLyNhanVien/ChinhSuaNhanVien/${currentEmployee.id}`
-      : "http://localhost:4000/api/QuanLyNhanVien/ThemNhanVien";
+    const action = isEditing
+      ? employeeApi.chinhSuaNhanVien
+      : employeeApi.themNhanVien;
+    const urlOrId = isEditing ? currentEmployee.id : values;
 
-    action(url, values)
+    action(urlOrId, values)
       .then((response) => {
         alert(
           isEditing
@@ -86,13 +86,13 @@ const AddOrEditNhanVienForm = ({
         );
         setSubmitting(false);
         onClose();
+        fetchEmployees();
       })
       .catch((error) => {
         alert(`Có lỗi xảy ra: ${error.message}`);
         setSubmitting(false);
       });
   };
-
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">

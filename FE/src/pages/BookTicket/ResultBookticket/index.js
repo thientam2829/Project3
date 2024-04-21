@@ -24,7 +24,7 @@ export default function ResultBookTicket() {
     isMobile,
   });
   const handleDownloadTicket = () => {
-    const input = document.getElementById("ticketContainer"); // Đảm bảo rằng bạn đã đặt id này cho container của vé
+    const input = document.getElementById("ticketContainer");
     html2canvas(input)
       .then((canvas) => {
         const a = document.createElement("a");

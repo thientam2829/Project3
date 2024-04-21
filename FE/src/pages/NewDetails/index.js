@@ -6,6 +6,8 @@ import { useLocation } from "react-router-dom";
 import { useHistory, Link } from "react-router-dom";
 import ScrollToTopOnPathChange from "../../components/Scroll";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import moviesApi from "../../api/moviesApi";
+import newsApi from "../../api/newApi";
 const Breadcrumb = ({ title }) => {
   const history = useHistory();
   return (
@@ -30,20 +32,16 @@ const NewsPage = ({ match }) => {
     const fetchNews = async () => {
       setLoading(true);
       try {
-        const responseNews = await axios.get(
-          `http://localhost:4000/api/QuanLyTinTuc/LayThongTinTinTuc/${id}`
-        );
+        const responseNews = await newsApi.layThongTinTinTuc(id);
         setNewsItem(responseNews.data);
-        const responseMovies = await axios.get(
-          `http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim`
-        );
+        const responseMovies = await moviesApi.getDanhSachPhim();
         setMovies(responseMovies.data.slice(0, 3));
       } catch (err) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
-
     fetchNews();
   }, [id]);
   function splitContentIntoThreeParts(content) {

@@ -58,9 +58,7 @@ export default function Register() {
 
   const handleSubmit = async (user) => {
     try {
-      const emailExist = await axios.get(
-        `http://localhost:4000/api/check-email/${user.email}`
-      );
+      const emailExist = await usersApi.checkEmailAvailability(user.email);
       if (emailExist.status === 400) {
         Swal.fire({
           icon: "error",

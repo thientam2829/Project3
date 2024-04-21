@@ -5,6 +5,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useStyles from "./style";
 import ListSeat from "./ListSeat";
 import PayMent from "./PayMent";
+
 import Modal from "./Modal";
 import { getListSeat } from "../../reducers/actions/BookTicket";
 import {

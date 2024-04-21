@@ -23,6 +23,7 @@ import {
   putUserUpdate,
   resetUserList,
 } from "../../reducers/actions/UsersManagement";
+import ticketsApi from "../../api/ticketsApi";
 const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: "transparent",
@@ -146,31 +147,27 @@ export default function Index() {
   const [typePassword, settypePassword] = useState("password");
   const fetchTongTienMuaVe = async (taiKhoan) => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/QuanLyVe/TongTienMuaVe/${taiKhoan}`
-      );
+      const response = await ticketsApi.tongTienMuaVe(taiKhoan);
       return response.data;
     } catch (error) {
       console.error("Lỗi khi gọi API:", error);
       return null;
     }
   };
+
   const fetchTongSoVeDaMua = async (taiKhoan) => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/QuanLyVe/TongSoVeDaMua/${taiKhoan}`
-      );
+      const response = await ticketsApi.tongSoVeDaMua(taiKhoan);
       return response.data;
     } catch (error) {
       console.error("Lỗi khi gọi API:", error);
       return null;
     }
   };
+
   const fetchWatchedMovies = async (taiKhoan) => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/QuanLyVe/TenPhimDaMua/${taiKhoan}`
-      );
+      const response = await ticketsApi.tenPhimDaMua(taiKhoan);
       return response.data;
     } catch (error) {
       console.error("Lỗi khi gọi API:", error);
@@ -207,7 +204,7 @@ export default function Index() {
           }
         })
         .catch((error) => {
-          console.error("Lỗi khi gọi API:", error);
+          console.error("Error when calling API:", error);
         });
     }
   }, [currentUser]);
@@ -257,13 +254,6 @@ export default function Index() {
     } else {
       settypePassword("password");
     }
-  };
-  const getIdSeat = (danhSachGhe) => {
-    return danhSachGhe
-      .reduce((listSeat, seat) => {
-        return [...listSeat, seat.tenGhe];
-      }, [])
-      .join(", ");
   };
 
   return (

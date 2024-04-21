@@ -1577,7 +1577,7 @@ app.get("/api/ThongKe/DoanhThuTheoThang", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-app.post("/api/QuanLyDatVe/ThemDanhGia", (req, res) => {
+app.post("/api/QuanLyDanhGia/ThemDanhGia", (req, res) => {
   const { hoTen, email, noiDung, maPhim, soSao, thoiGian } = req.body;
   const query = `INSERT INTO danhGia (hoTen, email, noiDung, maPhim, soSao, thoiGian) VALUES (?, ?, ?, ?, ?, ?)`;
 

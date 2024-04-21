@@ -10,17 +10,25 @@ import {
   Typography,
   Button,
   IconButton,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@material-ui/core";
 import axios from "axios";
 import AddOrEditNhanVienForm from "./dialog";
 import { format, parseISO } from "date-fns";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
+import employeeApi from "../../api/employeeApi";
+
 function Employee() {
   const [employees, setEmployees] = useState([]);
   const [open, setOpen] = useState(false);
   const [cumRapList, setCumRapList] = useState([]);
   const [currentEmployee, setCurrentEmployee] = useState(null);
+  const [noiLamViecFilter, setNoiLamViecFilter] = useState("");
+  const [loaiNhanVienFilter, setLoaiNhanVienFilter] = useState("");
 
   useEffect(() => {
     fetchEmployees();
@@ -29,27 +37,27 @@ function Employee() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/api/QuanLyNhanVien/LayTatCaNhanVien"
-      );
+      const response = await employeeApi.getTatCaNhanVien();
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
     }
   };
+
   const fetchCumRap = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/cumrap");
+      const response = await employeeApi.getCumRap();
       setCumRapList(response.data);
     } catch (error) {
       console.error("Error fetching cụm rạp:", error);
     }
   };
+
   const handleDeleteEmployee = (id) => {
     if (window.confirm("Bạn có chắc muốn xoá nhân viên này không?")) {
-      axios
-        .delete(`http://localhost:4000/api/QuanLyNhanVien/XoaNhanVien/${id}`)
-        .then((response) => {
+      employeeApi
+        .deleteNhanVien(id)
+        .then(() => {
           alert("Nhân viên đã được xoá thành công!");
           fetchEmployees();
         })
@@ -59,16 +67,25 @@ function Employee() {
         });
     }
   };
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const getCumRapName = (cumRapId) => {
     const cumRap = cumRapList.find((cr) => cr.cid === cumRapId);
-    return cumRap ? cumRap.tenCumRap : "sssss";
+    return cumRap ? cumRap.tenCumRap : "";
   };
+
   const handleEditClick = (employee) => {
     setCurrentEmployee(employee);
     setOpen(true);
   };
+
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      (noiLamViecFilter === "" || employee.noilamviec === noiLamViecFilter) &&
+      (loaiNhanVienFilter === "" ||
+        employee.loainhanvien === loaiNhanVienFilter)
+  );
 
   return (
     <>
@@ -103,6 +120,37 @@ function Employee() {
         >
           Danh Sách Nhân Viên
         </Typography>
+        <FormControl style={{ minWidth: 120, margin: "10px" }}>
+          <InputLabel id="noi-lam-viec-label">Nơi Làm Việc</InputLabel>
+          <Select
+            labelId="noi-lam-viec-label"
+            value={noiLamViecFilter}
+            onChange={(e) => setNoiLamViecFilter(e.target.value)}
+          >
+            <MenuItem value="">Tất cả</MenuItem>
+            {cumRapList.map((cumRap) => (
+              <MenuItem key={cumRap.cid} value={cumRap.cid}>
+                {cumRap.tenCumRap}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl style={{ minWidth: 120, margin: "10px" }}>
+          <InputLabel id="loai-nhan-vien-label">Loại Nhân Viên</InputLabel>
+          <Select
+            labelId="loai-nhan-vien-label"
+            value={loaiNhanVienFilter}
+            onChange={(e) => setLoaiNhanVienFilter(e.target.value)}
+          >
+            <MenuItem value="">Tất cả</MenuItem>
+            <MenuItem value="Quản Lý">Quản Lý</MenuItem>
+            <MenuItem value="Nhân viên bán thời gian">
+              Nhân viên bán thời gian
+            </MenuItem>
+            <MenuItem value="Nhân viên">Nhân Viên</MenuItem>
+          </Select>
+        </FormControl>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -120,7 +168,7 @@ function Employee() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {employees.map((employee) => (
+            {filteredEmployees.map((employee) => (
               <TableRow key={employee.id}>
                 <TableCell>{employee.hoten}</TableCell>
                 <TableCell>

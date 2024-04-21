@@ -21,7 +21,7 @@ const useStyle = makeStyles((theme) => ({
     color: "black",
     boxShadow: "none",
     "& .MuiTabs-indicator": {
-      height: 0, // ẩn gạch dưới
+      height: 0,
     },
   },
 

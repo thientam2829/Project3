@@ -87,7 +87,7 @@ import SearchStickets from "./SearchTickets";
 import useStyles from "./styles";
 import BtnPlay from "../../../components/BtnPlay";
 import { LOADING_BACKTO_HOME_COMPLETED } from "../../../reducers/constants/Lazy";
-import axios from "axios";
+import bannerApi from "../../../api/bannerApi";
 import "./carousel.css";
 
 export default function Carousel() {
@@ -100,7 +100,7 @@ export default function Carousel() {
   const settings = {
     dots: true,
     infinite: true,
-    autoplaySpeed: 3000, //speed per sence
+    autoplaySpeed: 3000,
     autoplay: true,
     speed: 500,
     swipeToSlide: true,
@@ -114,10 +114,10 @@ export default function Carousel() {
     fetchBannerData();
   }, []);
   function fetchBannerData() {
-    axios
-      .get("http://localhost:4000/api/QuanLyBanner/LayDanhSachBanner")
+    bannerApi
+      .layDanhSachBanner()
       .then((response) => {
-        setListFilmBanner(response.data); // Update state with fetched data
+        setListFilmBanner(response.data);
       })
       .catch((error) => {
         console.error("Error fetching banner data:", error);

@@ -6,6 +6,7 @@ import { OPEN_MODAL } from "../../reducers/constants/ModalTrailer";
 import { useDispatch } from "react-redux";
 import ConfirmationNumberTwoToneIcon from "@material-ui/icons/ConfirmationNumberTwoTone";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
+import moviesApi from "../../api/moviesApi";
 import ScrollToTopOnPathChange from "../../components/Scroll";
 import {
   Button,
@@ -56,9 +57,7 @@ const MovieList = () => {
 
   const fetchMoviesData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim`
-      );
+      const response = await moviesApi.getDanhSachPhim();
       setMovies(response.data);
     } catch (error) {
       console.error("Failed to fetch movies data:", error);

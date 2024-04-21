@@ -239,6 +239,7 @@ export default function PayMent() {
             Áp dụng
           </button>
         </div>
+
         {/* đặt vé */}
         <div className="">
           {/* <button

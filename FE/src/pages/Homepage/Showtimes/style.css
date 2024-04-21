@@ -1,0 +1,93 @@
+.movies-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 90px;
+}
+.movie-header {
+  margin: 48px;
+  color: #fa5238;
+}
+.movie-card {
+  flex: 0 0 calc(25% - 20px);
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card-front img {
+  width: 100%;
+  height: auto;
+}
+
+.movie-card-back {
+  padding: 10px;
+  background-color: #f8f8f8;
+  width: 95.5%;
+}
+
+.movie-card-back h3 {
+  margin: 0;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.movie-card-back h3 img {
+  margin-left: 10px;
+  max-width: 25px;
+  height: auto;
+}
+
+.movie-card-back p {
+  font-size: 0.8em;
+  color: #666;
+}
+
+.movie-card-footer {
+  padding: 10px;
+  text-align: center;
+}
+.see-more-button {
+  margin-top: 20px;
+  width: 50%;
+  align-items: center;
+}
+
+/* This will make the play-trailer visible and transition smoothly on hovering over movie-card */
+.movie-card:hover .movie-card-front .play-trailer {
+  opacity: 1;
+  transition: all 0.2s;
+}
+
+/* Initial style for play-trailer, hidden by default */
+.movie-card .movie-card-front .play-trailer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  font-size: 20px;
+  border-radius: 50%; /* changed from 50px to 50% to ensure a perfect circle */
+  line-height: 60px;
+  cursor: pointer;
+  transition: all 0.2s; /* corrected the syntax error in transition time */
+  opacity: 0;
+}
+
+/* Since you might have an icon within BtnPlay, if it's passed as a child, you'll adjust like this */
+.movie-card .movie-card-front .play-trailer i {
+  position: absolute;
+  color: white;
+  font-size: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}

@@ -5,9 +5,13 @@ const usersApi = {
     const path = "/QuanLyNguoiDung/DangKy";
     return axiosClient.post(path, user);
   },
-  postXacThucOTP: ({ email, otp }) => {
-    const path = "/QuanLyNguoiDung/XacThucOTP";
-    return axiosClient.post(path, { email, otp });
+  xacThucOTP: (email, otp) => {
+    const url = `/QuanLyNguoiDung/XacThucOTP`;
+    return axiosClient.post(url, { email, otp });
+  },
+  checkEmailAvailability: (email) => {
+    const url = `/check-email/${email}`;
+    return axiosClient.get(url);
   },
   postDangNhap: (user) => {
     const path = "/QuanLyNguoiDung/DangNhap";

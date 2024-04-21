@@ -9,15 +9,7 @@ export default function Footer() {
         <div className="col-6 col-md-4">
           <div className={classes.tix__text}>
             <div className="d-none d-lg-block d-xl-block">
-              <p>CosmoCinema</p>
-
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.cgv.vn/"
-              >
-                Brand Guidelines
-              </a>
+              <p>COSMO CINEMAS VIETNAM</p>
             </div>
             <div className="row">
               <Link to="/dieukhoansudung" className="col-6 col-lg-12">
@@ -153,7 +145,7 @@ export default function Footer() {
         </div>
         <div className="col-6 col-md-4 d-flex text-center">
           <div className={classes.social__width}>
-            <p className="d-none d-lg-block d-xl-block pb-2">SOCIAL APP</p>
+            <p className="d-none d-lg-block d-xl-block pb-2">SOCIAL</p>
             <div className={classes.footer__social}>
               <a
                 target="_blank"
@@ -192,7 +184,7 @@ export default function Footer() {
           </div>
           <div className={`col-12 col-md-9 p-1 text-center text-lg-left`}>
             <p>
-              <span>CosmoCinema - SẢN PHẨM CỦA CÔNG TY CỔ PHẦN COSMO</span>{" "}
+              <span>Cosmo Cinemas - SẢN PHẨM CỦA CÔNG TY CỔ PHẦN COSMO</span>{" "}
             </p>
             <p>
               <span>

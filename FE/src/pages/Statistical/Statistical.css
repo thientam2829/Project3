@@ -24,18 +24,16 @@ th {
   flex-wrap: wrap;
 }
 
-/* Điều chỉnh cho biểu đồ cột */
 .chart-bar {
-  width: 60%; /* Làm cho biểu đồ cột to hơn */
+  width: 60%;
   margin-bottom: 20px;
 }
 
-/* Điều chỉnh cho biểu đồ tròn */
 .chart-pie {
-  width: 30%; /* Làm cho biểu đồ tròn nhỏ hơn */
+  width: 30%;
   margin-bottom: 20px;
 }
-/* Statistical.css */
+
 .dashboard-container {
   display: flex;
   flex-direction: column;

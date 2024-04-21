@@ -27,15 +27,11 @@ import { FAKE_AVATAR } from "../../../constants/config";
 
 const items = [
   {
-    href: "/admin/statistical",
-    icon: EqualizerSharpIcon,
-    title: "Thống Kê",
-  },
-  {
     href: "/admin/movies",
     icon: MovieIcon,
     title: "Phim",
   },
+
   // {
   //   href: "/admin/users",
   //   icon: PeopleAltIcon,
@@ -50,6 +46,11 @@ const items = [
     href: "/admin/book",
     icon: ListIcon,
     title: "Danh Sách Đặt Chổ",
+  },
+  {
+    href: "/admin/statistical",
+    icon: EqualizerSharpIcon,
+    title: "Thống Kê",
   },
   {
     href: "/admin/news",

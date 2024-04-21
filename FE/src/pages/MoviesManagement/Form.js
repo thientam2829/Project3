@@ -223,7 +223,7 @@ export default function FormInput({ selectedPhim, onUpdate, onAddMovie }) {
             <Field as="select" name="phanLoai" className="form-control">
               <option value="">Chọn phân loại</option>
               <option value="P">P - Phổ thông</option>
-              <option value="K">K - Kinh dị</option>
+              <option value="K">K - Dưới 13 tuổi</option>
               <option value="T13">T13 - Trên 13 tuổi</option>
               <option value="T16">T16 - Trên 16 tuổi</option>
               <option value="T18">T18 - Trên 18 tuổi</option>

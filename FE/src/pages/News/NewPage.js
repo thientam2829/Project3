@@ -3,7 +3,8 @@ import axios from "axios";
 import { Button, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-
+import moviesApi from "../../api/moviesApi";
+import newsApi from "../../api/newApi";
 import "./NewPage.css";
 const Breadcrumb = () => {
   return (
@@ -20,8 +21,9 @@ export default function AllNews() {
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4000/api/QuanLyTinTuc/LayTatCaTinTuc")
+    // Fetch news
+    newsApi
+      .layTatCaTinTuc()
       .then((response) => {
         setNews(response.data);
       })
@@ -29,9 +31,8 @@ export default function AllNews() {
         console.error("There was an error fetching the news!", error);
       });
 
-    // Fetch movies
-    axios
-      .get("http://localhost:4000/api/QuanLyPhim/LayDanhSachPhim")
+    moviesApi
+      .getDanhSachPhim()
       .then((response) => {
         setMovies(response.data.slice(0, 3));
       })

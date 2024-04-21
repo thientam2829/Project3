@@ -15,6 +15,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { imageUpload } from "../../utilities/util";
+import bannerApi from "../../api/bannerApi";
 const AddBannerForm = ({ open, onClose, onAddBanner }) => {
   const [filmOptions, setFilmOptions] = useState([]);
   const [formValues, setFormValues] = useState({
@@ -32,9 +33,7 @@ const AddBannerForm = ({ open, onClose, onAddBanner }) => {
   useEffect(() => {
     const fetchFilmOptions = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/getFilmOptions"
-        );
+        const response = await bannerApi.getFilmOptions();
         setFilmOptions(response.data);
       } catch (error) {
         console.error("Error fetching film options:", error);
@@ -56,10 +55,7 @@ const AddBannerForm = ({ open, onClose, onAddBanner }) => {
     };
 
     try {
-      await axios.post(
-        "http://localhost:4000/api/QuanLyBanner/ThemBanner",
-        formData
-      );
+      await bannerApi.themBanner(formData);
       alert("Banner đã được thêm thành công!");
       if (typeof onAddBanner === "function") {
         onAddBanner();
@@ -69,9 +65,9 @@ const AddBannerForm = ({ open, onClose, onAddBanner }) => {
     } catch (error) {
       console.error("Error when performing:", error);
       alert("Error when performing");
+    } finally {
+      setSubmitting(false);
     }
-
-    setSubmitting(false);
   };
 
   return (

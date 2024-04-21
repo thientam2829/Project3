@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import statisticalApi from "../../api/statisticalApi";
 import { Bar, Pie, Doughnut, Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import "chartjs-plugin-datalabels";
@@ -12,9 +13,7 @@ function Statistical() {
   useEffect(() => {
     const fetchMovieRevenue = async () => {
       try {
-        const movieResponse = await axios.get(
-          "http://localhost:4000/api/ThongKe/DoanhThuPhim"
-        );
+        const movieResponse = await statisticalApi.getThongKeDoanhThuPhim();
         setMovieRevenue(movieResponse.data);
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu doanh thu phim:", error);
@@ -23,9 +22,8 @@ function Statistical() {
 
     const fetchTheaterRevenue = async () => {
       try {
-        const theaterResponse = await axios.get(
-          "http://localhost:4000/api/ThongKe/doanhthuphimtheorap"
-        );
+        const theaterResponse =
+          await statisticalApi.getThongKeDoanhThuPhimTheoRap();
         setTheaterRevenue(theaterResponse.data);
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu doanh thu theo rạp:", error);
@@ -34,15 +32,12 @@ function Statistical() {
 
     const fetchMonthlyTheaterRevenue = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/ThongKe/DoanhThuTheoThang"
-        );
+        const response = await statisticalApi.getThongKeDoanhThuTheoThang();
         setMonthlyTheaterRevenue(response.data);
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu doanh thu theo tháng:", error);
       }
     };
-
     fetchMonthlyTheaterRevenue();
     fetchMovieRevenue();
     fetchTheaterRevenue();
