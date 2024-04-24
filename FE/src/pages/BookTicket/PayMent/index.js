@@ -10,7 +10,7 @@ import {
   SET_READY_PAYMENT,
 } from "../../../reducers/constants/BookTicket";
 import { PayPalButton } from "react-paypal-button-v2";
-
+import ThoiLuongDanhGia from "../../../components/ThoiLuongDanhGia/thoiLuongDanhGia";
 const makeObjError = (name, value, dataSubmit) => {
   let newErrors = {
     ...dataSubmit.errors,
@@ -170,7 +170,17 @@ export default function PayMent() {
     const amountInUSD = amountInVND * exchangeRate;
     return amountInUSD;
   };
+  function calculateEndTime(startTime) {
+    if (!startTime) return ""; // Nếu không có startTime, trả về chuỗi rỗng
 
+    const [hours, minutes] = startTime.split(":");
+    const date = new Date();
+    date.setHours(parseInt(hours, 10), parseInt(minutes, 10) + 120);
+
+    return `${date.getHours()}:${
+      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+    }`;
+  }
   return (
     <aside className={classes.payMent}>
       <div>
@@ -181,8 +191,8 @@ export default function PayMent() {
           <p className={classes.tenPhim}>{thongTinPhim?.tenPhim}</p>
           <p>{thongTinPhim?.tenCumRap}</p>
           <p>{`${
-            thongTinPhim && formatDate(thongTinPhim.ngayChieu).dateFull
-          } - ${thongTinPhim?.tenRap}`}</p>
+            thongTinPhim && formatDate(thongTinPhim.ngayChieu).dayToday
+          } - ${thongTinPhim?.gioChieu} - ${thongTinPhim?.tenRap}`}</p>
         </div>
 
         <div className={`${classes.seatInfo} ${classes.payMentItem}`}>
@@ -227,7 +237,7 @@ export default function PayMent() {
         </div>
 
         {/* Mã giảm giá */}
-        <div className={classes.payMentItem}>
+        {/* <div className={classes.payMentItem}>
           <label className={classes.label}>Mã giảm giá</label>
           <input
             type="text"
@@ -238,7 +248,7 @@ export default function PayMent() {
           <button className={classes.btnDiscount} disabled>
             Áp dụng
           </button>
-        </div>
+        </div> */}
 
         {/* đặt vé */}
         <div className="">

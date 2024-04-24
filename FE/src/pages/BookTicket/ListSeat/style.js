@@ -34,9 +34,9 @@ const useStyles = makeStyles({
   },
   timeCount: {
     fontWeight: 500,
-    fontSize: 34,
+    fontSize: 30,
     color: "rgb(238, 130, 59)",
-    lineHeight: "39px",
+    lineHeight: "50px",
   },
 
   overflowSeat: {

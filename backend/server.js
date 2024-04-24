@@ -12,6 +12,7 @@ const axios = require("axios");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const router = express.Router();
+const moment = require("moment");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(
@@ -901,13 +902,29 @@ app.get("/api/QuanLyDatVe/LayDanhSachPhongVe", function (req, res) {
         );
       });
 
-      let danhSachGhePhong = Array.from({ length: 160 }, (_, i) => ({
+      let danhSachGhePhong = Array.from({ length: 164 }, (_, i) => ({
         maGhe: i + 1,
         tenGhe: i > 9 ? String(i + 1) : "0" + String(i + 1),
         maRap: maRap,
-        loaiGhe: i > 44 && i < 90 ? "Vip" : "Thuong",
+        loaiGhe:
+          (i >= 53 && i <= 58) ||
+          (i >= 69 && i <= 74) ||
+          (i >= 85 && i <= 90) ||
+          (i >= 101 && i <= 106)
+            ? "Vip"
+            : i >= 160 && i <= 163
+            ? "SweetBox"
+            : "Thuong",
         stt: i > 9 ? String(i + 1) : "0" + String(i + 1),
-        giaVe: i > 44 && i < 90 ? giaVeCoBan + 20000 : giaVeCoBan,
+        giaVe:
+          (i >= 53 && i <= 58) ||
+          (i >= 69 && i <= 74) ||
+          (i >= 85 && i <= 90) ||
+          (i >= 101 && i <= 106)
+            ? giaVeCoBan + 25000
+            : i >= 160 && i <= 163
+            ? giaVeCoBan + 30000
+            : giaVeCoBan,
         daDat: false,
         taiKhoanNguoiDat: null,
       }));

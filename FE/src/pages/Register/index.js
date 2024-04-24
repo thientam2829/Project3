@@ -108,9 +108,9 @@ export default function Register() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-10">
-              <div className="text-center">
+              {/* <div className="text-center">
                 <h1 className="text-white">Đăng ký</h1>
-              </div>
+              </div> */}
               <div className="wrap d-md-flex">
                 <div className="img" style={{ backgroundImage: "" }}>
                   <img src="https://res.cloudinary.com/thientam2829/image/upload/v1709453120/wjkn0lecvqqf7bzxw9vn.jpg" />
@@ -150,7 +150,10 @@ export default function Register() {
                       {(formikProps) => (
                         <Form className="col-sm-12">
                           <div className="form-group">
-                            <label>Tài khoản *&nbsp;</label>
+                            <label>
+                              Tài khoản <span style={{ color: "red" }}>*</span>
+                              &nbsp;
+                            </label>
                             <ErrorMessage
                               name="taiKhoan"
                               render={(msg) => (
@@ -163,8 +166,12 @@ export default function Register() {
                               className="form-control"
                             />
                           </div>
+
                           <div className="form-group">
-                            <label>Mật khẩu *&nbsp;</label>
+                            <label>
+                              Mật khẩu <span style={{ color: "red" }}>*</span>
+                              &nbsp;
+                            </label>
                             <ErrorMessage
                               name="matKhau"
                               render={(msg) => (
@@ -177,8 +184,12 @@ export default function Register() {
                               className="form-control"
                             />
                           </div>
+
                           <div className="form-group">
-                            <label>Họ và tên *&nbsp;</label>
+                            <label>
+                              Họ và tên <span style={{ color: "red" }}>*</span>
+                              &nbsp;
+                            </label>
                             <ErrorMessage
                               name="hoTen"
                               render={(msg) => (
@@ -193,7 +204,10 @@ export default function Register() {
                           </div>
 
                           <div className="form-group">
-                            <label>Email *&nbsp;</label>
+                            <label>
+                              Email <span style={{ color: "red" }}>*</span>
+                              &nbsp;
+                            </label>
                             <ErrorMessage
                               name="email"
                               render={(msg) => (
@@ -207,8 +221,12 @@ export default function Register() {
                               className="form-control"
                             />
                           </div>
+
                           <div className="form-group">
-                            <label>Số điện thoại *&nbsp;</label>
+                            <label>
+                              Số điện thoại{" "}
+                              <span style={{ color: "red" }}>*</span>&nbsp;
+                            </label>
                             <ErrorMessage
                               name="soDt"
                               render={(msg) => (
@@ -221,6 +239,7 @@ export default function Register() {
                               className="form-control"
                             />
                           </div>
+
                           <div className="form-group form-check">
                             <Field
                               type="checkbox"

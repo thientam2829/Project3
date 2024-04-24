@@ -13,7 +13,6 @@ function Index(props) {
     return now.toISOString().slice(0, 10);
   }, []);
 
-  // Filtering unique movies that have at least one showing for today or later
   const seenTitles = new Set();
   const uniqueMovies = useMemo(() => {
     return props.lstPhim.filter((phim) => {

@@ -13,8 +13,10 @@ import {
 import * as yup from "yup";
 import Rating from "@material-ui/lab/Rating";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import CreateRoundedIcon from "@material-ui/icons/CreateRounded";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import ThumbsUpDownTwoToneIcon from "@material-ui/icons/ThumbsUpDownTwoTone";
+import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 import CloseIcon from "@material-ui/icons/Close";
 import { Formik, Field } from "formik";
 import { useLocation } from "react-router-dom";
@@ -144,6 +146,10 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
 
     fetchReviews();
   }, [maPhim]);
+  const [displayCount, setDisplayCount] = useState(3);
+  const handleShowMoreReviews = () => {
+    setDisplayCount((prevCount) => prevCount + 5);
+  };
   const [reviews, setReviews] = useState([]);
   return (
     <div className="">
@@ -447,44 +453,51 @@ export default function Desktop({ movieDetailShowtimes: data, isMobile }) {
             }}
             onClick={handleOpenCommentDialog}
           >
-            Viết đánh giá
+            <CreateRoundedIcon /> Viết đánh giá
           </Button>
           {reviews.length > 0 ? (
-            <div className="row">
-              {reviews.map((review, index) => (
-                <div key={index} className="col-12 mb-3">
-                  <div className="card">
-                    <div className="card-body">
-                      <h5 class="makeStyles-text__second-364">
-                        {review.hoTen}
-                      </h5>
-                      <small className="text-muted ml-auto">
-                        {formatDistanceToNow(new Date(review.thoiGian), {
-                          addSuffix: true,
-                        })}
-                      </small>
-                      <div className="d-flex align-items-center">
-                        <span
-                          style={{
-                            fontSize: "2rem",
-                            color: "rgb(238, 130, 59)",
-                            marginRight: 8,
-                          }}
-                        >
-                          ★
-                        </span>
-                        <span className="ml-8">{`${review.soSao}/10`}</span>
-                      </div>
-                      <p className="card-text">{review.noiDung}</p>
+            reviews.slice(0, displayCount).map((review, index) => (
+              <div key={index} className="col-12 mb-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="makeStyles-text__second-364">
+                      {review.hoTen}
+                    </h5>
+                    <small className="text-muted ml-auto">
+                      {formatDistanceToNow(new Date(review.thoiGian), {
+                        addSuffix: true,
+                      })}
+                    </small>
+                    <div className="d-flex align-items-center">
+                      <span
+                        style={{
+                          fontSize: "2rem",
+                          color: "rgb(238, 130, 59)",
+                          marginRight: 8,
+                        }}
+                      >
+                        ★
+                      </span>
+                      <span className="ml-8">{`${review.soSao}/10`}</span>
                     </div>
+                    <p className="card-text">{review.noiDung}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
           ) : (
             <p className="text-center" style={{ color: "lightgray" }}>
               Chưa có đánh giá nào.
             </p>
+          )}
+          {reviews.length > 0 && displayCount < reviews.length && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleShowMoreReviews}
+            >
+              <ExpandMoreRoundedIcon /> Xem thêm đánh giá
+            </Button>
           )}
         </div>
       </div>

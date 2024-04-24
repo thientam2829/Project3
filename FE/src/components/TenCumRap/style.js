@@ -1,14 +1,14 @@
-import { makeStyles } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
-  text__first: props => ({
-    color: props.color ? `${props.color}` : '#000',
+  text__first: (props) => ({
+    color: props.color ? `${props.color}` : "#000",
     fontWeight: "500",
-    fontSize: props.testSize ? props.testSize : 14,
+    fontSize: props.testSize ? props.testSize : 15,
   }),
   text__second: {
     color: "#000",
     fontWeight: "500",
   },
 });
-export default useStyles
+export default useStyles;

@@ -1,38 +1,46 @@
-import React, { useMemo } from 'react'
+import React, { useMemo } from "react";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import Countdown, { zeroPad } from "react-countdown";
-import { TIMEOUT } from '../../../reducers/constants/BookTicket';
+import { TIMEOUT } from "../../../reducers/constants/BookTicket";
 
 export default function Index() {
-  const { loadingBookTicketTicket, successBookTicketTicketMessage, errorBookTicketMessage } = useSelector(state => state.BookTicketReducer);
+  const {
+    loadingBookTicketTicket,
+    successBookTicketTicketMessage,
+    errorBookTicketMessage,
+  } = useSelector((state) => state.BookTicketReducer);
   const dispatch = useDispatch();
-  const setTimeCount = useMemo(() => { 
-    return Date.now() + 300000
-  }, [])
+  const setTimeCount = useMemo(() => {
+    return Date.now() + 300000;
+  }, []);
 
   const handleTimeOut = () => {
-    if (!loadingBookTicketTicket && !(successBookTicketTicketMessage || errorBookTicketMessage)) {
+    if (
+      !loadingBookTicketTicket &&
+      !(successBookTicketTicketMessage || errorBookTicketMessage)
+    ) {
       dispatch({
         type: TIMEOUT,
-      })
+      });
     }
-  }
+  };
   const style = {
     fontWeight: 25,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "rgb(238, 130, 59)",
-    lineHeight: '39px',
-  }
+    lineHeight: "39px",
+    fontSize: "40px",
+  };
   return (
     <Countdown
       date={setTimeCount}
       renderer={({ minutes, seconds }) => (
         <span style={style}>
           {zeroPad(minutes)}:{zeroPad(seconds)}
-        </span>)
-      }
+        </span>
+      )}
       onComplete={() => handleTimeOut()}
     />
-  )
+  );
 }

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useParams, Link } from "react-router-dom";
 import "./style.css";
-import { useLocation } from "react-router-dom";
-import { useHistory, Link } from "react-router-dom";
 import ScrollToTopOnPathChange from "../../components/Scroll";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import moviesApi from "../../api/moviesApi";
 import newsApi from "../../api/newApi";
+
 const Breadcrumb = ({ title }) => {
-  const history = useHistory();
   return (
     <div className="link">
       <Link to="/">Trang chủ</Link>
@@ -21,7 +18,7 @@ const Breadcrumb = ({ title }) => {
   );
 };
 
-const NewsPage = ({ match }) => {
+const NewsPage = () => {
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState(null);
   const [movies, setMovies] = useState([]);
@@ -29,35 +26,30 @@ const NewsPage = ({ match }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchNewsAndMovies = async () => {
       setLoading(true);
       try {
         const responseNews = await newsApi.layThongTinTinTuc(id);
         setNewsItem(responseNews.data);
+
         const responseMovies = await moviesApi.getDanhSachPhim();
-        setMovies(responseMovies.data.slice(0, 3));
+        // Assuming responseMovies.data is an array of movie objects with a 'releaseDate' property
+        const sortedMovies = responseMovies.data
+          .sort((a, b) => new Date(a.ngayKhoiChieu) - new Date(b.ngayKhoiChieu))
+          .slice(0, 3); // Sorting and picking the top 3 latest movies
+        setMovies(sortedMovies);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-    fetchNews();
+    fetchNewsAndMovies();
   }, [id]);
-  function splitContentIntoThreeParts(content) {
-    const partLength = Math.ceil(content.length / 5);
-    return [
-      content.substring(0, partLength),
-      content.substring(partLength, 2 * partLength),
-      content.substring(2 * partLength),
-    ];
-  }
 
   if (loading) return <p>Đang tải...</p>;
   if (error) return <p>{error}</p>;
-  const contentParts = newsItem
-    ? splitContentIntoThreeParts(newsItem.noidung)
-    : [];
+
   return (
     <>
       <ScrollToTopOnPathChange />

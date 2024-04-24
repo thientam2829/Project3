@@ -16,16 +16,7 @@ import {
   InputLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-const Breadcrumb = () => {
-  const history = useHistory();
-  return (
-    <div className="link">
-      <Link to="/">Trang chủ</Link>
-      <span> / </span>
-      <Link to="/phimdangchieu">Phim đang chiếu</Link>
-    </div>
-  );
-};
+
 const useStyles = makeStyles((theme) => ({
   movieCardFooter: {
     display: "flex",
@@ -36,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     textTransform: "none",
   },
-
   formControl: {
     backgroundColor: "rgba(255,255,255)",
     borderRadius: theme.shape.borderRadius,
@@ -47,6 +37,17 @@ const useStyles = makeStyles((theme) => ({
   detail: { display: "inline-block" },
 }));
 
+const Breadcrumb = () => {
+  const history = useHistory();
+  return (
+    <div className="link">
+      <Link to="/">Trang chủ</Link>
+      <span> / </span>
+      <Link to="/phimdangchieu">Phim đang chiếu</Link>
+    </div>
+  );
+};
+
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
   const [selectedPhanLoai, setSelectedPhanLoai] = useState("");
@@ -54,17 +55,24 @@ const MovieList = () => {
   const [selectedTheLoai, setSelectedTheLoai] = useState("");
 
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const fetchMoviesData = async () => {
     try {
       const response = await moviesApi.getDanhSachPhim();
-      setMovies(response.data);
+      // Sort movies by release date, newest first
+      const sortedMovies = response.data.sort(
+        (a, b) => new Date(b.ngayKhoiChieu) - new Date(a.ngayKhoiChieu)
+      );
+      setMovies(sortedMovies);
     } catch (error) {
       console.error("Failed to fetch movies data:", error);
     }
   };
-  const quocGias = Array.from(new Set(movies.map((movie) => movie.quocGia)));
-  const theLoais = Array.from(new Set(movies.map((movie) => movie.theLoai)));
+
+  useEffect(() => {
+    fetchMoviesData();
+  }, []);
 
   const handleQuocGiaChange = (event) => {
     setSelectedQuocGia(event.target.value);
@@ -73,11 +81,6 @@ const MovieList = () => {
   const handleTheLoaiChange = (event) => {
     setSelectedTheLoai(event.target.value);
   };
-  useEffect(() => {
-    fetchMoviesData();
-  }, []);
-
-  const dispatch = useDispatch();
 
   const openModal = (urlYoutube) => {
     dispatch({
@@ -88,7 +91,6 @@ const MovieList = () => {
       },
     });
   };
-  useEffect(() => {}, [movies]);
 
   const filteredMovies = movies.filter(
     (movie) =>
@@ -100,7 +102,7 @@ const MovieList = () => {
   return (
     <>
       <ScrollToTopOnPathChange />
-      <Breadcrumb title="Phim đang chiếu" />
+      <Breadcrumb />
       <div className={classes.detail}>
         <FormControl className={classes.formControl}>
           <InputLabel>Phân Loại</InputLabel>
@@ -124,11 +126,14 @@ const MovieList = () => {
             <MenuItem value="">
               <em>Tất cả</em>
             </MenuItem>
-            {quocGias.map((quocGia) => (
-              <MenuItem key={quocGia} value={quocGia}>
-                {quocGia}
-              </MenuItem>
-            ))}
+            {movies
+              .map((movie) => movie.quocGia)
+              .filter((value, index, self) => self.indexOf(value) === index)
+              .map((quocGia) => (
+                <MenuItem key={quocGia} value={quocGia}>
+                  {quocGia}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
         <FormControl className={classes.formControl}>
@@ -137,15 +142,19 @@ const MovieList = () => {
             <MenuItem value="">
               <em>Tất cả</em>
             </MenuItem>
-            {theLoais.map((theLoai) => (
-              <MenuItem key={theLoai} value={theLoai}>
-                {theLoai}
-              </MenuItem>
-            ))}
+            {movies
+              .map((movie) => movie.theLoai)
+              .flat()
+              .filter((value, index, self) => self.indexOf(value) === index)
+              .map((theLoai) => (
+                <MenuItem key={theLoai} value={theLoai}>
+                  {theLoai}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
       </div>
-      <div class="line"></div>
+      <div className="line"></div>
       <div className="movie-list">
         {filteredMovies.map((movie) => (
           <div key={movie.maPhim} className="movie-card">

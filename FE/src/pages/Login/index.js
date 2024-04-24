@@ -26,7 +26,7 @@ export default function Login() {
         icon: "success",
         title: "Đăng nhập thành công",
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1500,
       }).then(() => {
         history.goBack();
       });
@@ -81,9 +81,9 @@ export default function Login() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-12 col-lg-10">
-              <div className="text-center">
+              {/* <div className="text-center">
                 <h1 className="text-white">Đăng nhập</h1>
-              </div>
+              </div> */}
               <div className="wrap d-md-flex">
                 <div className="img" style={{ backgroundImage: "" }}>
                   <img
@@ -104,7 +104,10 @@ export default function Login() {
                       {() => (
                         <Form className="col-sm-10 mx-auto">
                           <div className="form-group position-relative">
-                            <label>Tài khoản *&nbsp;</label>
+                            <label>
+                              Tài khoản <span style={{ color: "red" }}>*</span>
+                              &nbsp;
+                            </label>
                             <ErrorMessage
                               name="taiKhoan"
                               render={(msg) => (
@@ -119,7 +122,10 @@ export default function Login() {
                           </div>
 
                           <div className="form-group position-relative">
-                            <label>Mật khẩu *&nbsp;</label>
+                            <label>
+                              Mật khẩu <span style={{ color: "red" }}>*</span>
+                              &nbsp;
+                            </label>
                             <ErrorMessage
                               name="matKhau"
                               render={(msg) => (

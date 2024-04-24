@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import SeatIcon from "@material-ui/icons/CallToActionRounded";
 import { useSelector, useDispatch } from "react-redux";
 import Countdown from "../Countdown";
-
+import ThoiLuongDanhGia from "../../../components/ThoiLuongDanhGia/thoiLuongDanhGia";
 import useStyles from "./style";
 import { colorTheater, logoTheater } from "../../../constants/theaterData";
 import formatDate from "../../../utilities/formatDate";
@@ -97,11 +97,14 @@ export default function ListSeat() {
     if (seat.loaiGhe === "Vip") {
       color = "#f7b500";
     }
+    if (seat.loaiGhe === "SweetBox") {
+      color = "#FF62B0";
+    }
     if (seat.selected) {
       color = "#44c020";
     }
     if (seat.daDat) {
-      color = "#99c5ff";
+      color = "red";
     }
     return color;
   };
@@ -130,6 +133,12 @@ export default function ListSeat() {
 
       <div className={classes.overflowSeat}>
         <div className={classes.invariantWidth}>
+          <img
+            className=""
+            style={{ margin: "50px" }}
+            src="/img/bookticket/bg-screen.png"
+            alt="screen"
+          />
           <div className={classes.seatSelect}>
             {listSeat?.map((seat, i) => (
               <div
@@ -178,7 +187,10 @@ export default function ListSeat() {
             <SeatIcon style={{ color: "#f7b500", fontSize: 27 }} />
             <p>Ghế VIP</p>
           </div>
-
+          <div>
+            <SeatIcon style={{ color: "#FF62B0", fontSize: 27 }} />
+            <p>Ghế Sweet Box</p>
+          </div>
           <div>
             <SeatIcon style={{ color: "#44c020", fontSize: 27 }} />
             <p>Ghế đang chọn</p>
@@ -186,7 +198,7 @@ export default function ListSeat() {
           <div>
             <div style={{ position: "relative" }}>
               <p className={classes.posiX}>x</p>
-              <SeatIcon style={{ color: "#99c5ff", fontSize: 27 }} />
+              <SeatIcon style={{ color: "RED", fontSize: 27 }} />
             </div>
             <p>Ghế đã được mua</p>
           </div>

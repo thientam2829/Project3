@@ -45,6 +45,7 @@ import BannerList from "./pages/AdminBanner";
 import Statistical from "./pages/Statistical/Statistical";
 import AllNews from "./pages/News/NewPage";
 import Employee from "./pages/Employee";
+
 const style = {
   position: "absolute",
   top: "50%",
