@@ -210,7 +210,7 @@ function sendVerificationEmail(email, otp) {
     subject: "Xác thực tài khoản",
     html: `
       <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-        <div style="padding: 20px; text-align: center;">
+        <div style="padding: 20px; text-align: center; background: #264b80;">
           <img src="https://res.cloudinary.com/thientam2829/image/upload/v1709083061/hl7eyjomgkfcz9muyoly.png" alt="Cosmo Cinemas Logo" style="width: 200px;">
         </div>
         <div style="background: #ffffff; padding: 20px; text-align: center;">
@@ -1292,7 +1292,7 @@ app.post("/api/QuanLyNguoiDung/QuenMatKhau", async (req, res) => {
     subject: "Đặt lại mật khẩu",
     html: `
       <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-        <div style="padding: 20px; text-align: center;">
+        <div style="padding: 20px; text-align: center; background: #264b80;">
           <img src="https://res.cloudinary.com/thientam2829/image/upload/v1709083061/hl7eyjomgkfcz9muyoly.png" alt="Cosmo Cinemas Logo" style="width: 200px;">
         </div>
         <div style="background: #ffffff; padding: 20px; text-align: center;">
